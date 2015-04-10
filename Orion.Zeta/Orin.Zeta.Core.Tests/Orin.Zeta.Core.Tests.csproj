@@ -35,9 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MockJockey">
-      <HintPath>..\packages\MockJockey.1.0.1\lib\MockJockey.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -58,9 +57,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchEngineTests.cs" />
+    <Compile Include="SearchMethods\ExplorerSearchMethodTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Orion.Zeta.Core\Orion.Zeta.Core.csproj">
+      <Project>{8f5f52fb-b110-4f34-8046-a56a8e24f71c}</Project>
+      <Name>Orion.Zeta.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
