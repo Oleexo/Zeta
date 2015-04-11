@@ -1,7 +1,9 @@
-﻿namespace Orion.Zeta.Core {
-	public interface IItem {
-		string Name { get; }
+﻿using System.Drawing;
 
-		string Icon { get; }
+namespace Orion.Zeta.Core {
+	public interface IItem {
+		string Value { get; }
+
+		Icon Icon { get; }
 	}
 }

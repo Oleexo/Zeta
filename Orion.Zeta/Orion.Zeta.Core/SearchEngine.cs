@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Orion.Zeta.Core.SearchMethods;
 
 namespace Orion.Zeta.Core {
@@ -17,7 +18,7 @@ namespace Orion.Zeta.Core {
 			var items = new List<IItem>();
 			foreach (var searchMethod in this._searchMethods) {
 				if (searchMethod.IsMatching(expression))
-					searchMethod.Search(expression);
+					items = searchMethod.Search(expression).Concat(items).ToList();
 			}
 			return items;
 		}
