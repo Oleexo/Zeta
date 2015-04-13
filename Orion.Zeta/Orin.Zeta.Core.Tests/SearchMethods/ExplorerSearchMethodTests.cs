@@ -45,9 +45,7 @@ namespace Orin.Zeta.Core.Tests.SearchMethods {
 			@"~/Des",
 			@"~/Down",
 			@"/use",
-			@"/Windows/hh.",
-			@"/Work/gitRepositories/MediaMotion/MediaMotion."
-			)]string expression) {
+			@"/Windows/hh.")]string expression) {
 			var results = this._explorerSearchMethod.Search(expression);
 
 			Assert.IsNotEmpty(results);

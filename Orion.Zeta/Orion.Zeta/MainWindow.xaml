@@ -5,27 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:viewModels="clr-namespace:Orion.Zeta.ViewModels"
-                      mc:Ignorable="d"
-        Title="Zeta" Height="100" Width="525" d:DataContext="{viewModels:MainViewModel}">
+				xmlns:converters="clr-namespace:Orion.Zeta.Converters"
+				xmlns:zetaCore="clr-namespace:Orion.Zeta.Core;assembly=Orion.Zeta.Core"
+				mc:Ignorable="d"
+				d:DataContext="{viewModels:MainViewModel}"
+        Title="Zeta"
+				Height="100" Width="525" MaxHeight="400"
+				SizeToContent="Height">
+	<controls:MetroWindow.Resources>
+		<converters:IconToImageSourceConverter x:Key="IconToImageSourceConverter"></converters:IconToImageSourceConverter>
+	</controls:MetroWindow.Resources>
+	<controls:MetroWindow.Background>
+		<SolidColorBrush Opacity="0.75" Color="White"></SolidColorBrush>
+	</controls:MetroWindow.Background>
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
 			<Button Content="Settings"></Button>
 		</controls:WindowCommands>
 	</controls:MetroWindow.RightWindowCommands>
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"></ColumnDefinition>
-			<ColumnDefinition Width="Auto"></ColumnDefinition>
-		</Grid.ColumnDefinitions>
-		<Grid Grid.Column="0">
-			<TextBox Padding="0" Margin="0" Text="{Binding Suggestion, Mode=OneWay}" FontSize="26" Foreground="Gray" BorderThickness="0"></TextBox>
-			<TextBox Padding="0" Margin="0" TextChanged="ExpressionTextBox_TextChanged"
-				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-				FontSize="26" Background="Transparent" BorderThickness="0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<TextBox x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion, Mode=OneWay}" ScrollViewer.ScrollChanged="SuggestionTextBox_OnScrollChanged"
+				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Hidden"
+				Background="Transparent"></TextBox>
+			<TextBox x:Name="ExpressionTextBox" Padding="0" Margin="0,0,150,0" ScrollViewer.ScrollChanged="ExpressionTextBox_OnScrollChanged"
+				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="NoWrap"
+				FontSize="22" Background="Transparent" BorderThickness="0">
 				<TextBox.InputBindings>
-					<KeyBinding Key="Tab" Command="{Binding ExpressionAutoCompleteCommand}" CommandParameter="{Binding .}"></KeyBinding>
+					<KeyBinding Key="Tab" Command="{Binding ExpressionAutoCompleteCommand}"></KeyBinding>
 				</TextBox.InputBindings>
 			</TextBox>
 		</Grid>
+		<ListBox Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent">
+			<ListBox.ItemTemplate>
+				<DataTemplate DataType="{x:Type zetaCore:IItem}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<Image Grid.Column="0" Source="{Binding Icon, Mode=OneTime, Converter={StaticResource IconToImageSourceConverter}}"></Image>
+						<TextBlock Grid.Column="1" Text="{Binding Value}"></TextBlock>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 	</Grid>
 </controls:MetroWindow>
