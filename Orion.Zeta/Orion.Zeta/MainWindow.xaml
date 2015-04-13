@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-				xmlns:customsControls="clr-namespace:Orion.Zeta.Controls"
         xmlns:viewModels="clr-namespace:Orion.Zeta.ViewModels"
-        mc:Ignorable="d"
+                      mc:Ignorable="d"
         Title="Zeta" Height="100" Width="525" d:DataContext="{viewModels:MainViewModel}">
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
@@ -20,13 +19,13 @@
 		</Grid.ColumnDefinitions>
 		<Grid Grid.Column="0">
 			<TextBox Padding="0" Margin="0" Text="{Binding Suggestion, Mode=OneWay}" FontSize="26" Foreground="Gray" BorderThickness="0"></TextBox>
-			<TextBox Padding="0" Margin="0" Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="26" Background="Transparent" BorderThickness="0"></TextBox>
+			<TextBox Padding="0" Margin="0" TextChanged="ExpressionTextBox_TextChanged"
+				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+				FontSize="26" Background="Transparent" BorderThickness="0">
+				<TextBox.InputBindings>
+					<KeyBinding Key="Tab" Command="{Binding ExpressionAutoCompleteCommand}" CommandParameter="{Binding .}"></KeyBinding>
+				</TextBox.InputBindings>
+			</TextBox>
 		</Grid>
-<!--		
-UpdateSourceTrigger doesn't work with this custom control
-<customsControls:TextSuggestBox Grid.Column="0"
-			FontSize="36"
-			Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-			Suggestion="{Binding Suggestion, Mode=OneWay}"></customsControls:TextSuggestBox>-->
 	</Grid>
 </controls:MetroWindow>

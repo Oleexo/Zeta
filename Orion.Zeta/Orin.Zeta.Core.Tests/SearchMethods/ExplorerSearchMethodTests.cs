@@ -43,7 +43,10 @@ namespace Orin.Zeta.Core.Tests.SearchMethods {
 			@"c/Prog",
 			@"/Prog",
 			@"~/Des",
-			@"~/Down"
+			@"~/Down",
+			@"/use",
+			@"/Windows/hh.",
+			@"/Work/gitRepositories/MediaMotion/MediaMotion."
 			)]string expression) {
 			var results = this._explorerSearchMethod.Search(expression);
 

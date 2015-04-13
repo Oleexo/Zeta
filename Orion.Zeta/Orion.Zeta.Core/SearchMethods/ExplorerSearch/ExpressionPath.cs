@@ -37,7 +37,13 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 				}
 				var directories = Directory.GetDirectories(parentDirectoryPath, pattern, SearchOption.TopDirectoryOnly);
 				foreach (var directory in directories) {
-					this._possibilties.Add(new Tuple<PathType, string>(PathType.Directory, directory));
+					/*
+					 *  Path because /Example/Zeta/Zeta.
+					 *  Match with /Example/Zeta/Zeta
+					 *  if /Example/Zeta contains folder name Zeta
+					 * */
+					if (directory.Length >= path.Length)
+						this._possibilties.Add(new Tuple<PathType, string>(PathType.Directory, directory));
 				}
 			}
 		}
@@ -103,7 +109,7 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			else {
 				path = this._expression.Substring(0, 1) + winPath.Substring(2).Replace("\\", "/");
 			}
-			return path;
+			return this._expression + path.Substring(this._expression.Length);
 		}
 	}
 }

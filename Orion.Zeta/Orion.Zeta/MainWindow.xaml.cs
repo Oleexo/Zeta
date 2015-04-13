@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using System.Windows.Controls;
+using MahApps.Metro.Controls;
 using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta
@@ -16,5 +17,11 @@ namespace Orion.Zeta
 		    this._mainViewModel = new MainViewModel();
 		    this.DataContext = this._mainViewModel;
         }
+
+	    private void ExpressionTextBox_TextChanged(object sender, TextChangedEventArgs e) {
+		    var textBox = sender as TextBox;
+
+		    if (textBox != null) textBox.CaretIndex = textBox.Text.Length;
+	    }
     }
 }
