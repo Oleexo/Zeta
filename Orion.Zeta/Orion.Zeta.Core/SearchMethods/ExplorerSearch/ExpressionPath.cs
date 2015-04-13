@@ -12,7 +12,7 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			File
 		}
 		private readonly string _expression;
-		private List<Tuple<PathType, string>> _possibilties;
+		private readonly List<Tuple<PathType, string>> _possibilties;
 
 		public ExpressionPath(string expression) {
 			this._expression = expression;
@@ -27,6 +27,10 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			foreach (var path in paths) {
 				var parentDirectoryPath = this.GetParentDirectory(path);
 				var pattern = this.GetPattern(path);
+				if (String.IsNullOrEmpty(pattern)) {
+					continue;
+				}
+				pattern += "*";
 				var files = Directory.EnumerateFiles(parentDirectoryPath, pattern, SearchOption.TopDirectoryOnly);
 				foreach (var file in files) {
 					this._possibilties.Add(new Tuple<PathType, string>(PathType.File, file));
@@ -39,7 +43,7 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 		}
 
 		private string GetPattern(string path) {
-			return path.Substring(path.LastIndexOf("\\", StringComparison.Ordinal) + 1) + "*";
+			return path.Substring(path.LastIndexOf("\\", StringComparison.Ordinal) + 1);
 		}
 
 		private string GetParentDirectory(string path) {
