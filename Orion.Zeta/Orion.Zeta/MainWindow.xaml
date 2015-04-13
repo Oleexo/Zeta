@@ -29,7 +29,7 @@
 			<RowDefinition Height="Auto"></RowDefinition>
 		</Grid.RowDefinitions>
 		<Grid Grid.Row="0">
-			<TextBox x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion, Mode=OneWay}" ScrollViewer.ScrollChanged="SuggestionTextBox_OnScrollChanged"
+			<TextBox x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion, Mode=OneWay}"
 				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Hidden"
 				Background="Transparent"></TextBox>
 			<TextBox x:Name="ExpressionTextBox" Padding="0" Margin="0,0,150,0" ScrollViewer.ScrollChanged="ExpressionTextBox_OnScrollChanged"

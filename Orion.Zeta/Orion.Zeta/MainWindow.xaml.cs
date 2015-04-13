@@ -24,42 +24,19 @@ namespace Orion.Zeta {
 			this.ExpressionTextBox.CaretIndex = this.ExpressionTextBox.Text.Length;
 		}
 
-		private void SuggestionTextBox_OnScrollChanged(object sender, ScrollChangedEventArgs e) {
-			if (!this._changedExpression) {
-				return;
-			}
-			if (this.ExpressionTextBox.HorizontalOffset > e.HorizontalOffset - 1 && this.SuggestionTextBox.Text.Length > 0) {
-				var padding = this.SuggestionTextBox.Padding;
-				padding.Right = this.ExpressionTextBox.HorizontalOffset - this.SuggestionTextBox.HorizontalOffset;
-				this.SuggestionTextBox.Padding = padding;
-				this.SuggestionTextBox.ScrollToHorizontalOffset(this.ExpressionTextBox.HorizontalOffset);
-			}
-			if (this.SuggestionTextBox.Text.Length == 0) {
-				this.ResetSuggestionPadding();
-			}
-			this._changedExpression = false;
-		}
-
 		private void ExpressionTextBox_OnScrollChanged(object sender, ScrollChangedEventArgs e) {
-			this._changedExpression = true;
 			if (e.HorizontalOffset >= (e.ExtentWidth - e.ViewportWidth) - 1) {
-				this.ResetSuggestionPadding();
 				if (this.SuggestionTextBox.Visibility != Visibility.Visible)
 					this.SuggestionTextBox.Visibility = Visibility.Visible;
-				this.SuggestionTextBox.ScrollToHorizontalOffset(this.ExpressionTextBox.HorizontalOffset);
+				var margin = this.SuggestionTextBox.Margin;
+				margin.Left = -(this.ExpressionTextBox.HorizontalOffset);
+				this.SuggestionTextBox.Margin = margin;
 			}
 			else {
 				if (this.SuggestionTextBox.Visibility == Visibility.Visible) {
-					this.ResetSuggestionPadding();
 					this.SuggestionTextBox.Visibility = Visibility.Hidden;
 				}
 			}
-		}
-
-		private void ResetSuggestionPadding() {
-			var padding = this.SuggestionTextBox.Padding;
-			padding.Right = 0;
-			this.SuggestionTextBox.Padding = padding;
 		}
 	}
 }
