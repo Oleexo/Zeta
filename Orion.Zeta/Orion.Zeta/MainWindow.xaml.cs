@@ -10,7 +10,6 @@ namespace Orion.Zeta {
 	/// </summary>
 	public partial class MainWindow : MetroWindow {
 		private readonly MainViewModel _mainViewModel;
-		private bool _changedExpression;
 
 		public MainWindow() {
 			this.InitializeComponent();
