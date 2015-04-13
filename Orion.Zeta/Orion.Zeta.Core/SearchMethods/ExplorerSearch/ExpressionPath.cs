@@ -83,11 +83,16 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			var results = new List<IItem>();
 			foreach (var possibilty in this._possibilties) {
 				var item = new Item {
-					Value = this.ConvertToPseudoPath(possibilty.Item2)
+					Value = this.ConvertToPseudoPath(possibilty.Item2),
+					DisplayName = this.GetPattern(possibilty.Item2),
+					Execute = new Execute {
+						Program = possibilty.Item1 == PathType.Directory ? "explorer.exe" : possibilty.Item2,
+						Parameters = possibilty.Item1 == PathType.Directory ? possibilty.Item2 : string.Empty
+					}
 				};
 				Icon icon;
 				try {
-					icon = Icon.ExtractAssociatedIcon(possibilty.Item2);
+					icon = IconHelper.GetIcon(possibilty.Item2);
 				}
 				catch (Exception) {
 					icon = SystemIcons.WinLogo;

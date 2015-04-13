@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 	public class ExplorerSearchMethod : ISearchMethod {
 		private readonly Regex _rgx;
-		private const string PatternRegex = @"^(\/|[A-Za-z~]\/)(.[.A-Za-z0-9\/\s()]*)?$";
+		private const string PatternRegex = @"^(\/|[A-Za-z~]\/)(.[.A-Za-z0-9\/\s()-\[\]]*)?$";
 
 		public ExplorerSearchMethod() {
 			this._rgx = new Regex(PatternRegex);

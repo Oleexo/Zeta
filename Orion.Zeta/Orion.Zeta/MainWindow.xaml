@@ -10,7 +10,7 @@
 				mc:Ignorable="d"
 				d:DataContext="{viewModels:MainViewModel}"
         Title="Zeta"
-				Height="100" Width="525" MaxHeight="400"
+				Width="525" MaxHeight="400"
 				SizeToContent="Height">
 	<controls:MetroWindow.Resources>
 		<converters:IconToImageSourceConverter x:Key="IconToImageSourceConverter"></converters:IconToImageSourceConverter>
@@ -28,29 +28,39 @@
 			<RowDefinition Height="Auto"></RowDefinition>
 			<RowDefinition Height="Auto"></RowDefinition>
 		</Grid.RowDefinitions>
-		<Grid Grid.Row="0">
-			<TextBox x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion, Mode=OneWay}"
+		<Border Grid.Row="0" BorderBrush="#FF999393" BorderThickness="0,0,0,1">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<TextBox Grid.Column="0" x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion.Value, Mode=OneWay}"
 				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Hidden"
 				Background="Transparent"></TextBox>
-			<TextBox x:Name="ExpressionTextBox" Padding="0" Margin="0,0,150,0" ScrollViewer.ScrollChanged="ExpressionTextBox_OnScrollChanged"
+				<TextBox Grid.Column="0" x:Name="ExpressionTextBox" Padding="0" Margin="0,0,150,0" ScrollViewer.ScrollChanged="ExpressionTextBox_OnScrollChanged"
 				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="NoWrap"
 				FontSize="22" Background="Transparent" BorderThickness="0">
-				<TextBox.InputBindings>
-					<KeyBinding Key="Tab" Command="{Binding ExpressionAutoCompleteCommand}"></KeyBinding>
-				</TextBox.InputBindings>
-			</TextBox>
-		</Grid>
+					<TextBox.InputBindings>
+						<KeyBinding Key="Tab" Command="{Binding ExpressionAutoCompleteCommand}"></KeyBinding>
+						<KeyBinding Key="Enter" Command="{Binding ExpressionRunCommand}"></KeyBinding>
+					</TextBox.InputBindings>
+				</TextBox>
+				<Image Grid.Column="1" Source="{Binding Suggestion.Icon, Converter={StaticResource IconToImageSourceConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+			</Grid>
+		</Border>
 		<ListBox Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type zetaCore:IItem}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<Image Grid.Column="0" Source="{Binding Icon, Mode=OneTime, Converter={StaticResource IconToImageSourceConverter}}"></Image>
-						<TextBlock Grid.Column="1" Text="{Binding Value}"></TextBlock>
-					</Grid>
+					<Border BorderBrush="#FF999393" BorderThickness="0,0,0,1" Margin="0,0,5,0">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<Image Grid.Column="0" Source="{Binding Icon, Mode=OneTime, Converter={StaticResource IconToImageSourceConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+							<TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center"></TextBlock>
+						</Grid>
+					</Border>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IExecute.cs" />
     <Compile Include="IItem.cs" />
     <Compile Include="ISearchEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -47,6 +48,8 @@
     <Compile Include="SearchMethods\ExplorerSearch\ExplorerSearchMethod.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\ExpressionPath.cs" />
     <Compile Include="SearchMethods\ISearchMethod.cs" />
+    <Compile Include="SearchMethods\Shared\Execute.cs" />
+    <Compile Include="SearchMethods\Shared\IconHelper.cs" />
     <Compile Include="SearchMethods\Shared\Item.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
