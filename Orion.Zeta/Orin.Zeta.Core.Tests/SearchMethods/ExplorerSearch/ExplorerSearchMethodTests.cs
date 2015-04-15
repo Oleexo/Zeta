@@ -2,7 +2,10 @@
 using NUnit.Framework;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
 
-namespace Orin.Zeta.Core.Tests.SearchMethods {
+namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
+	/// <summary>
+	/// This test work only on Windows OS
+	/// </summary>
 	[TestFixture]
 	public class ExplorerSearchMethodTests {
 		private ExplorerSearchMethod _explorerSearchMethod;

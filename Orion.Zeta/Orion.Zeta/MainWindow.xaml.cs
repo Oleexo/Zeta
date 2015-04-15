@@ -17,6 +17,7 @@ namespace Orion.Zeta {
 			this._mainViewModel = new MainViewModel();
 			this.DataContext = this._mainViewModel;
 			this._mainViewModel.OnAutoComplete += this.OnAutoComplete;
+			this.ExpressionTextBox.Focus();
 		}
 
 		private void OnAutoComplete(object sender, EventArgs e) {

@@ -47,9 +47,13 @@
     <Compile Include="SearchEngine.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\ExplorerSearchMethod.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\ExpressionPath.cs" />
+    <Compile Include="SearchMethods\ExplorerSearch\PathHelper.cs" />
+    <Compile Include="SearchMethods\ExplorerSearch\PossibilityPath.cs" />
     <Compile Include="SearchMethods\ISearchMethod.cs" />
     <Compile Include="SearchMethods\Shared\Execute.cs" />
+    <Compile Include="SearchMethods\Shared\FileSystemSearch.cs" />
     <Compile Include="SearchMethods\Shared\IconHelper.cs" />
+    <Compile Include="SearchMethods\Shared\IFileSystemSearch.cs" />
     <Compile Include="SearchMethods\Shared\Item.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

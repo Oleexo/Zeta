@@ -43,7 +43,7 @@ namespace Orion.Zeta.ViewModels {
 			this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
 			this.Suggestions = new ObservableCollection<IItem>();
 			this.Suggestion = null;
-			this._expression = new Item(@"~/Downloads/a", null);//string.Empty;
+			this._expression = new Item();
 		}
 
 		private void OnExpressionRunCommand() {
