@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
@@ -12,7 +13,7 @@ namespace Orion.Zeta.Converters {
 			BitmapFrame imageSource;
 			using (var bmp = icon.ToBitmap()) {
 				var stream = new MemoryStream();
-				bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+				bmp.Save(stream, ImageFormat.Png);
 				imageSource = BitmapFrame.Create(stream);
 			}
 			return imageSource;

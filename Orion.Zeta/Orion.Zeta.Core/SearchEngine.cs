@@ -4,7 +4,7 @@ using Orion.Zeta.Core.SearchMethods;
 
 namespace Orion.Zeta.Core {
 	public class SearchEngine : ISearchEngine {
-		private List<ISearchMethod> _searchMethods;
+		private readonly List<ISearchMethod> _searchMethods;
 
 		public SearchEngine() {
 			this._searchMethods = new List<ISearchMethod>();

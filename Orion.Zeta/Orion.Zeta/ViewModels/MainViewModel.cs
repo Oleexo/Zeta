@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.MVVM;
 using Orion.Zeta.Core;
+using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
@@ -14,7 +15,12 @@ namespace Orion.Zeta.ViewModels {
 
 		public ICommand ExpressionRunCommand { get; set; }
 
+		public ICommand RunCommand { get; set; }
+
+		public ICommand SelectSuggestionCommand { get; set; }
+
 		public event EventHandler OnAutoComplete;
+		public event EventHandler OnProgramStart;
 
 		public string Expression {
 			get { return this._expression.Value; }
@@ -32,18 +38,50 @@ namespace Orion.Zeta.ViewModels {
 			}
 		}
 
+		public bool IsSearching {
+			get { return this._isSearching; }
+			set {
+				this._isSearching = value;
+				this.OnPropertyChanged();
+			}
+		}
+
 		public ObservableCollection<IItem> Suggestions { get; set; }
 
 		private IItem _suggestion;
 		private readonly Lazy<SearchEngine> _searchEngine = new Lazy<SearchEngine>(InitialisationSearchEngine);
 		private IItem _expression;
+		private bool _isSearching;
 
 		public MainViewModel() {
+			this.IsSearching = false;
 			this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
 			this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
+			this.RunCommand = new RelayCommand(this.OnRunCommand);
+			this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestion);
 			this.Suggestions = new ObservableCollection<IItem>();
 			this.Suggestion = null;
 			this._expression = new Item();
+		}
+
+		private void OnSelectSuggestion(object obj) {
+			var item = obj as IItem;
+			if (item != null) {
+				this.Suggestion = item;
+			}
+		}
+
+		private void OnRunCommand(object obj) {
+			var item = obj as IItem;
+			if (item != null) {
+				if (item.IsValid()) {
+					item.Execute.Start();
+					this.Suggestions.Clear();
+					if (this.OnProgramStart != null) {
+						this.OnProgramStart(this, new EventArgs());
+					}
+				}
+			}
 		}
 
 		private void OnExpressionRunCommand() {
@@ -68,6 +106,10 @@ namespace Orion.Zeta.ViewModels {
 		private static SearchEngine InitialisationSearchEngine() {
 			var searchEngine = new SearchEngine();
 			searchEngine.RegisterMethod(new ExplorerSearchMethod());
+			var applicationSearchMethod = new ApplicationSearchMethod();
+			//applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.Programs), new List<string> {"*.exe", "*.lnk"});
+			applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms), new List<string> { "*.exe", "*.lnk" });
+			searchEngine.RegisterMethod(applicationSearchMethod);
 			return searchEngine;
 		}
 

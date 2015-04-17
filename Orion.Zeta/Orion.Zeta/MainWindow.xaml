@@ -9,6 +9,8 @@
 				xmlns:zetaCore="clr-namespace:Orion.Zeta.Core;assembly=Orion.Zeta.Core"
 				mc:Ignorable="d"
 				d:DataContext="{viewModels:MainViewModel}"
+				ShowMaxRestoreButton="False"
+				GlowBrush="{DynamicResource AccentColorBrush}"
         Title="Zeta"
 				Width="525" MaxHeight="400"
 				SizeToContent="Height">
@@ -35,20 +37,43 @@
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 				<TextBox Grid.Column="0" x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion.Value, Mode=OneWay}"
-				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Hidden"
+				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Visible"
 				Background="Transparent"></TextBox>
 				<TextBox Grid.Column="0" x:Name="ExpressionTextBox" Padding="0" Margin="0,0,125,0" ScrollViewer.ScrollChanged="ExpressionTextBox_OnScrollChanged"
-				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="NoWrap"
+				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="NoWrap" KeyUp="ExpressionTextBox_OnKeyUp"
 				FontSize="22" Background="Transparent" BorderThickness="0">
 					<TextBox.InputBindings>
 						<KeyBinding Key="Tab" Command="{Binding ExpressionAutoCompleteCommand}"></KeyBinding>
 						<KeyBinding Key="Enter" Command="{Binding ExpressionRunCommand}"></KeyBinding>
 					</TextBox.InputBindings>
 				</TextBox>
-				<Image Grid.Column="1" Source="{Binding Suggestion.Icon, Converter={StaticResource IconToImageSourceConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+				<Image Grid.Column="1" Source="{Binding Suggestion.Icon, Converter={StaticResource IconToImageSourceConverter}}"
+				 HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+					<Image.Style>
+						<Style TargetType="Image">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsSearching, Mode=OneWay}" Value="False">
+									<Setter Property="Visibility" Value="Visible"></Setter>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Image.Style>
+				</Image>
+				<controls:ProgressRing Grid.Column="1" Height="35" Width="35" HorizontalAlignment="Center" VerticalAlignment="Center"
+				 Foreground="{DynamicResource AccentColorBrush}" IsActive="{Binding IsSearching}">
+					<controls:ProgressRing.Style>
+						<Style TargetType="controls:ProgressRing">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsSearching, Mode=OneWay}" Value="False">
+									<Setter Property="Visibility" Value="Collapsed"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</controls:ProgressRing.Style>
+				</controls:ProgressRing>
 			</Grid>
 		</Border>
-		<ListBox Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent" MaxHeight="325">
+		<ListBox x:Name="SuggestionsListBox" Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent" MaxHeight="325" KeyUp="SuggestionsListBox_OnKeyUp">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type zetaCore:IItem}">
 					<Border BorderBrush="#FF999393" BorderThickness="0,0,0,1" Margin="0,0,5,0">

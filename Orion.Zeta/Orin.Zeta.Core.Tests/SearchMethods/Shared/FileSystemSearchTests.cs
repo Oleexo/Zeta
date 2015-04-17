@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using NUnit.Framework;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
