@@ -45,6 +45,7 @@
     <Compile Include="ISearchEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchEngine.cs" />
+    <Compile Include="SearchMethods\ApplicationSearch\ApplicationsContainer.cs" />
     <Compile Include="SearchMethods\ApplicationSearch\ApplicationSearchMethod.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\ExplorerSearchMethod.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\ExpressionPath.cs" />
