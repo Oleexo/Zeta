@@ -10,8 +10,9 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 		private readonly string _path;
 		private readonly IEnumerable<string> _patterns;
 		private readonly IFileSystemSearch _fileSystemSearch;
+		private IList<Item> _items;
 
-		public ApplicationsContainer(string path, IEnumerable<string> patterns, IFileSystemSearch fileSystemSearch) {
+		public ApplicationsContainer(string path, IEnumerable<string> patterns, IFileSystemSearch fileSystemSearch, bool buildCache = true) {
 			if (!fileSystemSearch.DirectoryExists(path)) {
 				throw new DirectoryNotFoundException(path);
 			}
@@ -21,23 +22,29 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 			this._path = path;
 			this._patterns = patterns;
 			this._fileSystemSearch = fileSystemSearch;
+			if (buildCache)
+				this.BuildCache();
+		}
+
+		public void BuildCache() {
+			var matchedFiles = this.GetMatchedFiles();
+			this._items = matchedFiles.Select(mf => new Item {
+				Value = mf,
+				DisplayName = this._fileSystemSearch.GetFilename(mf),
+				Icon = this._fileSystemSearch.GetIcon(mf),
+				Execute = new Execute {
+					Program = mf
+				}
+			}).ToList();			
+		}
+
+		public void ClearCache() {
+			this._items.Clear();
 		}
 
 		public IEnumerable<IItem> Search(string expression) {
 			var regex = new Regex(this.ConvertWildcardToRegex(this.ConvertExpressionToWildCard(expression)), RegexOptions.IgnoreCase);
-			var matchedFiles = this.GetMatchedFiles();
-			var items = matchedFiles.Select(mf => {
-				var item = new Item {
-					Value = mf,
-					DisplayName = this._fileSystemSearch.GetFilename(mf),
-					Icon = this._fileSystemSearch.GetIcon(mf),
-					Execute = new Execute {
-						Program = mf
-					}
-				};
-				return item;
-			});
-			return items.Where(mf => regex.IsMatch(mf.DisplayName));;
+			return this._items.Where(mf => regex.IsMatch(mf.DisplayName));;
 		}
 
 		private string ConvertExpressionToWildCard(string expression) {
