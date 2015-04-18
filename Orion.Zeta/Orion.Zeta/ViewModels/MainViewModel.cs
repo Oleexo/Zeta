@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Microsoft.TeamFoundation.MVVM;
 using Orion.Zeta.Core;
 using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
@@ -123,16 +125,20 @@ namespace Orion.Zeta.ViewModels {
 			if (String.IsNullOrEmpty(expression)) {
 				return;
 			}
-			var suggestions = this.SearchEngine.Search(expression);
-			this.Suggestions.Clear();
-			if (suggestions.Count() > 1) {
-				foreach (var suggestion in suggestions) {
-					this.Suggestions.Add(suggestion);
-					Console.WriteLine(suggestion.Value);
+			this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result));
+		}
+
+		private void SearchingCallback(IEnumerable<IItem> suggestions) {
+			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
+				this.Suggestions.Clear();
+				if (suggestions.Count() > 1) {
+					foreach (var suggestion in suggestions) {
+						this.Suggestions.Add(suggestion);
+					}
 				}
-			}
-			var best = suggestions.FirstOrDefault();
-			this.Suggestion = best;
+				var best = suggestions.FirstOrDefault();
+				this.Suggestion = best;				
+			}));
 		}
 	}
 }

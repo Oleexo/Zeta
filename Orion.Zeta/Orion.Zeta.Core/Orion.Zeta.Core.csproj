@@ -52,6 +52,7 @@
     <Compile Include="SearchMethods\ExplorerSearch\PathHelper.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\PossibilityPath.cs" />
     <Compile Include="SearchMethods\ISearchMethod.cs" />
+    <Compile Include="SearchMethods\ISearchMethodAsync.cs" />
     <Compile Include="SearchMethods\Shared\Execute.cs" />
     <Compile Include="SearchMethods\Shared\FileSystemSearch.cs" />
     <Compile Include="SearchMethods\Shared\IconHelper.cs" />

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
 namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
@@ -22,9 +21,6 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			foreach (var path in paths) {
 				var parentDirectoryPath = PathHelper.GetParentDirectory(path);
 				var pattern = PathHelper.GetPattern(path);
-				if (String.IsNullOrEmpty(pattern)) {
-					continue;
-				}
 				pattern += "*";
 				var files = this._fileSystemSearch.GetFiles(parentDirectoryPath, pattern);
 				foreach (var file in files) {

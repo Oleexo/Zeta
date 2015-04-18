@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
@@ -13,6 +14,10 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 		private const string BadExpression = @"/fake";
 		private const string ExpressionParentDirectory = @"C:\";
 		private const string ExpressionPattern = @"fi*";
+		private const string ExpressionCompletePathOfDirectory = "/";
+		private const string ExpressionCompletePathOfDirectoryParentDirectory = @"C:\";
+		private const string ExpressionCompletePathOfDirectoryPattern = "*";
+
 		private IEnumerable<string> _listOfFiles;
 		private IEnumerable<string> _listOfDirectories;
 
@@ -38,6 +43,10 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 			this._iFileSystemSearchMock.Setup(fss => fss.GetFiles(ExpressionParentDirectory, ExpressionPattern, SearchOption.TopDirectoryOnly))
 				.Returns(this._listOfFiles);
 			this._iFileSystemSearchMock.Setup(fss => fss.GetDirectories(ExpressionParentDirectory, ExpressionPattern, SearchOption.TopDirectoryOnly))
+				.Returns(this._listOfDirectories);
+			this._iFileSystemSearchMock.Setup(fss => fss.GetFiles(ExpressionCompletePathOfDirectoryParentDirectory, ExpressionCompletePathOfDirectoryPattern, SearchOption.TopDirectoryOnly))
+				.Returns(this._listOfFiles);
+			this._iFileSystemSearchMock.Setup(fss => fss.GetDirectories(ExpressionCompletePathOfDirectoryParentDirectory, ExpressionCompletePathOfDirectoryPattern, SearchOption.TopDirectoryOnly))
 				.Returns(this._listOfDirectories);
 		}
 
@@ -67,6 +76,15 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 			var possibilities = expressionPath.FindPossibilities();
 
 			Assert.IsEmpty(possibilities);			
+		}
+
+		[Test]
+		public void GivenExpressionPathWithCompleteDirectoryPath_WhenFindPossibilities_ThenShouldReturnResult() {
+			var expressionPath = new ExpressionPath(ExpressionCompletePathOfDirectory, this._iFileSystemSearchMock.Object);
+
+			var possibilities = expressionPath.FindPossibilities();
+
+			Assert.IsNotEmpty(possibilities);
 		}
 	}
 }

@@ -9,7 +9,6 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 	[TestFixture]
 	public class ExplorerSearchMethodTests {
 		private ExplorerSearchMethod _explorerSearchMethod;
-		private const string CompletePathOfDirectory = "/";
 
 		[SetUp]
 		public void Setup() {
@@ -56,10 +55,18 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 		}
 
 		[Test]
-		public void GivenExplorer_WhenSearchWithCompleteDirectoryPath_ThenShouldNotReturnResult() {
-			var results = this._explorerSearchMethod.Search(CompletePathOfDirectory);
+		public async void GivenExplorer_WhenSearchAsync_ThenShouldReturnPossibiltyWhoStartWithExpression([Values(
+			@"/Users/Pub",
+			@"c/Prog",
+			@"/Prog",
+			@"~/Des",
+			@"~/Down",
+			@"/use",
+			@"/Windows/hh.")]string expression) {
+			var results = await this._explorerSearchMethod.SearchAsync(expression);
 
-			Assert.IsEmpty(results);
+			Assert.IsNotEmpty(results);
+			Assert.IsTrue(results.All(r => r.Value.StartsWith(expression)));
 		}
 	}
 }

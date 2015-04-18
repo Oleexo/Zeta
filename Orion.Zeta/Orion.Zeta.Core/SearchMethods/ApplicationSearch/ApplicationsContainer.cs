@@ -43,6 +43,8 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 		}
 
 		public IEnumerable<IItem> Search(string expression) {
+			if (String.IsNullOrEmpty(expression))
+				return new List<IItem>();
 			var regex = new Regex(this.ConvertWildcardToRegex(this.ConvertExpressionToWildCard(expression)), RegexOptions.IgnoreCase);
 			return this._items.Where(mf => regex.IsMatch(mf.DisplayName));;
 		}
