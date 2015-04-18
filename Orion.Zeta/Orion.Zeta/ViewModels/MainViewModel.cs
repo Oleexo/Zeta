@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -28,7 +29,7 @@ namespace Orion.Zeta.ViewModels {
 			get { return this._expression.Value; }
 			set {
 				this._expression.Value = value;
-				this.StartSearching(value);
+				this.OnExpressionUpdated();
 			}
 		}
 
@@ -54,6 +55,8 @@ namespace Orion.Zeta.ViewModels {
 		private readonly Lazy<SearchEngine> _searchEngine = new Lazy<SearchEngine>(InitialisationSearchEngine);
 		private IItem _expression;
 		private bool _isSearching;
+		private readonly TimeSpan _delaySearching;
+		private readonly Timer _expressionSearchTimer;
 
 		public MainViewModel() {
 			this.IsSearching = false;
@@ -64,6 +67,11 @@ namespace Orion.Zeta.ViewModels {
 			this.Suggestions = new ObservableCollection<IItem>();
 			this.Suggestion = null;
 			this._expression = new Item();
+			this._delaySearching = new TimeSpan(0, 0, 0, 0, 250);
+			this._expressionSearchTimer = new Timer(this._delaySearching.TotalMilliseconds) {AutoReset = false};
+			this._expressionSearchTimer.Elapsed += (sender, args) => {
+				this.StartSearching(this.Expression);
+			};
 		}
 
 		private void OnSelectSuggestion(object obj) {
@@ -121,11 +129,25 @@ namespace Orion.Zeta.ViewModels {
 			get { return this._searchEngine.Value; }
 		}
 
+		private void OnExpressionUpdated() {
+			if (this._expressionSearchTimer.Enabled) {
+				this._expressionSearchTimer.Stop();
+				this._expressionSearchTimer.Start();
+			}
+			else {
+				this._expressionSearchTimer.Start();
+			}
+		}
+
 		private void StartSearching(string expression) {
 			if (String.IsNullOrEmpty(expression)) {
 				return;
 			}
-			this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result));
+			// TODO find better way to protect double execution of searchengine (time window / cancel and start)
+			if (!this.IsSearching) {
+				this.IsSearching = true;
+				this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result));
+			}
 		}
 
 		private void SearchingCallback(IEnumerable<IItem> suggestions) {
@@ -137,7 +159,8 @@ namespace Orion.Zeta.ViewModels {
 					}
 				}
 				var best = suggestions.FirstOrDefault();
-				this.Suggestion = best;				
+				this.Suggestion = best;
+				this.IsSearching = false;
 			}));
 		}
 	}
