@@ -91,7 +91,14 @@ namespace Orion.Zeta.Core.SearchMethods.Shared {
 			}
 			if (res == IntPtr.Zero)
 				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
-			var icon = Icon.FromHandle(shinfo.hIcon);
+			Icon icon = null;
+			try {
+				// TODO find why this throw
+				icon = Icon.FromHandle(shinfo.hIcon);
+			}
+			catch (Exception e) {
+				Console.WriteLine(e.Message);
+			}
 
 			return icon;
 		}

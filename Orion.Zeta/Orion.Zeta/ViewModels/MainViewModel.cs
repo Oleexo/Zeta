@@ -95,10 +95,18 @@ namespace Orion.Zeta.ViewModels {
 		}
 
 		private void OnExpressionRunCommand() {
-			if (this._expression.IsValid())
+			if (this._expression.IsValid()) {
 				this._expression.Execute.Start();
-			else if (this._suggestion.IsValid())
+				if (this.OnProgramStart != null) {
+					this.OnProgramStart(this, new EventArgs());
+				}
+			}
+			else if (this._suggestion.IsValid()) {
 				this._suggestion.Execute.Start();
+				if (this.OnProgramStart != null) {
+					this.OnProgramStart(this, new EventArgs());
+				}
+			}
 		}
 
 		private void OnExpressionAutoCompleteCommand() {

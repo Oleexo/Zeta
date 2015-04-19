@@ -13,7 +13,9 @@
 				GlowBrush="{DynamicResource AccentColorBrush}"
         Title="Zeta"
 				Width="525" MaxHeight="400"
-				SizeToContent="Height">
+				SizeToContent="Height"
+				Topmost="True"
+				StateChanged="MainWindow_OnStateChanged">
 	<controls:MetroWindow.Resources>
 		<converters:IconToImageSourceConverter x:Key="IconToImageSourceConverter"></converters:IconToImageSourceConverter>
 	</controls:MetroWindow.Resources>
@@ -22,6 +24,7 @@
 	</controls:MetroWindow.Background>
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
+			<Label Foreground="White">Alpha Preview</Label>
 			<Button Content="Settings"></Button>
 		</controls:WindowCommands>
 	</controls:MetroWindow.RightWindowCommands>

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro.Controls;
 using Orion.Zeta.ViewModels;
 
@@ -11,6 +12,8 @@ namespace Orion.Zeta {
 	/// </summary>
 	public partial class MainWindow : MetroWindow {
 		private readonly MainViewModel _mainViewModel;
+		private readonly TaskbarIcon _notifyIcon;
+		private readonly NotifyIconViewModel _notifyIconViewModel;
 
 		public MainWindow() {
 			this.InitializeComponent();
@@ -20,10 +23,23 @@ namespace Orion.Zeta {
 			this._mainViewModel.OnAutoComplete += this.MainViewModelOnAutoComplete;
 			this._mainViewModel.OnProgramStart += this.MainViewModelOnOnProgramStart;
 			this.ExpressionTextBox.Focus();
+			this._notifyIcon = App.NotifyIcon;
+			this._notifyIconViewModel = App.NotifyIconViewModel;
+			this._notifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
+		}
+
+		private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
+			this.Show();
+			this.WindowState = WindowState.Normal;
+			this.Topmost = true;
 		}
 
 		private void MainViewModelOnOnProgramStart(object sender, EventArgs eventArgs) {
-			// TODO minimize
+			this.MinimizeApplication();
+		}
+
+		private void MinimizeApplication() {
+			this.Hide();
 		}
 
 		private void MainViewModelOnAutoComplete(object sender, EventArgs e) {
@@ -67,6 +83,12 @@ namespace Orion.Zeta {
 		private void SuggestionsListBox_OnKeyUp(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Enter) {
 				this._mainViewModel.RunCommand.Execute(this.SuggestionsListBox.SelectedItem);
+			}
+		}
+
+		private void MainWindow_OnStateChanged(object sender, EventArgs e) {
+			if (this.WindowState == WindowState.Minimized) {
+				this.MinimizeApplication();
 			}
 		}
 	}
