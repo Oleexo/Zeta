@@ -1,7 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
+using NHotkey;
+using NHotkey.Wpf;
 using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta
@@ -11,7 +15,13 @@ namespace Orion.Zeta
     /// </summary>
     public partial class App : Application
     {
-		public static TaskbarIcon NotifyIcon { get; private set; }
+	    private static MainWindow _mainWindow {
+		    get {
+				return Current.MainWindow as MainWindow;
+		    }
+	    }
+
+	    public static TaskbarIcon NotifyIcon { get; private set; }
 
 		public static NotifyIconViewModel NotifyIconViewModel { get; private set; }
 
@@ -29,6 +39,16 @@ namespace Orion.Zeta
 		    }
 			NotifyIconViewModel = new NotifyIconViewModel();
 		    NotifyIcon.DataContext = NotifyIconViewModel;
+			NotifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
+			HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Control, this.OnWakeUpApplication);
 	    }
+
+	    private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
+		    _mainWindow.WakeUpApplication();
+	    }
+
+	    private void OnWakeUpApplication(object sender, HotkeyEventArgs e) {
+			_mainWindow.WakeUpApplication();
+		}
     }
 }

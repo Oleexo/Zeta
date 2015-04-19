@@ -6,12 +6,8 @@ using MahApps.Metro.Controls;
 using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : MetroWindow {
 		private readonly MainViewModel _mainViewModel;
-		private readonly NotifyIconViewModel _notifyIconViewModel;
 
 		public MainWindow() {
 			this.InitializeComponent();
@@ -22,8 +18,21 @@ namespace Orion.Zeta {
 			this._mainViewModel.OnProgramStart += this.MainViewModelOnOnProgramStart;
 			this._mainViewModel.OnSearchFinished += this.MainViewModelOnOnSearchFinished;
 			this.ExpressionTextBox.Focus();
-			this._notifyIconViewModel = App.NotifyIconViewModel;
-			this._notifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
+			this.Deactivated += this.OnDeactivated;
+		}
+
+		private void OnDeactivated(object sender, EventArgs eventArgs) {
+			this.MinimizeApplication();
+		}
+
+		public void WakeUpApplication() {
+			if (this.WindowState == WindowState.Normal) {
+				return;
+			}
+			this.Show();
+			this.WindowState = WindowState.Normal;
+			this.Topmost = true;
+			this.ExpressionTextBox.Focus();
 		}
 
 		private void MainViewModelOnOnSearchFinished(object sender, EventArgs eventArgs) {
@@ -32,17 +41,12 @@ namespace Orion.Zeta {
 			this._mainViewModel.SelectSuggestionCommand.Execute(this.SuggestionsListBox.SelectedItem);
 		}
 
-		private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
-			this.Show();
-			this.WindowState = WindowState.Normal;
-			this.Topmost = true;
-		}
-
 		private void MainViewModelOnOnProgramStart(object sender, EventArgs eventArgs) {
 			this.MinimizeApplication();
 		}
 
 		private void MinimizeApplication() {
+			this.WindowState = WindowState.Minimized;
 			this.Hide();
 		}
 
