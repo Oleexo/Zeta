@@ -74,6 +74,8 @@ namespace Orion.Zeta.ViewModels {
 			this._expressionSearchTimer.Elapsed += (sender, args) => {
 				this.StartSearching(this.Expression);
 			};
+			// Force load searchEngine
+			var searchEngine = this.SearchEngine;
 		}
 
 		private void OnSelectSuggestion(object obj) {
@@ -127,6 +129,7 @@ namespace Orion.Zeta.ViewModels {
 			var searchEngine = new SearchEngine();
 			searchEngine.RegisterMethod(new ExplorerSearchMethod());
 			var applicationSearchMethod = new ApplicationSearchMethod();
+			applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.Programs), new List<string> { "*.exe", "*.lnk" });
 			applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms), new List<string> { "*.exe", "*.lnk" });
 			searchEngine.RegisterMethod(applicationSearchMethod);
 			return searchEngine;
