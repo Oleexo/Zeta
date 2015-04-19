@@ -40,7 +40,7 @@
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 				<TextBox Grid.Column="0" x:Name="SuggestionTextBox" Padding="0" Margin="0" Text="{Binding Suggestion.Value, Mode=OneWay}"
-				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Visible"
+				FontSize="22" Foreground="Gray" BorderThickness="0" IsReadOnly="True" Visibility="Visible" TextChanged="SuggestionTextBox_OnTextChanged"
 				Background="Transparent"></TextBox>
 				<TextBox Grid.Column="0" x:Name="ExpressionTextBox" Padding="0" Margin="0,0,125,0" ScrollViewer.ScrollChanged="ExpressionTextBox_OnScrollChanged"
 				Text="{Binding Expression, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="NoWrap" KeyUp="ExpressionTextBox_OnKeyUp"

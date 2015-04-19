@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro.Controls;
 using Orion.Zeta.ViewModels;
 
@@ -12,7 +11,6 @@ namespace Orion.Zeta {
 	/// </summary>
 	public partial class MainWindow : MetroWindow {
 		private readonly MainViewModel _mainViewModel;
-		private readonly TaskbarIcon _notifyIcon;
 		private readonly NotifyIconViewModel _notifyIconViewModel;
 
 		public MainWindow() {
@@ -22,10 +20,16 @@ namespace Orion.Zeta {
 			this.DataContext = this._mainViewModel;
 			this._mainViewModel.OnAutoComplete += this.MainViewModelOnAutoComplete;
 			this._mainViewModel.OnProgramStart += this.MainViewModelOnOnProgramStart;
+			this._mainViewModel.OnSearchFinished += this.MainViewModelOnOnSearchFinished;
 			this.ExpressionTextBox.Focus();
-			this._notifyIcon = App.NotifyIcon;
 			this._notifyIconViewModel = App.NotifyIconViewModel;
 			this._notifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
+		}
+
+		private void MainViewModelOnOnSearchFinished(object sender, EventArgs eventArgs) {
+			this.SuggestionsListBox.SelectedIndex = 0;
+			this.SuggestionTextBox.UpdateLayout();
+			this._mainViewModel.SelectSuggestionCommand.Execute(this.SuggestionsListBox.SelectedItem);
 		}
 
 		private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
@@ -48,7 +52,7 @@ namespace Orion.Zeta {
 
 		private void ExpressionTextBox_OnScrollChanged(object sender, ScrollChangedEventArgs e) {
 			if (e.HorizontalOffset >= (e.ExtentWidth - e.ViewportWidth) - 1) {
-				if (this.SuggestionTextBox.Visibility != Visibility.Visible)
+				if (this.SuggestionTextBox.Visibility == Visibility.Hidden)
 					this.SuggestionTextBox.Visibility = Visibility.Visible;
 				var margin = this.SuggestionTextBox.Margin;
 				margin.Left = -(this.ExpressionTextBox.HorizontalOffset);
@@ -89,6 +93,12 @@ namespace Orion.Zeta {
 		private void MainWindow_OnStateChanged(object sender, EventArgs e) {
 			if (this.WindowState == WindowState.Minimized) {
 				this.MinimizeApplication();
+			}
+		}
+
+		private void SuggestionTextBox_OnTextChanged(object sender, TextChangedEventArgs e) {
+			if (!this.SuggestionTextBox.Text.StartsWith(this.ExpressionTextBox.Text, StringComparison.OrdinalIgnoreCase)) {
+				this.SuggestionTextBox.Visibility = Visibility.Collapsed;
 			}
 		}
 	}

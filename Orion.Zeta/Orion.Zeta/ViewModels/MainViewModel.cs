@@ -24,6 +24,7 @@ namespace Orion.Zeta.ViewModels {
 
 		public event EventHandler OnAutoComplete;
 		public event EventHandler OnProgramStart;
+		public event EventHandler OnSearchFinished;
 
 		public string Expression {
 			get { return this._expression.Value; }
@@ -126,7 +127,6 @@ namespace Orion.Zeta.ViewModels {
 			var searchEngine = new SearchEngine();
 			searchEngine.RegisterMethod(new ExplorerSearchMethod());
 			var applicationSearchMethod = new ApplicationSearchMethod();
-			//applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.Programs), new List<string> {"*.exe", "*.lnk"});
 			applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms), new List<string> { "*.exe", "*.lnk" });
 			searchEngine.RegisterMethod(applicationSearchMethod);
 			return searchEngine;
@@ -159,10 +159,8 @@ namespace Orion.Zeta.ViewModels {
 				return;
 			}
 			this._lastTimeStartSearching = DateTime.Now;
-			if (!this.IsSearching) {
-				this.IsSearching = true;
-				this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching));
-			}
+			this.IsSearching = true;
+			this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching));
 		}
 
 		private void SearchingCallback(IEnumerable<IItem> suggestions, DateTime timeStart) {
@@ -179,6 +177,9 @@ namespace Orion.Zeta.ViewModels {
 				var best = suggestions.FirstOrDefault();
 				this.Suggestion = best;
 				this.IsSearching = false;
+				if (this.OnSearchFinished != null) {
+					this.OnSearchFinished(this, new EventArgs());
+				}
 			}));
 		}
 	}
