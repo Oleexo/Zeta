@@ -57,6 +57,7 @@ namespace Orion.Zeta.ViewModels {
 		private bool _isSearching;
 		private readonly TimeSpan _delaySearching;
 		private readonly Timer _expressionSearchTimer;
+		private DateTime _lastTimeStartSearching;
 
 		public MainViewModel() {
 			this.IsSearching = false;
@@ -68,7 +69,7 @@ namespace Orion.Zeta.ViewModels {
 			this.Suggestion = null;
 			this._expression = new Item();
 			this._delaySearching = new TimeSpan(0, 0, 0, 0, 250);
-			this._expressionSearchTimer = new Timer(this._delaySearching.TotalMilliseconds) {AutoReset = false};
+			this._expressionSearchTimer = new Timer(this._delaySearching.TotalMilliseconds) { AutoReset = false };
 			this._expressionSearchTimer.Elapsed += (sender, args) => {
 				this.StartSearching(this.Expression);
 			};
@@ -149,16 +150,25 @@ namespace Orion.Zeta.ViewModels {
 
 		private void StartSearching(string expression) {
 			if (String.IsNullOrEmpty(expression)) {
+				if (this.Suggestions.Any()) {
+					Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
+						this.Suggestions.Clear();
+						this.Suggestion = null;
+					}));
+				}
 				return;
 			}
-			// TODO find better way to protect double execution of searchengine (time window / cancel and start)
+			this._lastTimeStartSearching = DateTime.Now;
 			if (!this.IsSearching) {
 				this.IsSearching = true;
-				this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result));
+				this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching));
 			}
 		}
 
-		private void SearchingCallback(IEnumerable<IItem> suggestions) {
+		private void SearchingCallback(IEnumerable<IItem> suggestions, DateTime timeStart) {
+			if (timeStart != this._lastTimeStartSearching) {
+				return;
+			}
 			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
 				this.Suggestions.Clear();
 				if (suggestions.Count() > 1) {
