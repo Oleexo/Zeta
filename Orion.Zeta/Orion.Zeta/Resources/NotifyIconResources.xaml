@@ -4,8 +4,8 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 										xmlns:local="clr-namespace:Orion.Zeta.ViewModels"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
-	<notify:TaskbarIcon x:Key="TaskbarIcon" d:DataContext="{local:NotifyIconViewModel}"
-	ToolTipText="Test" LeftClickCommand="{Binding WakeUpCommand}">
+	<notify:TaskbarIcon x:Key="TaskbarIcon" d:DataContext="{local:NotifyIconViewModel}" IconSource="/Resources/zetaIco.ico"
+	ToolTipText="{Binding ToopTipText}" LeftClickCommand="{Binding WakeUpCommand}">
 		<notify:TaskbarIcon.ContextMenu>
 			<ContextMenu Background="{DynamicResource ControlBackgroundBrush}">
 				<MenuItem Header="Open" Command="{Binding WakeUpCommand}"></MenuItem>

@@ -11,9 +11,12 @@ namespace Orion.Zeta.ViewModels {
 
 		public event EventHandler WakeUpApplication;
 
+		public string ToopTipText { get; private set; }
+
 		public NotifyIconViewModel() {
 			this.WakeUpCommand = new RelayCommand(this.OnWakeUpCommand);
 			this.ShutDownApplicationCommand = new RelayCommand(this.OnShutDownApplicationCommand);
+			this.ToopTipText = "Zeta - Alpha Preview (Ctrl + Space)";
 		}
 
 		private void OnShutDownApplicationCommand() {
