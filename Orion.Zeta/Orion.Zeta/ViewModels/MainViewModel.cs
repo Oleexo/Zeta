@@ -99,7 +99,7 @@ namespace Orion.Zeta.ViewModels {
 		}
 
 		private void OnExpressionRunCommand() {
-			if (!this._suggestion.IsValid()) return;
+			if (this._suggestion == null || !this._suggestion.IsValid()) return;
 			this._suggestion.Execute.Start();
 			if (this.OnProgramStart != null) {
 				this.OnProgramStart(this, new EventArgs());
