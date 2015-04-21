@@ -27,9 +27,9 @@ namespace Orion.Zeta.ViewModels {
 		public event EventHandler OnSearchFinished;
 
 		public string Expression {
-			get { return this._expression.Value; }
+			get { return this._expression; }
 			set {
-				this._expression.Value = value;
+				this._expression = value;
 				this.OnExpressionUpdated();
 			}
 		}
@@ -54,7 +54,7 @@ namespace Orion.Zeta.ViewModels {
 
 		private IItem _suggestion;
 		private readonly Lazy<SearchEngine> _searchEngine = new Lazy<SearchEngine>(InitialisationSearchEngine);
-		private IItem _expression;
+		private string _expression;
 		private bool _isSearching;
 		private readonly TimeSpan _delaySearching;
 		private readonly Timer _expressionSearchTimer;
@@ -68,7 +68,7 @@ namespace Orion.Zeta.ViewModels {
 			this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestion);
 			this.Suggestions = new ObservableCollection<IItem>();
 			this.Suggestion = null;
-			this._expression = new Item();
+			this._expression = string.Empty;
 			this._delaySearching = new TimeSpan(0, 0, 0, 0, 250);
 			this._expressionSearchTimer = new Timer(this._delaySearching.TotalMilliseconds) { AutoReset = false };
 			this._expressionSearchTimer.Elapsed += (sender, args) => {
@@ -99,17 +99,10 @@ namespace Orion.Zeta.ViewModels {
 		}
 
 		private void OnExpressionRunCommand() {
-			if (this._expression.IsValid()) {
-				this._expression.Execute.Start();
-				if (this.OnProgramStart != null) {
-					this.OnProgramStart(this, new EventArgs());
-				}
-			}
-			else if (this._suggestion.IsValid()) {
-				this._suggestion.Execute.Start();
-				if (this.OnProgramStart != null) {
-					this.OnProgramStart(this, new EventArgs());
-				}
+			if (!this._suggestion.IsValid()) return;
+			this._suggestion.Execute.Start();
+			if (this.OnProgramStart != null) {
+				this.OnProgramStart(this, new EventArgs());
 			}
 		}
 
@@ -117,7 +110,7 @@ namespace Orion.Zeta.ViewModels {
 			if (this.Suggestion == null || this.Expression.Equals(this.Suggestion.Value)) {
 				return;
 			}
-			this._expression = this.Suggestion;
+			this._expression = this.Suggestion.Value;
 			this.OnPropertyChanged("Expression");
 			this.Suggestions.Clear();
 			if (this.OnAutoComplete != null) {

@@ -104,6 +104,11 @@ namespace Orion.Zeta {
 			if (!this.SuggestionTextBox.Text.StartsWith(this.ExpressionTextBox.Text, StringComparison.OrdinalIgnoreCase)) {
 				this.SuggestionTextBox.Visibility = Visibility.Collapsed;
 			}
+			else {
+				if (this.SuggestionTextBox.Visibility == Visibility.Collapsed) {
+					this.SuggestionTextBox.Visibility = Visibility.Visible;
+				}
+			}
 		}
 	}
 }
