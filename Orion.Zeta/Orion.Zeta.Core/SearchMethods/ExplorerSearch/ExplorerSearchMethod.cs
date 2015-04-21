@@ -9,7 +9,7 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 		private readonly Regex _rgx;
 		private readonly FileSystemSearch _fileSystemSearch;
 		private Task _initialisationTask;
-		private const string PatternRegex = @"^(\/|[A-Za-z~]\/)(.[.A-Za-z0-9\/\s()-\[\]]*)?$";
+		private const string PatternRegex = @"^(\/|[A-Za-z~]\/)(.[.\w+\/\s()-\[\]]*)?$";
 
 		public ExplorerSearchMethod() {
 			this._rgx = new Regex(PatternRegex);

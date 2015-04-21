@@ -22,7 +22,8 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 			@"/",
 			@"/Work//Project.sln",
 			@"C/Program Files (x68)/test.sln",
-			@"c/TesT"
+			@"c/TesT",
+			@"/université Laval"
 			)]string expression) {
 			var result = this._explorerSearchMethod.IsMatching(expression);
 
