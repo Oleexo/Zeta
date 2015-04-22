@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
