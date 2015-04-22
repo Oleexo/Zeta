@@ -142,6 +142,7 @@ namespace Orion.Zeta.ViewModels {
 			else {
 				this._expressionSearchTimer.Start();
 			}
+			this.Suggestion = null;
 		}
 
 		private void StartSearching(string expression) {
