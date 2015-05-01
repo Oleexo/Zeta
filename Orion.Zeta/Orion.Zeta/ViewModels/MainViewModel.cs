@@ -10,6 +10,7 @@ using Microsoft.TeamFoundation.MVVM;
 using Orion.Zeta.Core;
 using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
+using Orion.Zeta.Settings;
 
 namespace Orion.Zeta.ViewModels {
 	public class MainViewModel : BaseViewModel {
@@ -20,6 +21,8 @@ namespace Orion.Zeta.ViewModels {
 		public ICommand RunCommand { get; set; }
 
 		public ICommand SelectSuggestionCommand { get; set; }
+
+		public ICommand OpenSettingCommand { get; set; }
 
 		public event EventHandler OnAutoComplete;
 		public event EventHandler OnProgramStart;
@@ -65,6 +68,7 @@ namespace Orion.Zeta.ViewModels {
 			this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
 			this.RunCommand = new RelayCommand(this.OnRunCommand);
 			this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestion);
+			this.OpenSettingCommand = new RelayCommand(this.OnOpenSettingCommand);
 			this.Suggestions = new ObservableCollection<IItem>();
 			this.Suggestion = null;
 			this._expression = string.Empty;
@@ -75,6 +79,11 @@ namespace Orion.Zeta.ViewModels {
 			};
 			// Force load searchEngine
 			var searchEngine = this.SearchEngine;
+		}
+
+		private void OnOpenSettingCommand() {
+			var settingWindow = new SettingWindow();
+			settingWindow.Show();
 		}
 
 		private void OnSelectSuggestion(object obj) {

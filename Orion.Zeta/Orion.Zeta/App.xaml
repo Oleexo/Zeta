@@ -11,6 +11,7 @@
 				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/cobalt.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/Orion.Zeta;component/Resources/Icons.xaml" />
 				<ResourceDictionary Source="Resources/NotifyIconResources.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
