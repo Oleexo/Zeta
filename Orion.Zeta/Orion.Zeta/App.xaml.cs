@@ -40,7 +40,7 @@ namespace Orion.Zeta {
 			NotifyIcon.DataContext = NotifyIconViewModel;
 			NotifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
 			try {
-				HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Control, this.OnWakeUpApplication);
+				HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.LeftAlt, ModifierKeys.Control, this.OnWakeUpApplication);
 			}
 			catch (HotkeyAlreadyRegisteredException exception) {
 #if !(DEBUG)
