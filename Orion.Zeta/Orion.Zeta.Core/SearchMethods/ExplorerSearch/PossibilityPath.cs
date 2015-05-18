@@ -20,7 +20,9 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			set { this._rank = value; }
 		}
 
-		public string Path { get { return this._path; } }
+		public string Path {
+			get { return this._path; }
+		}
 
 		public PathType Type { get { return this._type; } }
 

@@ -52,6 +52,8 @@
     <Compile Include="SearchMethods\ExplorerSearch\ExpressionPath.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\PathHelper.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\PossibilityPath.cs" />
+    <Compile Include="SearchMethods\ExplorerSearch\SortPathBetterMatchStrategy.cs" />
+    <Compile Include="SearchMethods\ExplorerSearch\SortPathWindowsStyle.cs" />
     <Compile Include="SearchMethods\ISearchMethod.cs" />
     <Compile Include="SearchMethods\ISearchMethodAsync.cs" />
     <Compile Include="SearchMethods\Shared\Execute.cs" />
