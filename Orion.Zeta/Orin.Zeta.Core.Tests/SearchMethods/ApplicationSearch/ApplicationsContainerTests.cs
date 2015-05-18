@@ -20,6 +20,7 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ApplicationSearch {
 		private const string Pattern = "*.exe";
 		private const string ApplicationName = "Visual Studio 2015";
 		private const string ApplicationPath = @"C:\Visual Studio 2015.exe";
+		private const string ExpressionPerfectMatch = ApplicationName;
 
 
 		[SetUp]
@@ -76,6 +77,14 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ApplicationSearch {
 			var results = this._applicationsContainer.Search(EmptyExpression);
 
 			Assert.IsEmpty(results);
+		}
+
+		[Test]
+		public void GivenApplicationContainerWithValidInformation_WhenSearchWithExpression_ThenPerfectMatchItemShouldHaveRankOfZero() {
+			var results = this._applicationsContainer.Search(ExpressionPerfectMatch);
+
+			var result = results.FirstOrDefault();
+			Assert.AreEqual(0, result.Rank);
 		}
 	}
 }

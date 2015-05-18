@@ -22,5 +22,14 @@ namespace Orion.Zeta.Core.SearchMethods.Shared {
 		public bool IsValid() {
 			return this.Execute != null;
 		}
+
+		public Item Clone() {
+			return new Item {
+				Value = this.Value,
+				DisplayName = this.DisplayName,
+				Execute = this.Execute,
+				Icon = this.Icon	
+			};
+		}
 	}
 }

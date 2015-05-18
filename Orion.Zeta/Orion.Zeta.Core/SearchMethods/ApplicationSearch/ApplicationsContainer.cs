@@ -35,7 +35,16 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 				Execute = new Execute {
 					Program = mf
 				}
-			}).ToList();			
+			}).ToList();
+		}
+
+		private IEnumerable<IItem> RankList(IEnumerable<Item> matchedFiles, string expression) {
+			var ranker = new RankApplicationStrategy();
+			var rankedList = matchedFiles.Select(m => m.Clone());
+			foreach (var item in rankedList) {
+				item.Rank = ranker.GetRank(item, expression);
+			}
+			return rankedList;
 		}
 
 		public void ClearCache() {
@@ -46,7 +55,7 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 			if (String.IsNullOrEmpty(expression))
 				return new List<IItem>();
 			var regex = new Regex(this.ConvertWildcardToRegex(this.ConvertExpressionToWildCard(expression)), RegexOptions.IgnoreCase);
-			return this._items.Where(mf => regex.IsMatch(mf.DisplayName));;
+			return this.RankList(this._items.Where(mf => regex.IsMatch(mf.DisplayName)), expression);
 		}
 
 		private string ConvertExpressionToWildCard(string expression) {
@@ -75,6 +84,34 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 
 		public string Path {
 			get { return this._path; }
+		}
+	}
+
+	public class RankApplicationStrategy {
+		public int GetRank(Item item, string expression) {
+			if (item.DisplayName.Equals(expression, StringComparison.OrdinalIgnoreCase)) {
+				return 0;
+			}
+			return this.RankBasedOnUpperCase(expression, item.DisplayName);
+		}
+
+		private int RankBasedOnUpperCase(string expression, string itemName) {
+			var numberCharMatch = 0;
+			var numberUpperCaseMatch = 0;
+			var posItemName = 0;
+			var posExpression = 0;
+			while (posExpression < expression.Length && posItemName < itemName.Length) {
+				if (expression[posExpression] == itemName[posItemName]) {
+					++numberCharMatch;
+					if (Char.IsUpper(expression[posExpression]))
+						++numberUpperCaseMatch;
+					++posExpression;
+					++posItemName;
+				}
+				++posItemName;
+			}
+			var rank = (itemName.Length - numberCharMatch) * 5 - numberUpperCaseMatch * 2;
+			return rank;
 		}
 	}
 }
