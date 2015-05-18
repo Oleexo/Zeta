@@ -17,7 +17,7 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 		}
 
 		private IEnumerable<PossibilityPath> GeneratePossibilities(IEnumerable<string> paths) {
-			var results = new List<PossibilityPath>();
+			var results = new CollectionExpressionPath();
 			foreach (var path in paths) {
 				var parentDirectoryPath = PathHelper.GetParentDirectory(path);
 				var pattern = PathHelper.GetPattern(path);
@@ -38,6 +38,7 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 					}
 				}
 			}
+			results.SortAndRank();
 			return results;
 		}
 	}

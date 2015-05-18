@@ -16,6 +16,8 @@ namespace Orion.Zeta.Core.SearchMethods.Shared {
 
 		public Icon Icon { get; set; }
 
+		public int Rank { get; set; }
+
 		public IExecute Execute { get; set; }
 		public bool IsValid() {
 			return this.Execute != null;

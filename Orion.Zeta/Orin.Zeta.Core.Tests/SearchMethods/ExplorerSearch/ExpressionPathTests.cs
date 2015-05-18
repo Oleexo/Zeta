@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
@@ -19,6 +20,10 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 
 		private IEnumerable<string> _listOfFiles;
 		private IEnumerable<string> _listOfDirectories;
+		private const string FileNameLong = "/file12";
+		private const string FileNameShort = "/file1";
+		private const string FileNameAlphabeticFirst = "/fileABC";
+		private const string FileNameAlphabeticSecond = "/fileDAA";
 
 		[SetUp]
 		public void Setup() {
@@ -28,7 +33,10 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 				@"C:\File3",
 				@"C:\File4",
 				@"C:\File5",
-				@"C:\file6"
+				@"C:\file6",
+				@"C:\File12",
+				@"C:\FileABC",
+				@"C:\FileDAA",
 			};
 			this._listOfDirectories = new List<string> {
 				@"C:\Directory1",
@@ -84,6 +92,30 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 			var possibilities = expressionPath.FindPossibilities();
 
 			Assert.IsNotEmpty(possibilities);
+		}
+
+		[Test]
+		public void GivenExpressionPathWithExpression_WhenFindPossibilities_ThenRankOfShortFilenameIsLowerThanOther() {
+			var expressionPath = new ExpressionPath(Expression, this._iFileSystemSearchMock.Object);
+
+			var possibilities = expressionPath.FindPossibilities();
+
+			var items = possibilities.Select(p => p.ToItem());
+			var rankShortFileName = items.First(i => i.Value == FileNameShort).Rank;
+			var rankLongFileName = items.First(i => i.Value == FileNameLong).Rank;
+			Assert.IsTrue( rankShortFileName < rankLongFileName);
+		}
+
+		[Test]
+		public void GivenExpressionPathWithExpression_WhenFindPossibilities_ThenRankOfFilenameDependOfAlphabeticalOrder() {
+			var expressionPath = new ExpressionPath(Expression, this._iFileSystemSearchMock.Object);
+
+			var possibilities = expressionPath.FindPossibilities();
+
+			var items = possibilities.Select(p => p.ToItem());
+			var rankFirstFileName = items.First(i => i.Value == FileNameAlphabeticFirst).Rank;
+			var rankSecondFileName = items.First(i => i.Value == FileNameAlphabeticSecond).Rank;
+			Assert.IsTrue(rankFirstFileName < rankSecondFileName);
 		}
 	}
 }
