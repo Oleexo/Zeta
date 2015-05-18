@@ -3,7 +3,7 @@ using System.Drawing;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
 namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
-	public class PossibilityPath : IComparable<PossibilityPath> {
+	public class PossibilityPath {
 
 		public enum PathType {
 			Directory,
@@ -20,12 +20,15 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			set { this._rank = value; }
 		}
 
+		public string Path { get { return this._path; } }
+
+		public PathType Type { get { return this._type; } }
+
 		private readonly string _baseExpression;
 
 		private readonly string _path;
 		private readonly PathType _type;
 		private const string ExplorerExe = "explorer.exe";
-		private const int MultiplierRank = 20;
 		private int _rank;
 
 		public IItem ToItem() {
@@ -47,10 +50,6 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			}
 			item.Icon = icon;
 			return item;
-		}
-
-		public int CompareTo(PossibilityPath other) {
-			return String.Compare(this._path, other._path, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }

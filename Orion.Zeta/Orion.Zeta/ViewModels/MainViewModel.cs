@@ -164,7 +164,7 @@ namespace Orion.Zeta.ViewModels {
 				return;
 			}
 			var sortedList = suggestions.ToList();
-			sortedList.Sort((item1, item2) => item1.Rank < item2.Rank ? 1 : item1.Rank == item2.Rank ? 0 : -1);
+			sortedList.Sort((item1, item2) => item1.Rank < item2.Rank ? -1 : item1.Rank == item2.Rank ? 0 : 1);
 			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
 				this.Suggestions.Clear();
 				if (sortedList.Count() > 1) {
@@ -172,7 +172,7 @@ namespace Orion.Zeta.ViewModels {
 						this.Suggestions.Add(suggestion);
 					}
 				}
-				var best = this.Suggestions.FirstOrDefault();
+				var best = sortedList.FirstOrDefault();
 				this.Suggestion = best;
 				this.IsSearching = false;
 				if (this.OnSearchFinished != null) {

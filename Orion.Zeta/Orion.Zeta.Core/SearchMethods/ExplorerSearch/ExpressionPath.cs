@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
 namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
@@ -17,7 +18,8 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 		}
 
 		private IEnumerable<PossibilityPath> GeneratePossibilities(IEnumerable<string> paths) {
-			var results = new CollectionExpressionPath();
+			var sortStrategy = this.IsBaseDirectory(paths) ? (IComparer<PossibilityPath>) new SortPathWindowsStyle() : new SortPathBetterMatchStrategy();
+			var results = new CollectionExpressionPath(sortStrategy);
 			foreach (var path in paths) {
 				var parentDirectoryPath = PathHelper.GetParentDirectory(path);
 				var pattern = PathHelper.GetPattern(path);
@@ -40,6 +42,10 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			}
 			results.SortAndRank();
 			return results;
+		}
+
+		private bool IsBaseDirectory(IEnumerable<string> paths) {
+			return paths.All(p => p.EndsWith(@"\"));
 		}
 	}
 }
