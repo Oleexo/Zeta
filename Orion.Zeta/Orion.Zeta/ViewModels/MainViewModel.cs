@@ -163,14 +163,16 @@ namespace Orion.Zeta.ViewModels {
 			if (timeStart != this._lastTimeStartSearching) {
 				return;
 			}
+			var sortedList = suggestions.ToList();
+			sortedList.Sort((item1, item2) => item1.Rank < item2.Rank ? 1 : item1.Rank == item2.Rank ? 0 : -1);
 			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
 				this.Suggestions.Clear();
-				if (suggestions.Count() > 1) {
-					foreach (var suggestion in suggestions) {
+				if (sortedList.Count() > 1) {
+					foreach (var suggestion in sortedList) {
 						this.Suggestions.Add(suggestion);
 					}
 				}
-				var best = suggestions.FirstOrDefault();
+				var best = this.Suggestions.FirstOrDefault();
 				this.Suggestion = best;
 				this.IsSearching = false;
 				if (this.OnSearchFinished != null) {
