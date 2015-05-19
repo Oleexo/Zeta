@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
@@ -24,7 +26,15 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 				var parentDirectoryPath = PathHelper.GetParentDirectory(path);
 				var pattern = PathHelper.GetPattern(path);
 				pattern += "*";
-				var files = this._fileSystemSearch.GetFiles(parentDirectoryPath, pattern);
+                IEnumerable<string> files;
+                try
+                {
+			        files = this._fileSystemSearch.GetFiles(parentDirectoryPath, pattern);
+			    }
+			    catch (DirectoryNotFoundException)
+			    {
+			        continue;
+			    }
 				foreach (var file in files) {
 					results.Add(new PossibilityPath(file, this._expression, PossibilityPath.PathType.File));
 				}
