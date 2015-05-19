@@ -6,10 +6,10 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Microsoft.TeamFoundation.MVVM;
 using Orion.Zeta.Core;
 using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
+using Orion.Zeta.Tools;
 
 namespace Orion.Zeta.ViewModels {
 	public class MainViewModel : BaseViewModel {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.TeamFoundation.MVVM;
+using Orion.Zeta.Tools;
 
 namespace Orion.Zeta.ViewModels {
 	public class NotifyIconViewModel : BaseViewModel {
