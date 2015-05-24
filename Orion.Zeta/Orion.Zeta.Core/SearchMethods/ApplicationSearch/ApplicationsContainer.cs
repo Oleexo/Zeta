@@ -35,7 +35,16 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 				Execute = new Execute {
 					Program = mf
 				}
-			}).ToList();			
+			}).ToList();
+		}
+
+		private IEnumerable<IItem> RankList(IEnumerable<Item> matchedFiles, string expression) {
+			var ranker = new RankApplicationStrategy();
+			var rankedList = matchedFiles.Select(m => m.Clone()).ToList();
+			foreach (var item in rankedList) {
+				item.Rank = ranker.GetRank(item, expression);
+			}
+			return rankedList;
 		}
 
 		public void ClearCache() {
@@ -46,7 +55,7 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 			if (String.IsNullOrEmpty(expression))
 				return new List<IItem>();
 			var regex = new Regex(this.ConvertWildcardToRegex(this.ConvertExpressionToWildCard(expression)), RegexOptions.IgnoreCase);
-			return this._items.Where(mf => regex.IsMatch(mf.DisplayName));;
+			return this.RankList(this._items.Where(mf => regex.IsMatch(mf.DisplayName)), expression);
 		}
 
 		private string ConvertExpressionToWildCard(string expression) {

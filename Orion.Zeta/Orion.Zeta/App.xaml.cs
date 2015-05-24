@@ -40,9 +40,9 @@ namespace Orion.Zeta {
 			NotifyIcon.DataContext = NotifyIconViewModel;
 			NotifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
 			try {
-				HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Control, this.OnWakeUpApplication);
+				HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Alt, this.OnWakeUpApplication);
 			}
-			catch (HotkeyAlreadyRegisteredException exception) {
+			catch (HotkeyAlreadyRegisteredException) {
 #if !(DEBUG)
 				MessageBox.Show("Sorry, Global hot key CTRL + Space is already use");
 				Current.Shutdown();
