@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:local="clr-namespace:Orion.Zeta.Settings.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -14,5 +15,15 @@
     <Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="DimGray" Margin="15 5 15 5" Padding="5 0 5 0">
       <TextBlock Text="General" FontSize="20" />
     </Border>
+    <ScrollViewer Grid.Row="1" Margin="30 0 30 0">
+      <WrapPanel Orientation="Vertical">
+        <Label Style="{StaticResource SettingTitle}">User Interface</Label>
+        <controls:ToggleSwitch Header="Hide when it loses focus" OnLabel="On" OffLabel="Off" />
+        <controls:ToggleSwitch Header="Always on top" OnLabel="On" OffLabel="Off" />
+        <!--HotKey Setting-->
+        <Label Style="{StaticResource SettingTitle}">Suggestion Options</Label>
+        <Label Style="{StaticResource SettingTitle}">Application Options</Label>
+      </WrapPanel>
+    </ScrollViewer>
   </Grid>
 </UserControl>
