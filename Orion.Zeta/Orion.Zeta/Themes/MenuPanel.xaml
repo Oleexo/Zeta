@@ -8,7 +8,12 @@
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<Image Source="{Binding Icon}" Grid.Column="0" />
+			<Image Source="{Binding Image}" Grid.Column="0" Width="20" Height="20" />
+			<Rectangle Grid.Column="0" Stretch="Fill" Height="20" Width="20">
+				<Rectangle.Fill>
+					<VisualBrush Visual="{Binding Icon}"></VisualBrush>
+				</Rectangle.Fill>
+			</Rectangle>
 			<Label Content="{Binding Header}" Grid.Column="1" />
 		</Grid>
 	</DataTemplate>

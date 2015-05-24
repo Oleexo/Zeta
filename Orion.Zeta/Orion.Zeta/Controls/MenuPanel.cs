@@ -53,6 +53,8 @@ namespace Orion.Zeta.Controls {
 	public class MenuPanelItem  {
 		public string Header { get; set; }
 
-		public ImageSource Icon { get; set; } 
+		public ImageSource Image { get; set; }
+
+		public Canvas Icon { get; set; }
 	}
 }
