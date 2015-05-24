@@ -19,7 +19,7 @@
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
-		<myControls:MenuPanel Grid.Column="0" x:Name="PanelMenu" ItemsSource="{Binding MenuItems}"/>
-		<controls:TransitioningContentControl Grid.Column="1" />
+    <myControls:MenuPanel Grid.Column="0" x:Name="PanelMenu" ItemsSource="{Binding MenuItems}" SelectedItem="{Binding CurrentSelectedItem, Mode=TwoWay}"/>
+    <controls:TransitioningContentControl Grid.Column="1" Content="{Binding CurrentSetting, Mode=OneWay}" />
 	</Grid>
 </controls:MetroWindow>
