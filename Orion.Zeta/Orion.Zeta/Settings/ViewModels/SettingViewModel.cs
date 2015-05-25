@@ -1,12 +1,17 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
+using System.Linq;
 using System.Windows.Controls;
 using Orion.Zeta.Controls;
-using Orion.Zeta.Settings.Views;
+using Orion.Zeta.Services;
 using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta.Settings.ViewModels {
     public class SettingViewModel : BaseViewModel {
+        private readonly SettingsService settingsService;
+        private UserControl currentSetting;
+        private object currentSelectedItem;
+
+
         public ObservableCollection<MenuPanelItem> MenuItems { get; private set; }
 
         public UserControl CurrentSetting {
@@ -27,23 +32,16 @@ namespace Orion.Zeta.Settings.ViewModels {
             }
         }
 
-        public SettingViewModel() {
-            var panelItem = new MenuPanelItem {
-                Header = "General",
-                Icon = Application.Current.FindResource("appbar_settings") as Canvas,
-                Control = new GeneralView()
-            };
-            this.MenuItems = new ObservableCollection<MenuPanelItem> { panelItem,
-                new MenuPanelItem {
-                    Header = "Style",
-                    Icon = Application.Current.FindResource("appbar_draw_paintbrush") as Canvas,
-                    Control = new StyleView()
-                }};
-            this.CurrentSetting = panelItem.Control;
+        public SettingViewModel(SettingsService settingsService) {
+            this.settingsService = settingsService;
+            var settingContainers = this.settingsService.GetSettingContainers();
+            this.MenuItems = new ObservableCollection<MenuPanelItem>();
+            foreach (var settingContainer in settingContainers) {
+                this.MenuItems.Add(settingContainer.ToMenuPanelItem());
+            }
+            this.CurrentSetting = this.MenuItems.FirstOrDefault()?.Control;
         }
 
-        private UserControl currentSetting;
-        private object currentSelectedItem;
 
         private void SetCurrentSetting(object item) {
             var itemPanel = item as MenuPanelItem;

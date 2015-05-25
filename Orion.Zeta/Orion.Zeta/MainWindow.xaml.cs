@@ -22,7 +22,8 @@ namespace Orion.Zeta {
 		}
 
 		private void OnDeactivated(object sender, EventArgs eventArgs) {
-			this.MinimizeApplication();
+            if (this._mainViewModel.IsHideWhenLostFocus)
+    			this.MinimizeApplication();
 		}
 
 		public void WakeUpApplication() {

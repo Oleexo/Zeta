@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
+using Orion.Zeta.Settings.Models;
 
 namespace Orion.Zeta.Settings.Views {
     /// <summary>
     /// Interaction logic for StyleView.xaml
     /// </summary>
     public partial class StyleView : UserControl {
-        public StyleView() {
+        private readonly StyleModel model;
+
+        public StyleView(StyleModel model) {
+            this.model = model;
             InitializeComponent();
         }
     }

@@ -101,14 +101,21 @@
     </ApplicationDefinition>
     <Compile Include="Controls\MenuPanel.cs" />
     <Compile Include="Converters\IconToImageSourceConverter.cs" />
+    <Compile Include="Core\Settings\GeneralApplicable.cs" />
+    <Compile Include="Core\Settings\StyleApplicable.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Services\SearchMethodService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Settings\Models\GeneralModel.cs" />
+    <Compile Include="Settings\Models\StyleModel.cs" />
     <Compile Include="Settings\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\ViewModels\SettingViewModel.cs" />
-    <Compile Include="Settings\Views\GeneralView.xaml.cs">
+    <Compile Include="Settings\Views\GeneralView.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\ViewModels\GeneralViewModel.cs" />
     <Compile Include="Settings\Views\StyleView.xaml.cs">
       <DependentUpon>StyleView.xaml</DependentUpon>
     </Compile>

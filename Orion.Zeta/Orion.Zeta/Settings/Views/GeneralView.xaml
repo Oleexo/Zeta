@@ -18,11 +18,15 @@
     <ScrollViewer Grid.Row="1" Margin="30 0 30 0">
       <WrapPanel Orientation="Vertical">
         <Label Style="{StaticResource SettingTitle}">User Interface</Label>
-        <controls:ToggleSwitch Header="Hide when it loses focus" OnLabel="On" OffLabel="Off" />
-        <controls:ToggleSwitch Header="Always on top" OnLabel="On" OffLabel="Off" />
+        <controls:ToggleSwitch Header="Hide when it loses focus" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsHideWhenLostFocus, Mode=TwoWay}" />
+        <controls:ToggleSwitch Header="Always on top" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsAlwaysOnTop, Mode=TwoWay}" />
         <!--HotKey Setting-->
         <Label Style="{StaticResource SettingTitle}">Suggestion Options</Label>
+        <Label>Comming Soon</Label>
         <Label Style="{StaticResource SettingTitle}">Application Options</Label>
+        <controls:ToggleSwitch x:Name="autoRefresh" Header="Auto Refresh" OnLabel="On" OffLabel="Off" IsCheckedChanged="autoRefresh_OnIsCheckedChanged" IsChecked="{Binding IsAutoRefreshEnbabled, Mode=TwoWay}" />
+        <controls:NumericUpDown x:Name="autoRefreshValue" Visibility="Collapsed" Minimum="1" Maximum="999999" StringFormat="{}{0} minutes" Width="150" Value="{Binding AutoRefresh, Mode=TwoWay}" />
+        <controls:ToggleSwitch Header="Startup" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsStartOnBoot, Mode=TwoWay}" />
       </WrapPanel>
     </ScrollViewer>
   </Grid>
