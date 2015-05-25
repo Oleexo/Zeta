@@ -12,13 +12,15 @@ namespace Orion.Zeta.Settings.Views {
         public GeneralView(GeneralModel model) {
             InitializeComponent();
             this.DataContext = new GeneralViewModel(model);
+            if (model.IsAutoRefreshEnbabled) {
+                this.autoRefreshValue.Visibility = Visibility.Visible;
+            }
         }
 
         public void autoRefresh_OnIsCheckedChanged(object sender, EventArgs eventArgs) {
             if (this.autoRefresh.IsChecked.HasValue && this.autoRefresh.IsChecked.Value) {
                 this.autoRefreshValue.Visibility = Visibility.Visible;
-            }
-            else {
+            } else {
                 this.autoRefreshValue.Visibility = Visibility.Collapsed;
             }
         }

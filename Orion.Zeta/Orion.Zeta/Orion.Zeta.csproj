@@ -70,6 +70,10 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NHotkey">
       <HintPath>..\packages\NHotkey.1.2.1\lib\net20\NHotkey.dll</HintPath>
     </Reference>
@@ -101,17 +105,29 @@
     </ApplicationDefinition>
     <Compile Include="Controls\MenuPanel.cs" />
     <Compile Include="Converters\IconToImageSourceConverter.cs" />
+    <Compile Include="Core\SearchMethods\SearchMethodAsyncContainer.cs" />
+    <Compile Include="Core\SearchMethods\SearchMethodContainer.cs" />
+    <Compile Include="Core\SearchMethods\SearchMethodContainerBase.cs" />
+    <Compile Include="Core\Settings\DataSettingContainer.cs" />
     <Compile Include="Core\Settings\GeneralApplicable.cs" />
+    <Compile Include="Core\Settings\ISettingContainer.cs" />
     <Compile Include="Core\Settings\StyleApplicable.cs" />
+    <Compile Include="Persistence\ISettingRepository.cs" />
+    <Compile Include="Persistence\LocalStorage\SettingRepository.cs" />
+    <Compile Include="Persistence\PersistenceException.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\SearchMethodService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Settings\Models\ApplicationSearchModel.cs" />
     <Compile Include="Settings\Models\GeneralModel.cs" />
     <Compile Include="Settings\Models\StyleModel.cs" />
     <Compile Include="Settings\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\ViewModels\SettingViewModel.cs" />
+    <Compile Include="Settings\Views\ApplicationSearchView.xaml.cs">
+      <DependentUpon>ApplicationSearchView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Views\GeneralView.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
@@ -148,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Views\ApplicationSearchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

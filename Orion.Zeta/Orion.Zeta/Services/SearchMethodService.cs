@@ -36,32 +36,4 @@ namespace Orion.Zeta.Services {
                 this._settingsService.Register(searchMethodContainer.SettingContainer);
         }
     }
-
-    public class SearchMethodContainer : SearchMethodContainerBase {
-        public ISearchMethod SearchMethod { get; set; }
-
-
-    }
-
-    public class SearchMethodAsyncContainer : SearchMethodContainerBase {
-        public SearchMethodAsyncContainer(ISearchMethodAsync searchMethodAsync, ISettingContainer settingContainer) {
-            this.SettingContainer = settingContainer;
-            this.SearchMethod = searchMethodAsync;
-        }
-
-        public SearchMethodAsyncContainer(ISearchMethodAsync searchMethodAsync) {
-            this.SettingContainer = null;
-            this.SearchMethod = searchMethodAsync;
-        }
-
-        public ISearchMethodAsync SearchMethod { get; set; }
-    }
-
-    public abstract class SearchMethodContainerBase {
-        public ISettingContainer SettingContainer;
-
-        public bool IsModifiable() {
-            return this.SettingContainer != null;
-        }
-    }
 }

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Controls;
-using Orion.Zeta.Controls;
-using Orion.Zeta.Core.SearchMethods;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Orion.Zeta.Core.Settings;
+using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Services {
     public class SettingsService {
+        private readonly ISettingRepository _settingRepository;
         private List<ISettingContainer> _settingContainers;
 
-        public SettingsService() {
+        public SettingsService(ISettingRepository settingRepository) {
+            this._settingRepository = settingRepository;
             this._settingContainers = new List<ISettingContainer>();
         }
 
@@ -18,6 +19,9 @@ namespace Orion.Zeta.Services {
 
         public void RegisterGlobal(ISettingContainer settingContainer) {
             this._settingContainers.Add(settingContainer);
+            if (!settingContainer.HaveDefaultData()) {
+                settingContainer.ReadData(this._settingRepository);
+            }
         }
 
         public void Register(ISettingContainer settingContainer) {
@@ -29,56 +33,15 @@ namespace Orion.Zeta.Services {
                 settingContainer.ApplyChanges();
             }
         }
-    }
 
-    public class DataSettingContainer : ISettingContainer {
-        public object Data { get; set; }
-
-        public Type ControlType { get; set; }
-
-        public string Header { get; set; }
-
-        private readonly IModifiableSettings _modifiableSettings;
-
-        public DataSettingContainer(string general, Type type, IModifiableSettings modifiableSettings) {
-            this._modifiableSettings = modifiableSettings;
-            this.Header = general;
-            this.ControlType = type;
-            this.Data = null;
+        public void SaveChanges() {
+            foreach (var settingContainer in this._settingContainers) {
+                settingContainer.WriteData(this._settingRepository);
+            }
         }
 
-        public DataSettingContainer(string general, Type type, IModifiableSettings modifiableSettings, object data) {
-            this._modifiableSettings = modifiableSettings;
-            this.Header = general;
-            this.ControlType = type;
-            this.Data = data;
+        public async Task SaveChangesAsync() {
+            await Task.Run((() => this.SaveChanges()));
         }
-
-        public MenuPanelItem ToMenuPanelItem() {
-            return new MenuPanelItem {
-                Header = this.Header,
-                Control = this.CreateControl()
-            };
-        }
-
-        public void ApplyChanges() {
-            this._modifiableSettings?.ApplyChanges(this.Data);
-        }
-
-        private UserControl CreateControl() {
-            return Activator.CreateInstance(this.ControlType, this.Data) as UserControl;
-        }
-    }
-
-    public interface ISettingContainer {
-        Type ControlType { get; set; }
-
-        string Header { get; set; }
-
-        MenuPanelItem ToMenuPanelItem();
-
-        object Data { get; }
-
-        void ApplyChanges();
     }
 }

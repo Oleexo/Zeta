@@ -7,9 +7,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Orion.Zeta.Core;
+using Orion.Zeta.Core.SearchMethods;
 using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
 using Orion.Zeta.Core.Settings;
+using Orion.Zeta.Persistence.LocalStorage;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings;
 using Orion.Zeta.Settings.Models;
@@ -81,8 +83,9 @@ namespace Orion.Zeta.ViewModels {
         private DateTime _lastTimeStartSearching;
 
         public MainViewModel() {
+            this._settingRepository = new SettingRepository();
             this._searchEngine = new Lazy<SearchEngine>();
-            this._settingsService = new Lazy<SettingsService>();
+            this._settingsService = new Lazy<SettingsService>(() => new SettingsService(this._settingRepository));
             this._methodService = new Lazy<SearchMethodService>(() => new SearchMethodService(this.SettingsService));
             this.IsSearching = false;
             this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
@@ -102,22 +105,23 @@ namespace Orion.Zeta.ViewModels {
         }
 
         private void InitialisationSearchEngine() {
+            this.SettingsService.RegisterGlobal(new DataSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this)));
+            this.SettingsService.RegisterGlobal(new DataSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
+
             var applicationSearchMethod = new ApplicationSearchMethod();
             applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.Programs), new List<string> { "*.exe", "*.lnk" });
             applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms), new List<string> { "*.exe", "*.lnk" });
 
             this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(new ExplorerSearchMethod()));
-            this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(applicationSearchMethod));
+            this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(applicationSearchMethod).AddSettings<ApplicationSearchModel>("Application Search", typeof(ApplicationSearchView)));
             this.SearchMethodService.RegisterSearchMethods(this.SearchEngine);
-
-            this.SettingsService.RegisterGlobal(new DataSettingContainer("General", typeof(GeneralView), new GeneralApplicable(this), new GeneralModel()));
-            this.SettingsService.RegisterGlobal(new DataSettingContainer("Style", typeof(StyleView), new StyleApplicable(this), new StyleModel()));
         }
 
         private void OnOpenSettingCommand() {
             var settingWindow = new SettingWindow(this.SettingsService);
-            settingWindow.Closed += (sender, args) => {
+            settingWindow.Closed += async (sender, args) => {
                 this.SettingsService.ApplyChanges();
+                await this.SettingsService.SaveChangesAsync();
             };
             settingWindow.Show();
         }
@@ -212,6 +216,7 @@ namespace Orion.Zeta.ViewModels {
         #region IModifiableGeneralSetting
         private bool _isHideWhenLostFocus;
         private bool _isAlwaysOnTop;
+        private SettingRepository _settingRepository;
 
         public bool IsHideWhenLostFocus {
             get { return this._isHideWhenLostFocus; }
