@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Orion.Zeta.Core.SearchMethods.Shared;
 
 namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
-	public class ApplicationSearchMethod : ISearchMethodAsync, IModifiableSettings {
+	public class ApplicationSearchMethod : ISearchMethodAsync {
 		private readonly List<ApplicationsContainer> _applications;
 		private readonly IFileSystemSearch _fileSystemSearch;
 		private readonly Regex _rgx;
@@ -56,9 +56,5 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 			}
 			return await Task.Run(() => this.Search(expression));
 		}
-
-	    public void ApplyChanges(object item) {
-	        
-	    }
 	}
 }

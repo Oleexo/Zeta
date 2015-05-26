@@ -1,13 +1,8 @@
 using System;
-using Orion.Zeta.Core.Settings;
+using Orion.Zeta.Core.SearchMethods;
 
-namespace Orion.Zeta.Core.SearchMethods {
+namespace Orion.Zeta.Core.Settings.SearchMethods {
     public class SearchMethodAsyncContainer : SearchMethodContainerBase {
-        public SearchMethodAsyncContainer(ISearchMethodAsync searchMethodAsync, ISettingContainer settingContainer) {
-            this.SettingContainer = settingContainer;
-            this.SearchMethod = searchMethodAsync;
-        }
-
         public SearchMethodAsyncContainer(ISearchMethodAsync searchMethodAsync) {
             this.SettingContainer = null;
             this.SearchMethod = searchMethodAsync;

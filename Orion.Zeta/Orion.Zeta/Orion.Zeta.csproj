@@ -105,12 +105,15 @@
     </ApplicationDefinition>
     <Compile Include="Controls\MenuPanel.cs" />
     <Compile Include="Converters\IconToImageSourceConverter.cs" />
-    <Compile Include="Core\SearchMethods\SearchMethodAsyncContainer.cs" />
-    <Compile Include="Core\SearchMethods\SearchMethodContainer.cs" />
-    <Compile Include="Core\SearchMethods\SearchMethodContainerBase.cs" />
     <Compile Include="Core\Settings\DataSettingContainer.cs" />
     <Compile Include="Core\Settings\GeneralApplicable.cs" />
     <Compile Include="Core\Settings\ISettingContainer.cs" />
+    <Compile Include="Core\Settings\SearchMethods\ApplicationSearchMethodContainer.cs" />
+    <Compile Include="Core\Settings\SearchMethods\ApplicationSearchSettingConnector.cs" />
+    <Compile Include="Core\Settings\SearchMethods\Directory.cs" />
+    <Compile Include="Core\Settings\SearchMethods\SearchMethodAsyncContainer.cs" />
+    <Compile Include="Core\Settings\SearchMethods\SearchMethodContainer.cs" />
+    <Compile Include="Core\Settings\SearchMethods\SearchMethodContainerBase.cs" />
     <Compile Include="Core\Settings\StyleApplicable.cs" />
     <Compile Include="Persistence\ISettingRepository.cs" />
     <Compile Include="Persistence\LocalStorage\SettingRepository.cs" />
@@ -124,6 +127,7 @@
     <Compile Include="Settings\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\ViewModels\ApplicationSearchViewModel.cs" />
     <Compile Include="Settings\ViewModels\SettingViewModel.cs" />
     <Compile Include="Settings\Views\ApplicationSearchView.xaml.cs">
       <DependentUpon>ApplicationSearchView.xaml</DependentUpon>

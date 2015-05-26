@@ -19,13 +19,13 @@ namespace Orion.Zeta.Services {
 
         public void RegisterGlobal(ISettingContainer settingContainer) {
             this._settingContainers.Add(settingContainer);
-            if (!settingContainer.HaveDefaultData()) {
-                settingContainer.ReadData(this._settingRepository);
-            }
+            settingContainer.ReadData(this._settingRepository);
+            settingContainer.ApplyChanges();
         }
 
         public void Register(ISettingContainer settingContainer) {
             this._settingContainers.Add(settingContainer);
+            settingContainer.ReadData(this._settingRepository);
         }
 
         public void ApplyChanges() {

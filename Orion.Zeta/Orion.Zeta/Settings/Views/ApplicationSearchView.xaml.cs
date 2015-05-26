@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using Orion.Zeta.Settings.Models;
+using Orion.Zeta.Settings.ViewModels;
 
 namespace Orion.Zeta.Settings.Views {
     /// <summary>
@@ -8,6 +9,7 @@ namespace Orion.Zeta.Settings.Views {
     public partial class ApplicationSearchView : UserControl {
         public ApplicationSearchView(ApplicationSearchModel model) {
             InitializeComponent();
+            this.DataContext = new ApplicationSearchViewModel(model);
         }
     }
 }

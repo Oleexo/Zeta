@@ -44,7 +44,11 @@ namespace Orion.Zeta.Core.Settings {
         }
 
         public void ReadData(ISettingRepository settingRepository) {
-            this.Data = settingRepository.Find<T>(this.Header) as T ?? new T();
+            var data = settingRepository.Find<T>(this.Header) as T;
+            if (data == null && this.Data == null)
+                this.Data = new T();           
+            else if (data != null)
+                this.Data = data;
         }
 
         public void WriteData(ISettingRepository settingRepository) {

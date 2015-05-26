@@ -1,6 +1,4 @@
-using Orion.Zeta.Core.Settings;
-
-namespace Orion.Zeta.Core.SearchMethods {
+namespace Orion.Zeta.Core.Settings.SearchMethods {
     public abstract class SearchMethodContainerBase {
         public ISettingContainer SettingContainer;
 

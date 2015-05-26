@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -11,6 +12,7 @@ using Orion.Zeta.Core.SearchMethods;
 using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
 using Orion.Zeta.Core.Settings;
+using Orion.Zeta.Core.Settings.SearchMethods;
 using Orion.Zeta.Persistence.LocalStorage;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings;
@@ -20,6 +22,8 @@ using Orion.Zeta.Tools;
 
 namespace Orion.Zeta.ViewModels {
     public class MainViewModel : BaseViewModel, IModifiableGeneralSetting, IModifiableStyleSetting {
+        #region Properties
+        #region Commands
         public ICommand ExpressionAutoCompleteCommand { get; set; }
 
         public ICommand ExpressionRunCommand { get; set; }
@@ -29,10 +33,7 @@ namespace Orion.Zeta.ViewModels {
         public ICommand SelectSuggestionCommand { get; set; }
 
         public ICommand OpenSettingCommand { get; set; }
-
-        public event EventHandler OnAutoComplete;
-        public event EventHandler OnProgramStart;
-        public event EventHandler OnSearchFinished;
+        #endregion
 
         public string Expression {
             get { return this._expression; }
@@ -71,17 +72,28 @@ namespace Orion.Zeta.ViewModels {
         private SearchMethodService SearchMethodService {
             get { return this._methodService.Value; }
         }
+        #endregion
 
+        #region Events
+        public event EventHandler OnAutoComplete;
+        public event EventHandler OnProgramStart;
+        public event EventHandler OnSearchFinished;
+        #endregion
+
+        #region Fields
         private readonly Lazy<SearchEngine> _searchEngine;
         private readonly Lazy<SettingsService> _settingsService;
         private readonly Lazy<SearchMethodService> _methodService;
+        private readonly Task _initialisationTask;
         private IItem _suggestion;
         private string _expression;
         private bool _isSearching;
         private readonly TimeSpan _delaySearching;
         private readonly Timer _expressionSearchTimer;
         private DateTime _lastTimeStartSearching;
+        #endregion
 
+        #region Constructor
         public MainViewModel() {
             this._settingRepository = new SettingRepository();
             this._searchEngine = new Lazy<SearchEngine>();
@@ -91,7 +103,7 @@ namespace Orion.Zeta.ViewModels {
             this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
             this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
             this.RunCommand = new RelayCommand(this.OnRunCommand);
-            this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestion);
+            this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestionCommand);
             this.OpenSettingCommand = new RelayCommand(this.OnOpenSettingCommand);
             this.Suggestions = new ObservableCollection<IItem>();
             this.Suggestion = null;
@@ -101,22 +113,26 @@ namespace Orion.Zeta.ViewModels {
             this._expressionSearchTimer.Elapsed += (sender, args) => {
                 this.StartSearching(this.Expression);
             };
-            this.InitialisationSearchEngine();
+            this._initialisationTask = this.InitialisationSearchEngineAsync();
         }
+        #endregion
 
+        #region Initialisation
         private void InitialisationSearchEngine() {
             this.SettingsService.RegisterGlobal(new DataSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this)));
             this.SettingsService.RegisterGlobal(new DataSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
 
-            var applicationSearchMethod = new ApplicationSearchMethod();
-            applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.Programs), new List<string> { "*.exe", "*.lnk" });
-            applicationSearchMethod.RegisterPath(Environment.GetFolderPath(Environment.SpecialFolder.CommonPrograms), new List<string> { "*.exe", "*.lnk" });
-
             this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(new ExplorerSearchMethod()));
-            this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(applicationSearchMethod).AddSettings<ApplicationSearchModel>("Application Search", typeof(ApplicationSearchView)));
+            this.SearchMethodService.AddContainer(new ApplicationSearchMethodContainer());
             this.SearchMethodService.RegisterSearchMethods(this.SearchEngine);
         }
 
+        private async Task InitialisationSearchEngineAsync() {
+            await Task.Run(() => this.InitialisationSearchEngine());
+        }
+        #endregion
+
+        #region Commands
         private void OnOpenSettingCommand() {
             var settingWindow = new SettingWindow(this.SettingsService);
             settingWindow.Closed += async (sender, args) => {
@@ -126,7 +142,7 @@ namespace Orion.Zeta.ViewModels {
             settingWindow.Show();
         }
 
-        private void OnSelectSuggestion(object obj) {
+        private void OnSelectSuggestionCommand(object obj) {
             var item = obj as IItem;
             if (item != null) {
                 this.Suggestion = item;
@@ -165,7 +181,9 @@ namespace Orion.Zeta.ViewModels {
                 this.OnAutoComplete(this, new EventArgs());
             }
         }
+        #endregion
 
+        #region Search
         private void OnExpressionUpdated() {
             if (this._expressionSearchTimer.Enabled) {
                 this._expressionSearchTimer.Stop();
@@ -188,7 +206,16 @@ namespace Orion.Zeta.ViewModels {
             }
             this._lastTimeStartSearching = DateTime.Now;
             this.IsSearching = true;
-            this.SearchEngine.Search(expression).ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching));
+            if (!this._initialisationTask.IsCompleted) {
+                this._initialisationTask.ContinueWith(
+                    (task =>
+                        this.SearchEngine.Search(expression)
+                            .ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching))));
+            }
+            else {
+                this.SearchEngine.Search(expression)
+                    .ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching));
+            }
         }
 
         private void SearchingCallback(IEnumerable<IItem> suggestions, DateTime timeStart) {
@@ -212,6 +239,7 @@ namespace Orion.Zeta.ViewModels {
                 }
             }));
         }
+        #endregion
 
         #region IModifiableGeneralSetting
         private bool _isHideWhenLostFocus;
