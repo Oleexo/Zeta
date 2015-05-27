@@ -290,7 +290,7 @@ namespace Orion.Zeta.ViewModels {
         }
 
         public void EnabledAutoRefresh(int interval) {
-            this._autoRefreshTimer.Interval = interval;
+            this._autoRefreshTimer.Interval = interval * 60000;
             this._autoRefreshTimer.Start();
         }
 
