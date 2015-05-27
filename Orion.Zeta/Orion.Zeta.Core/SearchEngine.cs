@@ -41,5 +41,15 @@ namespace Orion.Zeta.Core {
 			}
 			return items;
 		}
+
+	    public void RefreshCache() {
+	        foreach (var searchMethod in this._searchMethods) {
+	            searchMethod.RefreshCache();
+	        }
+
+	        foreach (var searchMethodAsync in this._searchMethodsAsync) {
+	            searchMethodAsync.RefreshCache();
+	        }
+	    }
 	}
 }

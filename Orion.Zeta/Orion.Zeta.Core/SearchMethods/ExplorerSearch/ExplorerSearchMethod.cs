@@ -31,7 +31,9 @@ namespace Orion.Zeta.Core.SearchMethods.ExplorerSearch {
 			return possibilities.Select(p => p.ToItem());
 		}
 
-		public Task InitialisationAsync() {
+	    public void RefreshCache() {}
+
+	    public Task InitialisationAsync() {
 			this._initialisationTask = Task.Run(() => {
 				this.Initialisation();
 			});

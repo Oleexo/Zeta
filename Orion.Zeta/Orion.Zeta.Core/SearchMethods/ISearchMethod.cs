@@ -7,5 +7,7 @@ namespace Orion.Zeta.Core.SearchMethods {
 		void Initialisation();
 
 		IEnumerable<IItem> Search(string expression);
+
+	    void RefreshCache();
 	}
 }
