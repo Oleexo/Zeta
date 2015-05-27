@@ -36,9 +36,7 @@ namespace Orion.Zeta.Core.SearchMethods.ApplicationSearch {
 		}
 
 	    public void RefreshCache() {
-	        foreach (var applicationsContainer in this._applications) {
-	            applicationsContainer.BuildCache();
-	        }
+	        this._initialisationTask = this.InitialisationAsync();
 	    }
 
 	    public void RegisterPath(string path, IEnumerable<string> patterns) {

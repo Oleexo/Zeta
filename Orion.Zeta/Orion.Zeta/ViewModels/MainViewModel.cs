@@ -196,7 +196,7 @@ namespace Orion.Zeta.ViewModels {
         #region Search
 
         private void AutoRefreshSearchEngine() {
-
+            this.SearchEngine.RefreshCache();
         }
 
         private void OnExpressionUpdated() {
@@ -290,6 +290,9 @@ namespace Orion.Zeta.ViewModels {
         }
 
         public void EnabledAutoRefresh(int interval) {
+            if (interval <= 0) {
+                return;
+            }
             this._autoRefreshTimer.Interval = interval * 60000;
             this._autoRefreshTimer.Start();
         }
