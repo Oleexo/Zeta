@@ -17,6 +17,11 @@ namespace Orion.Zeta.Core.Settings {
                 throw new NullReferenceException("bad item type");
             this._modifiableGeneralSetting.IsHideWhenLostFocus = generalSetting.IsHideWhenLostFocus;
             this._modifiableGeneralSetting.IsAlwaysOnTop = generalSetting.IsAlwaysOnTop;
+            if (generalSetting.IsAutoRefreshEnbabled)
+                this._modifiableGeneralSetting.EnabledAutoRefresh(generalSetting.AutoRefresh);
+            else
+                this._modifiableGeneralSetting.DisabledAutoRefresh();
+            this._modifiableGeneralSetting.StartOnBoot = generalSetting.IsStartOnBoot;
         }
     }
 }

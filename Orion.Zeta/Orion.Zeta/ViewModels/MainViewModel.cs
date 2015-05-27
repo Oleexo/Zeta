@@ -8,8 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Orion.Zeta.Core;
-using Orion.Zeta.Core.SearchMethods;
-using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
 using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
 using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Core.Settings.SearchMethods;
@@ -22,6 +20,49 @@ using Orion.Zeta.Tools;
 
 namespace Orion.Zeta.ViewModels {
     public class MainViewModel : BaseViewModel, IModifiableGeneralSetting, IModifiableStyleSetting {
+        #region Fields
+        private readonly SettingRepository _settingRepository;
+        private readonly Lazy<SearchEngine> _searchEngine;
+        private readonly Lazy<SettingsService> _settingsService;
+        private readonly Lazy<SearchMethodService> _methodService;
+        private readonly Task _initialisationTask;
+        private IItem _suggestion;
+        private string _expression;
+        private bool _isSearching;
+        private readonly TimeSpan _delaySearching;
+        private readonly Timer _expressionSearchTimer;
+        private DateTime _lastTimeStartSearching;
+        private readonly Timer _autoRefreshTimer;
+        #endregion
+
+        #region Constructor
+        public MainViewModel() {
+            this._settingRepository = new SettingRepository();
+            this._searchEngine = new Lazy<SearchEngine>();
+            this._settingsService = new Lazy<SettingsService>(() => new SettingsService(this._settingRepository));
+            this._methodService = new Lazy<SearchMethodService>(() => new SearchMethodService(this.SettingsService));
+            this.IsSearching = false;
+            this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
+            this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
+            this.RunCommand = new RelayCommand(this.OnRunCommand);
+            this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestionCommand);
+            this.OpenSettingCommand = new RelayCommand(this.OnOpenSettingCommand);
+            this.Suggestions = new ObservableCollection<IItem>();
+            this.Suggestion = null;
+            this._expression = string.Empty;
+            this._delaySearching = new TimeSpan(0, 0, 0, 0, 250);
+            this._expressionSearchTimer = new Timer(this._delaySearching.TotalMilliseconds) { AutoReset = false };
+            this._expressionSearchTimer.Elapsed += (sender, args) => {
+                this.StartSearching(this.Expression);
+            };
+            this._autoRefreshTimer = new Timer();
+            this._autoRefreshTimer.Elapsed += (sender, args) => {
+                this.AutoRefreshSearchEngine();
+            };
+            this._initialisationTask = this.InitialisationSearchEngineAsync();
+        }
+        #endregion
+
         #region Properties
         #region Commands
         public ICommand ExpressionAutoCompleteCommand { get; set; }
@@ -80,46 +121,15 @@ namespace Orion.Zeta.ViewModels {
         public event EventHandler OnSearchFinished;
         #endregion
 
-        #region Fields
-        private readonly Lazy<SearchEngine> _searchEngine;
-        private readonly Lazy<SettingsService> _settingsService;
-        private readonly Lazy<SearchMethodService> _methodService;
-        private readonly Task _initialisationTask;
-        private IItem _suggestion;
-        private string _expression;
-        private bool _isSearching;
-        private readonly TimeSpan _delaySearching;
-        private readonly Timer _expressionSearchTimer;
-        private DateTime _lastTimeStartSearching;
-        #endregion
-
-        #region Constructor
-        public MainViewModel() {
-            this._settingRepository = new SettingRepository();
-            this._searchEngine = new Lazy<SearchEngine>();
-            this._settingsService = new Lazy<SettingsService>(() => new SettingsService(this._settingRepository));
-            this._methodService = new Lazy<SearchMethodService>(() => new SearchMethodService(this.SettingsService));
-            this.IsSearching = false;
-            this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
-            this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
-            this.RunCommand = new RelayCommand(this.OnRunCommand);
-            this.SelectSuggestionCommand = new RelayCommand(this.OnSelectSuggestionCommand);
-            this.OpenSettingCommand = new RelayCommand(this.OnOpenSettingCommand);
-            this.Suggestions = new ObservableCollection<IItem>();
-            this.Suggestion = null;
-            this._expression = string.Empty;
-            this._delaySearching = new TimeSpan(0, 0, 0, 0, 250);
-            this._expressionSearchTimer = new Timer(this._delaySearching.TotalMilliseconds) { AutoReset = false };
-            this._expressionSearchTimer.Elapsed += (sender, args) => {
-                this.StartSearching(this.Expression);
-            };
-            this._initialisationTask = this.InitialisationSearchEngineAsync();
-        }
-        #endregion
-
         #region Initialisation
         private void InitialisationSearchEngine() {
-            this.SettingsService.RegisterGlobal(new DataSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this)));
+            this.SettingsService.RegisterGlobal(new DataSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this), new GeneralModel {
+                AutoRefresh = 60,
+                IsAutoRefreshEnbabled = true,
+                IsAlwaysOnTop = true,
+                IsHideWhenLostFocus = true,
+                IsStartOnBoot = true
+            }));
             this.SettingsService.RegisterGlobal(new DataSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
 
             this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(new ExplorerSearchMethod()));
@@ -184,6 +194,11 @@ namespace Orion.Zeta.ViewModels {
         #endregion
 
         #region Search
+
+        private void AutoRefreshSearchEngine() {
+
+        }
+
         private void OnExpressionUpdated() {
             if (this._expressionSearchTimer.Enabled) {
                 this._expressionSearchTimer.Stop();
@@ -211,8 +226,7 @@ namespace Orion.Zeta.ViewModels {
                     (task =>
                         this.SearchEngine.Search(expression)
                             .ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching))));
-            }
-            else {
+            } else {
                 this.SearchEngine.Search(expression)
                     .ContinueWith(t => this.SearchingCallback(t.Result, this._lastTimeStartSearching));
             }
@@ -244,7 +258,7 @@ namespace Orion.Zeta.ViewModels {
         #region IModifiableGeneralSetting
         private bool _isHideWhenLostFocus;
         private bool _isAlwaysOnTop;
-        private SettingRepository _settingRepository;
+        private bool _startOnBoot;
 
         public bool IsHideWhenLostFocus {
             get { return this._isHideWhenLostFocus; }
@@ -262,6 +276,28 @@ namespace Orion.Zeta.ViewModels {
             }
         }
 
+        public bool StartOnBoot {
+            get { return this._startOnBoot; }
+            set {
+                this._startOnBoot = value;
+                this.ToogleStartOnBoot(value);
+            }
+        }
+
+        private void ToogleStartOnBoot(bool value) {
+            var app = Application.Current as App;
+            app?.ToggleStartOnBoot(value);
+        }
+
+        public void EnabledAutoRefresh(int interval) {
+            this._autoRefreshTimer.Interval = interval;
+            this._autoRefreshTimer.Start();
+        }
+
+        public void DisabledAutoRefresh() {
+            this._autoRefreshTimer.Stop();
+        }
+
         #endregion
 
         #region IModifiableStyleSetting
@@ -274,5 +310,8 @@ namespace Orion.Zeta.ViewModels {
     public interface IModifiableGeneralSetting {
         bool IsHideWhenLostFocus { get; set; }
         bool IsAlwaysOnTop { get; set; }
+        bool StartOnBoot { get; set; }
+        void EnabledAutoRefresh(int interval);
+        void DisabledAutoRefresh();
     }
 }
