@@ -83,13 +83,11 @@
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
 							<Image Grid.Column="0" Source="{Binding Icon, Mode=OneTime, Converter={StaticResource IconToImageSourceConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
-							<TextBlock Grid.Column="1" Margin="5 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"></TextBlock>
-							<TextBlock Grid.Column="2" Text="{Binding Rank}"></TextBlock>
-						</Grid>
+              <TextBlock Grid.Column="1" Margin="5 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"></TextBlock>
+            </Grid>
 					</Border>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
