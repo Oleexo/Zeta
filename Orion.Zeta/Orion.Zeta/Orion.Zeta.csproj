@@ -83,6 +83,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -122,6 +123,7 @@
     <Compile Include="Services\SearchMethodService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Settings\Models\ApplicationSearchModel.cs" />
+    <Compile Include="Settings\Models\DirectoryModel.cs" />
     <Compile Include="Settings\Models\GeneralModel.cs" />
     <Compile Include="Settings\Models\StyleModel.cs" />
     <Compile Include="Settings\SettingWindow.xaml.cs">

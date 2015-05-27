@@ -12,6 +12,8 @@ namespace Orion.Zeta.Core.Settings {
 
         public string Header { get; set; }
 
+        public bool? Enabled { get; set; }
+
         private readonly IModifiableSettings _modifiableSettings;
 
         public DataSettingContainer(string header, Type type, IModifiableSettings modifiableSettings) {
@@ -28,13 +30,6 @@ namespace Orion.Zeta.Core.Settings {
             this.Data = data;
         }
 
-        public MenuPanelItem ToMenuPanelItem() {
-            return new MenuPanelItem {
-                Header = this.Header,
-                Control = this.CreateControl()
-            };
-        }
-
         public void ApplyChanges() {
             this._modifiableSettings?.ApplyChanges(this.Data);
         }
@@ -44,19 +39,35 @@ namespace Orion.Zeta.Core.Settings {
         }
 
         public void ReadData(ISettingRepository settingRepository) {
-            var data = settingRepository.Find<T>(this.Header) as T;
-            if (data == null && this.Data == null)
-                this.Data = new T();           
-            else if (data != null)
-                this.Data = data;
+            var dataBox = settingRepository.Find<DataBox<T>>(this.Header) as DataBox<T>;
+            if (dataBox == null && this.Data == null) {
+                this.Data = new T();
+                this.Enabled = true;
+            }
+            else if (dataBox != null) {
+                this.Data = dataBox.Data;
+                this.Enabled = dataBox.Enabled;
+            }
+            if (!this.Enabled.HasValue) {
+                this.Enabled = true;
+            }
         }
 
         public void WriteData(ISettingRepository settingRepository) {
-            settingRepository.Persite(this.Header, this.Data);
+            settingRepository.Persite(this.Header, new DataBox<T> {
+                Enabled = this.Enabled,
+                Data = this.Data
+            });
         }
 
-        private UserControl CreateControl() {
+        public UserControl CreateControl() {
             return Activator.CreateInstance(this.ControlType, this.Data) as UserControl;
+        }
+
+        public class DataBox<TData> {
+            public bool? Enabled { get; set; }
+
+            public TData Data { get; set; }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Orion.Zeta.Core;
-using Orion.Zeta.Core.SearchMethods;
 using Orion.Zeta.Core.Settings.SearchMethods;
 
 namespace Orion.Zeta.Services {

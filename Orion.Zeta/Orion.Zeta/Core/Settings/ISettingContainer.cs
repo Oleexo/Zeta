@@ -1,5 +1,5 @@
 using System;
-using Orion.Zeta.Controls;
+using System.Windows.Controls;
 using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Core.Settings {
@@ -8,11 +8,13 @@ namespace Orion.Zeta.Core.Settings {
 
         string Header { get; set; }
 
-        MenuPanelItem ToMenuPanelItem();
+        bool? Enabled { get; set; }
 
         void ApplyChanges();
 
         bool HaveDefaultData();
+
+        UserControl CreateControl();
 
         void ReadData(ISettingRepository settingRepository);
 
