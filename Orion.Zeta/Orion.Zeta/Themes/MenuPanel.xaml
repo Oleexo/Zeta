@@ -8,13 +8,19 @@
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <Image Source="{Binding Image}" Grid.Column="0" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-      <Rectangle Grid.Column="0" Stretch="Fill" Height="20" Width="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Rectangle.Fill>
-          <VisualBrush Visual="{Binding Icon}"></VisualBrush>
-        </Rectangle.Fill>
-      </Rectangle>
-      <Label Content="{Binding Header}" Grid.Column="1">
+      <Label Grid.Column="0" Content="{Binding Shortheader}" FontWeight="Bold" FontSize="16" FontFamily="Segoe UI">
+        <Label.Style>
+          <Style TargetType="Label">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MenuPanel}}, Path=IsMinimize}" Value="True">
+                <Setter Property="Visibility" Value="Visible" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Label.Style>
+      </Label>
+      <Label Content="{Binding Header}" Grid.Column="1" FontSize="16" FontFamily="Segoe UI">
         <Label.Style>
           <Style TargetType="Label">
             <Setter Property="Visibility" Value="Visible" />
@@ -33,7 +39,6 @@
     <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="ItemTemplate" Value="{StaticResource MenuPanelItemTemplate}" />
-    <Setter Property="Width" Value="200" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:MenuPanel}">
@@ -41,20 +46,20 @@
 									BorderBrush="{TemplateBinding BorderBrush}"
 									BorderThickness="{TemplateBinding BorderThickness}"
 									HorizontalAlignment="Left"
-									Width="{TemplateBinding Width}" x:Name="PART_Border">
+									Width="200" x:Name="PART_Border">
             <VisualStateManager.VisualStateGroups>
               <VisualStateGroup Name="ValueStates">
                 <VisualState Name="OpenState">
                   <Storyboard>
-                    <DoubleAnimation Storyboard.TargetName="PART_Border"
-										Storyboard.TargetProperty="(Border.Width)"
+                    <DoubleAnimation
+										Storyboard.TargetProperty="Width"
 										To="200" Duration="0:0:0.150" />
                   </Storyboard>
                 </VisualState>
                 <VisualState Name="MinimizeState">
                   <Storyboard>
-                    <DoubleAnimation Storyboard.TargetName="PART_Border"
-										Storyboard.TargetProperty="(Border.Width)"
+                    <DoubleAnimation
+										Storyboard.TargetProperty="Width"
 										To="50" Duration="0:0:0.150" />
                   </Storyboard>
                 </VisualState>
@@ -72,7 +77,7 @@
                       <Setter.Value>
                         <ControlTemplate TargetType="Button">
                           <Border>
-                            <Rectangle Stretch="Fill" Height="20" Width="30">
+                            <Rectangle Stretch="Fill" Height="20" Width="25">
                               <Rectangle.Fill>
                                 <VisualBrush Visual="{DynamicResource appbar_lines_horizontal_4}" />
                               </Rectangle.Fill>

@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Orion.Zeta.Controls {
 
@@ -88,11 +89,29 @@ namespace Orion.Zeta.Controls {
     }
 
     public class MenuPanelItem {
+        private string _shortheader;
+
         public string Header { get; set; }
 
-        public ImageSource Image { get; set; }
+        public string Shortheader {
+            get
+            {
+                if (string.IsNullOrEmpty(this._shortheader)) {
+                    this._shortheader = this.GenerateDefaultShortHeader();
+                }
+                return this._shortheader;
+            }
+            set { this._shortheader = value; }
+        }
 
-        public Canvas Icon { get; set; }
+        private string GenerateDefaultShortHeader() {
+            var words = this.Header.Split(' ');
+            var result = string.Empty;
+            foreach (var word in words) {
+                result += word.First();
+            }
+            return result.First().ToString().ToUpper() + result.Substring(1).ToLower();
+        }
 
         public UserControl Control { get; set; }
     }
