@@ -34,6 +34,7 @@ namespace Orion.Zeta {
 			this.WindowState = WindowState.Normal;
 			this.Topmost = true;
 			this.ExpressionTextBox.Focus();
+			this.ExpressionTextBox.SelectAll();
 		}
 
 		private void MainViewModelOnOnSearchFinished(object sender, EventArgs eventArgs) {

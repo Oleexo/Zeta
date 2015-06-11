@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
@@ -44,7 +46,7 @@ namespace Orion.Zeta {
                 HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Alt, this.OnWakeUpApplication);
             } catch (HotkeyAlreadyRegisteredException) {
 #if !(DEBUG)
-				MessageBox.Show("Sorry, Global hot key CTRL + Space is already use");
+				MessageBox.Show("Sorry, Global hot key ALT + Space is already use");
 				Current.Shutdown();
 				return;
 #endif
