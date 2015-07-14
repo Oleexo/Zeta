@@ -1,5 +1,5 @@
 ﻿using System;
-using Orion.Zeta.Core.SearchMethods;
+using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Settings.Models;
 using Orion.Zeta.ViewModels;
 

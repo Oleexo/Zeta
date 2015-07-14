@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Orion.Zeta.Core.SearchMethods;
+using Orion.Zeta.Methods.Dev;
+using Orion.Zeta.Methods.Dev.Shared;
 
 namespace Orion.Zeta.Core {
 	public class SearchEngine : ISearchEngine {

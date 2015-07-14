@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
+using Orion.Zeta.Methods.ExplorerSearch;
 
 namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 	/// <summary>

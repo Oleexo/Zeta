@@ -7,6 +7,7 @@
         xmlns:viewModels="clr-namespace:Orion.Zeta.ViewModels"
 				xmlns:converters="clr-namespace:Orion.Zeta.Converters"
 				xmlns:zetaCore="clr-namespace:Orion.Zeta.Core;assembly=Orion.Zeta.Core"
+				xmlns:shared="clr-namespace:Orion.Zeta.Methods.Dev.Shared;assembly=Orion.Zeta.Methods.Dev"
 				mc:Ignorable="d"
 				d:DataContext="{viewModels:MainViewModel}"
 				ShowMaxRestoreButton="False"
@@ -78,7 +79,7 @@
 		</Border>
 		<ListBox x:Name="SuggestionsListBox" Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent" MaxHeight="325" KeyUp="SuggestionsListBox_OnKeyUp">
 			<ListBox.ItemTemplate>
-				<DataTemplate DataType="{x:Type zetaCore:IItem}">
+				<DataTemplate DataType="{x:Type shared:IItem}">
 					<Border BorderBrush="#FF999393" BorderThickness="0,0,0,1" Margin="0,0,5,0">
 						<Grid>
 							<Grid.ColumnDefinitions>

@@ -1,5 +1,5 @@
 using System;
-using Orion.Zeta.Core.SearchMethods;
+using Orion.Zeta.Methods.Dev;
 
 namespace Orion.Zeta.Core.Settings.SearchMethods {
     public class SearchMethodAsyncContainer : SearchMethodContainerBase {

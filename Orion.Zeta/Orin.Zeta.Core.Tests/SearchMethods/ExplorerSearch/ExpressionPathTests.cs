@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
-using Orion.Zeta.Core.SearchMethods.Shared;
+using Orion.Zeta.Methods.Dev.Shared;
+using Orion.Zeta.Methods.ExplorerSearch;
 
 namespace Orin.Zeta.Core.Tests.SearchMethods.ExplorerSearch {
 	[TestFixture]

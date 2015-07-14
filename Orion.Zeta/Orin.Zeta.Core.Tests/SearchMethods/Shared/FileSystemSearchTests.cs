@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using Orion.Zeta.Core.SearchMethods.Shared;
+using Orion.Zeta.Methods.Dev.Shared;
 
 namespace Orin.Zeta.Core.Tests.SearchMethods.Shared {
 	[TestFixture]

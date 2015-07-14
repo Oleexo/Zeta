@@ -1,4 +1,4 @@
-﻿using Orion.Zeta.Core.SearchMethods;
+﻿using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta.Core.Settings {

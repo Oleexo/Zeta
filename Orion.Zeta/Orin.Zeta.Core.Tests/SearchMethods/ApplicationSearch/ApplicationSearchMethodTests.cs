@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Orion.Zeta.Core.SearchMethods.ApplicationSearch;
+using Orion.Zeta.Methods.ApplicationSearch;
 
 namespace Orin.Zeta.Core.Tests.SearchMethods.ApplicationSearch {
 	[TestFixture]

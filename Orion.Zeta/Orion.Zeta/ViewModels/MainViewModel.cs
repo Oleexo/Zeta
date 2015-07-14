@@ -8,15 +8,15 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Orion.Zeta.Core;
-using Orion.Zeta.Core.SearchMethods.ExplorerSearch;
 using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Core.Settings.SearchMethods;
+using Orion.Zeta.Methods.Dev.Shared;
+using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Persistence.LocalStorage;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings;
 using Orion.Zeta.Settings.Models;
 using Orion.Zeta.Settings.Views;
-using Orion.Zeta.Tools;
 
 namespace Orion.Zeta.ViewModels {
     public class MainViewModel : BaseViewModel, IModifiableGeneralSetting, IModifiableStyleSetting {
@@ -131,9 +131,6 @@ namespace Orion.Zeta.ViewModels {
                 IsStartOnBoot = true
             }));
             this.SettingsService.RegisterGlobal(new DataSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
-
-            this.SearchMethodService.AddContainer(new SearchMethodAsyncContainer(new ExplorerSearchMethod()));
-            this.SearchMethodService.AddContainer(new ApplicationSearchMethodContainer());
             this.SearchMethodService.RegisterSearchMethods(this.SearchEngine);
         }
 

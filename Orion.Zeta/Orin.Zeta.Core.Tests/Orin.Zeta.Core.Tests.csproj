@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Orin.Zeta.Core.Tests</RootNamespace>
     <AssemblyName>Orin.Zeta.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,6 +72,14 @@
     <ProjectReference Include="..\Orion.Zeta.Core\Orion.Zeta.Core.csproj">
       <Project>{8f5f52fb-b110-4f34-8046-a56a8e24f71c}</Project>
       <Name>Orion.Zeta.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orion.Zeta.Methods.Dev\Orion.Zeta.Methods.Dev.csproj">
+      <Project>{e94f58e3-199d-4562-a2bb-582bc616fb89}</Project>
+      <Name>Orion.Zeta.Methods.Dev</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orion.Zeta.Methods\Orion.Zeta.Methods.csproj">
+      <Project>{edf4a1c8-85f8-4a97-9355-3b96c6568d08}</Project>
+      <Name>Orion.Zeta.Methods</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

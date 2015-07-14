@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Controls;
-using Orion.Zeta.Core.SearchMethods;
+using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Core.Settings {

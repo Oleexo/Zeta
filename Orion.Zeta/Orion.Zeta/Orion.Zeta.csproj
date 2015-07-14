@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Orion.Zeta</RootNamespace>
     <AssemblyName>Orion.Zeta</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -30,6 +30,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -81,6 +82,7 @@
       <HintPath>..\packages\NHotkey.Wpf.1.2.1\lib\net35\NHotkey.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -109,9 +111,6 @@
     <Compile Include="Core\Settings\DataSettingContainer.cs" />
     <Compile Include="Core\Settings\GeneralApplicable.cs" />
     <Compile Include="Core\Settings\ISettingContainer.cs" />
-    <Compile Include="Core\Settings\SearchMethods\ApplicationSearchMethodContainer.cs" />
-    <Compile Include="Core\Settings\SearchMethods\ApplicationSearchSettingConnector.cs" />
-    <Compile Include="Core\Settings\SearchMethods\Directory.cs" />
     <Compile Include="Core\Settings\SearchMethods\SearchMethodAsyncContainer.cs" />
     <Compile Include="Core\Settings\SearchMethods\SearchMethodContainer.cs" />
     <Compile Include="Core\Settings\SearchMethods\SearchMethodContainerBase.cs" />
@@ -123,18 +122,12 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\SearchMethodService.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Settings\Models\ApplicationSearchModel.cs" />
-    <Compile Include="Settings\Models\DirectoryModel.cs" />
     <Compile Include="Settings\Models\GeneralModel.cs" />
     <Compile Include="Settings\Models\StyleModel.cs" />
     <Compile Include="Settings\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\ViewModels\ApplicationSearchViewModel.cs" />
     <Compile Include="Settings\ViewModels\SettingViewModel.cs" />
-    <Compile Include="Settings\Views\ApplicationSearchView.xaml.cs">
-      <DependentUpon>ApplicationSearchView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Views\GeneralView.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>
@@ -142,7 +135,6 @@
     <Compile Include="Settings\Views\StyleView.xaml.cs">
       <DependentUpon>StyleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NotifyIconViewModel.cs" />
@@ -171,10 +163,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\SettingWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Views\ApplicationSearchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,10 +217,16 @@
       <Project>{8f5f52fb-b110-4f34-8046-a56a8e24f71c}</Project>
       <Name>Orion.Zeta.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orion.Zeta.Methods.Dev\Orion.Zeta.Methods.Dev.csproj">
+      <Project>{e94f58e3-199d-4562-a2bb-582bc616fb89}</Project>
+      <Name>Orion.Zeta.Methods.Dev</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orion.Zeta.Methods.Ui.Dev\Orion.Zeta.Methods.Ui.Dev.csproj">
+      <Project>{6ec2d9c0-a0b3-467c-a51c-a8201f3c658e}</Project>
+      <Name>Orion.Zeta.Methods.Ui.Dev</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>

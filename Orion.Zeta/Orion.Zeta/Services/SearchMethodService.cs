@@ -1,17 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using Orion.Zeta.Core;
-using Orion.Zeta.Core.Settings.SearchMethods;
+using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Services {
     public class SearchMethodService {
         private readonly SettingsService _settingsService;
-        private List<SearchMethodContainer> _searchMethods;
-        private List<SearchMethodAsyncContainer> _searchMethodsAsync;
+        [ImportMany(typeof(IMethodContainer))]
+        private IEnumerable<IMethodContainer> _searchMethods;
+        [ImportMany(typeof(IMethodAsyncContainer))]
+        private IEnumerable<IMethodAsyncContainer> _searchMethodsAsync;
 
         public SearchMethodService(SettingsService settingsService) {
             this._settingsService = settingsService;
-            this._searchMethods = new List<SearchMethodContainer>();
-            this._searchMethodsAsync = new List<SearchMethodAsyncContainer>();
+            this.Initialisation();
+        }
+
+        private void Initialisation() {
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog("Orion.Zeta.Methods.Ui.dll"));
+            var directoryCatalog = new DirectoryCatalog(@"Plugins/");
+            catalog.Catalogs.Add(directoryCatalog);
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
         }
 
         public void RegisterSearchMethods(ISearchEngine searchEngine) {
@@ -22,18 +34,6 @@ namespace Orion.Zeta.Services {
             foreach (var searchMethodAsync in this._searchMethodsAsync) {
                 searchEngine.RegisterMethod(searchMethodAsync.SearchMethod);
             }
-        }
-
-        public void AddContainer(SearchMethodAsyncContainer searchMethodAsyncContainer) {
-            this._searchMethodsAsync.Add(searchMethodAsyncContainer);
-            if (searchMethodAsyncContainer.IsModifiable())
-                this._settingsService.Register(searchMethodAsyncContainer.SettingContainer);
-        }
-
-        public void AddContainer(SearchMethodContainer searchMethodContainer) {
-            this._searchMethods.Add(searchMethodContainer);
-            if (searchMethodContainer.IsModifiable())
-                this._settingsService.Register(searchMethodContainer.SettingContainer);
         }
 
         public void ToggleMethodBySetting() {

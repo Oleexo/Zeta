@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Orion.Zeta.Core</RootNamespace>
     <AssemblyName>Orion.Zeta.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,29 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IExecute.cs" />
-    <Compile Include="IItem.cs" />
     <Compile Include="ISearchEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchEngine.cs" />
-    <Compile Include="SearchMethods\ApplicationSearch\ApplicationsContainer.cs" />
-    <Compile Include="SearchMethods\ApplicationSearch\ApplicationSearchMethod.cs" />
-    <Compile Include="SearchMethods\ApplicationSearch\RankApplicationStrategy.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\CollectionExpressionPath.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\ExplorerSearchMethod.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\ExpressionPath.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\PathHelper.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\PossibilityPath.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\SortPathBetterMatchStrategy.cs" />
-    <Compile Include="SearchMethods\ExplorerSearch\SortPathWindowsStyle.cs" />
-    <Compile Include="SearchMethods\IModifiableSettings.cs" />
-    <Compile Include="SearchMethods\ISearchMethod.cs" />
-    <Compile Include="SearchMethods\ISearchMethodAsync.cs" />
-    <Compile Include="SearchMethods\Shared\Execute.cs" />
-    <Compile Include="SearchMethods\Shared\FileSystemSearch.cs" />
-    <Compile Include="SearchMethods\Shared\IconHelper.cs" />
-    <Compile Include="SearchMethods\Shared\IFileSystemSearch.cs" />
-    <Compile Include="SearchMethods\Shared\Item.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Orion.Zeta.Methods.Dev\Orion.Zeta.Methods.Dev.csproj">
+      <Project>{e94f58e3-199d-4562-a2bb-582bc616fb89}</Project>
+      <Name>Orion.Zeta.Methods.Dev</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

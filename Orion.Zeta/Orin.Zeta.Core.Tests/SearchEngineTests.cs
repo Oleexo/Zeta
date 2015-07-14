@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Orion.Zeta.Core;
-using Orion.Zeta.Core.SearchMethods;
+using Orion.Zeta.Methods.Dev;
 
 namespace Orin.Zeta.Core.Tests {
 	[TestFixture]
