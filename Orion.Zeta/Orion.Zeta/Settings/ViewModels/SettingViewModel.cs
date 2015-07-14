@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Controls;
 using Orion.Zeta.Controls;
+using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Services;
 using Orion.Zeta.ViewModels;
 
@@ -13,6 +14,7 @@ namespace Orion.Zeta.Settings.ViewModels {
         private string _currentSettingName;
         private bool _isDisactivable;
         private bool? _enabled;
+        private MenuPanelItemSetting _currentItemPanel;
 
 
         public ObservableCollection<MenuPanelItemSetting> MenuItems { get; private set; }
@@ -49,12 +51,11 @@ namespace Orion.Zeta.Settings.ViewModels {
             }
         }
 
-        public bool? Enabled
-        {
+        public bool? Enabled {
             get { return this._enabled; }
-            set
-            {
+            set {
                 this._enabled = value;
+                this._currentItemPanel.Enabled = value;
                 this.OnPropertyChanged();
             }
         }
@@ -65,21 +66,11 @@ namespace Orion.Zeta.Settings.ViewModels {
             var globalSettingContainers = this._settingsService.GetGlobalSettingContainers();
             this.MenuItems = new ObservableCollection<MenuPanelItemSetting>();
             foreach (var globalSettingContainer in globalSettingContainers) {
-                var menuItem = new MenuPanelItemSetting {
-                    Header = globalSettingContainer.Header,
-                    Control = globalSettingContainer.CreateControl(),
-                    Enabled = globalSettingContainer.Enabled,
-                };
-                this.MenuItems.Add(menuItem);
+                this.MenuItems.Add(new MenuPanelItemSetting(globalSettingContainer));
             }
 
             foreach (var settingContainer in settingContainers) {
-                var menuItem = new MenuPanelItemSetting {
-                    Header = settingContainer.Header,
-                    Control = settingContainer.CreateControl(),
-                    Enabled = settingContainer.Enabled,
-                };
-                this.MenuItems.Add(menuItem);
+                this.MenuItems.Add(new MenuPanelItemSetting(settingContainer));
             }
             var item = this.MenuItems.FirstOrDefault();
             this.CurrentSetting = item?.Control;
@@ -88,14 +79,26 @@ namespace Orion.Zeta.Settings.ViewModels {
 
 
         private void SetCurrentSetting(object item) {
-            var itemPanel = item as MenuPanelItemSetting;
-            this.CurrentSetting = itemPanel?.Control;
-            this.CurrentSettingName = itemPanel?.Header ?? "Setting";
-            this.Enabled = itemPanel?.Enabled;
+            this._currentItemPanel = item as MenuPanelItemSetting;
+            this.CurrentSetting = this._currentItemPanel?.Control;
+            this.CurrentSettingName = this._currentItemPanel?.Header ?? "Setting";
+            this.Enabled = this._currentItemPanel?.Enabled;
         }
 
         public class MenuPanelItemSetting : MenuPanelItem {
-            public bool? Enabled { get; set; }
+            private readonly ISettingContainer _settingContainer;
+
+            public MenuPanelItemSetting(ISettingContainer settingContainer) {
+                this._settingContainer = settingContainer;
+                this.Header = settingContainer.Header;
+                this.Control = settingContainer.CreateControl();
+
+            }
+
+            public bool? Enabled {
+                get { return this._settingContainer.Enabled; }
+                set { this._settingContainer.Enabled = value; }
+            }
         }
     }
 }

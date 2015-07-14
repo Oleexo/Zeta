@@ -33,6 +33,7 @@ namespace Orion.Zeta.Services {
         public void Register(ISettingContainer settingContainer) {
             this._settingContainers.Add(settingContainer);
             settingContainer.ReadData(this._settingRepository);
+            settingContainer.ApplyChanges();
         }
 
         public void ApplyChanges() {

@@ -10,7 +10,6 @@ namespace Orion.Zeta.Core.Settings.SearchMethods {
             var applicationSearchModel = this.DefaultApplicationSearchModel();
             var applicationSearchSettingConnector = new ApplicationSearchSettingConnector(this.SearchMethod as ApplicationSearchMethod);
             this.SettingContainer = new DataSettingContainer<ApplicationSearchModel>("Application Search", typeof(ApplicationSearchView), applicationSearchSettingConnector, applicationSearchModel);
-            this.SettingContainer.ApplyChanges();
         }
 
         private ApplicationSearchModel DefaultApplicationSearchModel() {

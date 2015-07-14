@@ -35,5 +35,10 @@ namespace Orion.Zeta.Services {
             if (searchMethodContainer.IsModifiable())
                 this._settingsService.Register(searchMethodContainer.SettingContainer);
         }
+
+        public void ToggleMethodBySetting() {
+            foreach (var searchMethod in this._searchMethods) {
+            }
+        }
     }
 }

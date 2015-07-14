@@ -146,6 +146,7 @@ namespace Orion.Zeta.ViewModels {
         private void OnOpenSettingCommand() {
             var settingWindow = new SettingWindow(this.SettingsService);
             settingWindow.Closed += async (sender, args) => {
+                this.SearchMethodService.ToggleMethodBySetting();
                 this.SettingsService.ApplyChanges();
                 await this.SettingsService.SaveChangesAsync();
             };

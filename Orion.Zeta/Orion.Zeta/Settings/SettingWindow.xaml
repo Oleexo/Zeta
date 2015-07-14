@@ -31,7 +31,7 @@
       <Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="DimGray" Margin="15 5 15 5" Padding="5 0 5 0">
         <Grid>
           <TextBlock Text="{Binding CurrentSettingName}" FontSize="20" HorizontalAlignment="Left" />
-          <controls:ToggleSwitch HorizontalAlignment="Right" OnLabel="On" OffLabel="Off" IsChecked="{Binding Enabled}">
+          <controls:ToggleSwitch HorizontalAlignment="Right" OnLabel="On" OffLabel="Off" IsChecked="{Binding Enabled, Mode=TwoWay}">
             <controls:ToggleSwitch.Style>
               <Style TargetType="controls:ToggleSwitch">
               <Setter Property="Visibility" Value="Visible" />
