@@ -8,9 +8,9 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch {
     /// Interaction logic for ApplicationSearchView.xaml
     /// </summary>
     public partial class ApplicationSearchView : UserControl {
-        public ApplicationSearchView(IDataService dataService) {
+        public ApplicationSearchView(IDataService dataService, ISearchMethod method) {
             this.InitializeComponent();
-            this.DataContext = new ApplicationSearchViewModel(dataService);
+            this.DataContext = new ApplicationSearchViewModel(dataService, method);
         }
     }
 }

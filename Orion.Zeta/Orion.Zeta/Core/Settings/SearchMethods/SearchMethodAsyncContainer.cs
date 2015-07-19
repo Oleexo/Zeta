@@ -13,7 +13,7 @@ namespace Orion.Zeta.Core.Settings.SearchMethods {
         public SearchMethodAsyncContainer AddSettings<T>(string name, Type type) where T : class, new() {
             if (!(this.SearchMethod is IModifiableSettings))
                 throw new Exception("Impossible to assign search method to modifiable setting");
-            this.SettingContainer = new DataSettingContainer<T>(name, type, (IModifiableSettings) this.SearchMethod);
+            this.SettingContainer = new GeneralSettingContainer<T>(name, type, (IModifiableSettings) this.SearchMethod);
             return this;
         }
     }

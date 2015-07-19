@@ -10,7 +10,7 @@ namespace Orion.Zeta.Methods.Ui.ExplorerSearch {
 
         public bool HaveSettingControl => false;
 
-        public UserControl CreateSettingControl(IDataService dataService) {
+        public UserControl CreateSettingControl(IDataService dataService, ISearchMethod method) {
             throw new System.NotImplementedException();
         }
 

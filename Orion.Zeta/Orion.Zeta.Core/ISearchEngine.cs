@@ -12,5 +12,7 @@ namespace Orion.Zeta.Core {
 		Task<IEnumerable<IItem>> Search(string expression);
 
 	    void RefreshCache();
+
+	    void UnRegister(ISearchMethod searchMethod);
 	}
 }

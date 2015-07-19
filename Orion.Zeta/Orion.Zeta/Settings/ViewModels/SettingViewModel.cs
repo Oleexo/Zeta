@@ -55,6 +55,7 @@ namespace Orion.Zeta.Settings.ViewModels {
             get { return this._enabled; }
             set {
                 this._enabled = value;
+                this._settingsService.ToggleMethod(this._currentItemPanel.Header, value);
                 this._currentItemPanel.Enabled = value;
                 this.OnPropertyChanged();
             }
@@ -92,7 +93,6 @@ namespace Orion.Zeta.Settings.ViewModels {
                 this._settingContainer = settingContainer;
                 this.Header = settingContainer.Header;
                 this.Control = settingContainer.CreateControl();
-
             }
 
             public bool? Enabled {

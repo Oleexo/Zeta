@@ -30,8 +30,8 @@ namespace Orion.Zeta.Persistence.LocalStorage {
             }
         }
 
-        public object Find<T>(string id) {
-            object data;
+        public T Find<T>(string id) {
+            T data;
             try {
                 using (var reader = new StreamReader(Path.Combine(this._path, id + ".json")))
                 using (var jw = new JsonTextReader(reader)) {
@@ -41,7 +41,7 @@ namespace Orion.Zeta.Persistence.LocalStorage {
                     data = serializer.Deserialize<T>(jw);
                 }
             } catch (Exception) {
-                return null;
+                return default(T);
             }
             return data;
         }

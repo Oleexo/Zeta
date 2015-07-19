@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="IBaseMethodContainer.cs" />
     <Compile Include="IMethodAsyncContainer.cs" />
     <Compile Include="IMethodContainer.cs" />
     <Compile Include="RelayCommand.cs" />

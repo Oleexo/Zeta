@@ -4,7 +4,7 @@ using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Core.Settings {
-    public class DataSettingContainer<T> : ISettingContainer where T : class, new() {
+    public class GeneralSettingContainer<T> : IGeneralSettingContainer where T : class, new() {
         public T Data { get; set; }
 
         public Type ControlType { get; set; }
@@ -15,14 +15,14 @@ namespace Orion.Zeta.Core.Settings {
 
         private readonly IModifiableSettings _modifiableSettings;
 
-        public DataSettingContainer(string header, Type type, IModifiableSettings modifiableSettings) {
+        public GeneralSettingContainer(string header, Type type, IModifiableSettings modifiableSettings) {
             this._modifiableSettings = modifiableSettings;
             this.Header = header;
             this.ControlType = type;
             this.Data = default(T);
         }
 
-        public DataSettingContainer(string header, Type type, IModifiableSettings modifiableSettings, T data) {
+        public GeneralSettingContainer(string header, Type type, IModifiableSettings modifiableSettings, T data) {
             this._modifiableSettings = modifiableSettings;
             this.Header = header;
             this.ControlType = type;

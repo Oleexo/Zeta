@@ -13,7 +13,8 @@ using Application = System.Windows.Application;
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
     public class ApplicationSearchViewModel : BaseViewModel {
         private readonly ApplicationSearchModel _model;
-        private IDataService dataService;
+        private IDataService _dataService;
+        private readonly ISearchMethod _method;
 
         public ObservableCollection<DirectoryModel> Directories { get; set; } 
 
@@ -31,8 +32,9 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
             this.RemoveDirectoryCommand = new RelayCommand(this.OnRemoveDirectoryCommand);
         }
 
-        public ApplicationSearchViewModel(IDataService dataService) {
-            this.dataService = dataService;
+        public ApplicationSearchViewModel(IDataService dataService, ISearchMethod method) {
+            this._dataService = dataService;
+            this._method = method;
         }
 
         private void OnRemoveDirectoryCommand(object data) {

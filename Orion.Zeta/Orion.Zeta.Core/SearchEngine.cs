@@ -52,5 +52,14 @@ namespace Orion.Zeta.Core {
 	            searchMethodAsync.RefreshCache();
 	        }
 	    }
+
+	    public void UnRegister(ISearchMethod searchMethod) {
+	        if (this._searchMethods.Contains(searchMethod)) {
+	            this._searchMethods.Remove(searchMethod);
+	        }
+	        else if (this._searchMethodsAsync.Contains(searchMethod)) {
+	            this._searchMethodsAsync.Remove(searchMethod as ISearchMethodAsync);
+	        }
+	    }
 	}
 }

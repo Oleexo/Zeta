@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Orion.Zeta.Core;
 using Orion.Zeta.Core.Settings;
-using Orion.Zeta.Core.Settings.SearchMethods;
 using Orion.Zeta.Methods.Dev.Shared;
 using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Persistence.LocalStorage;
@@ -22,9 +21,9 @@ namespace Orion.Zeta.ViewModels {
     public class MainViewModel : BaseViewModel, IModifiableGeneralSetting, IModifiableStyleSetting {
         #region Fields
         private readonly SettingRepository _settingRepository;
-        private readonly Lazy<SearchEngine> _searchEngine;
+        private readonly Lazy<ISearchEngine> _searchEngine;
         private readonly Lazy<SettingsService> _settingsService;
-        private readonly Lazy<SearchMethodService> _methodService;
+        private readonly Lazy<ISearchMethodService> _methodService;
         private readonly Task _initialisationTask;
         private IItem _suggestion;
         private string _expression;
@@ -38,9 +37,9 @@ namespace Orion.Zeta.ViewModels {
         #region Constructor
         public MainViewModel() {
             this._settingRepository = new SettingRepository();
-            this._searchEngine = new Lazy<SearchEngine>();
+            this._searchEngine = new Lazy<ISearchEngine>(() => new SearchEngine());
             this._settingsService = new Lazy<SettingsService>(() => new SettingsService(this._settingRepository));
-            this._methodService = new Lazy<SearchMethodService>(() => new SearchMethodService(this.SettingsService));
+            this._methodService = new Lazy<ISearchMethodService>(() => new SearchMethodService());
             this.IsSearching = false;
             this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
             this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
@@ -102,7 +101,7 @@ namespace Orion.Zeta.ViewModels {
 
         public ObservableCollection<IItem> Suggestions { get; set; }
 
-        private SearchEngine SearchEngine {
+        private ISearchEngine SearchEngine {
             get { return this._searchEngine.Value; }
         }
 
@@ -110,7 +109,7 @@ namespace Orion.Zeta.ViewModels {
             get { return this._settingsService.Value; }
         }
 
-        private SearchMethodService SearchMethodService {
+        private ISearchMethodService SearchMethodService {
             get { return this._methodService.Value; }
         }
         #endregion
@@ -123,15 +122,16 @@ namespace Orion.Zeta.ViewModels {
 
         #region Initialisation
         private void InitialisationSearchEngine() {
-            this.SettingsService.RegisterGlobal(new DataSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this), new GeneralModel {
+            this.SettingsService.RegisterGlobal(new GeneralSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this), new GeneralModel {
                 AutoRefresh = 60,
                 IsAutoRefreshEnbabled = true,
                 IsAlwaysOnTop = true,
                 IsHideWhenLostFocus = true,
                 IsStartOnBoot = true
             }));
-            this.SettingsService.RegisterGlobal(new DataSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
-            this.SearchMethodService.RegisterSearchMethods(this.SearchEngine);
+            this.SettingsService.RegisterGlobal(new GeneralSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
+            this.SearchMethodService.RegisterSearchMethods(this.SearchEngine, this.SettingsService);
+            this.SearchMethodService.RegisterSettings(this.SettingsService);
         }
 
         private async Task InitialisationSearchEngineAsync() {
@@ -140,10 +140,11 @@ namespace Orion.Zeta.ViewModels {
         #endregion
 
         #region Commands
-        private void OnOpenSettingCommand() {
+        private async void OnOpenSettingCommand() {
+            await this._initialisationTask;
             var settingWindow = new SettingWindow(this.SettingsService);
             settingWindow.Closed += async (sender, args) => {
-                this.SearchMethodService.ToggleMethodBySetting();
+                this.SearchMethodService.ToggleMethodBySetting(this.SearchEngine, this.SettingsService);
                 this.SettingsService.ApplyChanges();
                 await this.SettingsService.SaveChangesAsync();
             };

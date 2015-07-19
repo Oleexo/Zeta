@@ -9,8 +9,8 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch {
     public class ApplicationSearchContainer : IMethodAsyncContainer {
         public bool HaveSettingControl => true;
 
-        public UserControl CreateSettingControl(IDataService dataService) {
-            return new ApplicationSearchView(dataService);
+        public UserControl CreateSettingControl(IDataService dataService, ISearchMethod method) {
+            return new ApplicationSearchView(dataService, method);
         }
 
         public ISearchMethodAsync SearchMethod => new ApplicationSearchMethod();
