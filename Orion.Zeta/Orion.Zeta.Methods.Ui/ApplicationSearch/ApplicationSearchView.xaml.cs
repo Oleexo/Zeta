@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
 using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel;
-using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch {
     /// <summary>

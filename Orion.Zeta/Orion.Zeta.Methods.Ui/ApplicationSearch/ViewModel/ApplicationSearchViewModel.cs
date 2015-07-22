@@ -1,9 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Orion.Zeta.Methods.ApplicationSearch;
 using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Ui.ApplicationSearch.Models;
 using Orion.Zeta.Methods.Ui.Dev;
@@ -11,30 +14,32 @@ using Orion.Zeta.Settings.Models;
 using Application = System.Windows.Application;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
-    public class ApplicationSearchViewModel : BaseViewModel {
-        private readonly ApplicationSearchModel _model;
-        private IDataService _dataService;
-        private readonly ISearchMethod _method;
-
+    public class ApplicationSearchViewModel : SettingBaseViewModel<ApplicationSearchMethod, ApplicationSearchModel> {
         public ObservableCollection<DirectoryModel> Directories { get; set; } 
 
         public ICommand AddDirectoryCommand { get; private set; }
 
         public ICommand RemoveDirectoryCommand { get; private set; }
 
-        public ApplicationSearchViewModel(ApplicationSearchModel model) {
-            this._model = model;
+        public ApplicationSearchViewModel(IDataService dataService, ISearchMethod method) : base(dataService, method) {
             this.Directories = new ObservableCollection<DirectoryModel>();
-            foreach (var directory in model.Directories) {
-                this.Directories.Add(new DirectoryModel(directory));
-            }
             this.AddDirectoryCommand = new RelayCommand(this.OnAddDirectoryCommand);
             this.RemoveDirectoryCommand = new RelayCommand(this.OnRemoveDirectoryCommand);
+            this.Initialise();
         }
 
-        public ApplicationSearchViewModel(IDataService dataService, ISearchMethod method) {
-            this._dataService = dataService;
-            this._method = method;
+        private void Initialise() {
+            this.LoadDataSettingAsync().ContinueWith((result) => {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(this.ApplyDataLoaded));
+            });
+        }
+
+        private void ApplyDataLoaded() {
+	        if (this._model.Directories != null) {
+		        foreach (var directory in this._model.Directories) {
+			        this.Directories.Add(new DirectoryModel(directory));
+		        }
+	        }
         }
 
         private void OnRemoveDirectoryCommand(object data) {

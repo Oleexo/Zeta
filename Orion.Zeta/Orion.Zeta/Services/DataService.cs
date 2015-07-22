@@ -1,4 +1,5 @@
-﻿using Orion.Zeta.Methods.Dev;
+﻿using System.IO;
+using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Services {
@@ -11,12 +12,14 @@ namespace Orion.Zeta.Services {
             this._settingRepository = settingRepository;
         }
 
-        public object Retrieve(string name) {
-            throw new System.NotImplementedException();
+        public T Retrieve<T>(string name) {
+	        var path = Path.Combine(this._baseFolderName, name);
+	        return this._settingRepository.Find<T>(path);
         }
 
         public void Persist(string name, object data) {
-            throw new System.NotImplementedException();
-        }
+			var path = Path.Combine(this._baseFolderName, name);
+			this._settingRepository.Persite(path, data);
+		}
     }
 }

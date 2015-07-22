@@ -64,6 +64,7 @@
     <Compile Include="ApplicationSearch\Models\DirectoryModel.cs" />
     <Compile Include="ExplorerSearch\ExplorerSearchContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingBaseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Orion.Zeta.Methods.Dev\Orion.Zeta.Methods.Dev.csproj">
