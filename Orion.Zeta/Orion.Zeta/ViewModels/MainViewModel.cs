@@ -39,7 +39,7 @@ namespace Orion.Zeta.ViewModels {
             this._settingRepository = new SettingRepository();
             this._searchEngine = new Lazy<ISearchEngine>(() => new SearchEngine());
             this._settingsService = new Lazy<SettingsService>(() => new SettingsService(this._settingRepository));
-            this._methodService = new Lazy<ISearchMethodService>(() => new SearchMethodService());
+            this._methodService = new Lazy<ISearchMethodService>(() => new SearchMethodService(new SearchMethodPool(this.SearchEngine)));
             this.IsSearching = false;
             this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
             this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
@@ -130,7 +130,7 @@ namespace Orion.Zeta.ViewModels {
                 IsStartOnBoot = true
             }));
             this.SettingsService.RegisterGlobal(new GeneralSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
-            this.SearchMethodService.RegisterSearchMethods(this.SearchEngine, this.SettingsService);
+            this.SearchMethodService.RegisterSearchMethods(this.SettingsService);
             this.SearchMethodService.RegisterSettings(this.SettingsService);
         }
 
@@ -144,7 +144,7 @@ namespace Orion.Zeta.ViewModels {
             await this._initialisationTask;
             var settingWindow = new SettingWindow(this.SettingsService);
             settingWindow.Closed += async (sender, args) => {
-                this.SearchMethodService.ToggleMethodBySetting(this.SearchEngine, this.SettingsService);
+                this.SearchMethodService.ManageMethodsBySetting(this.SettingsService);
                 this.SettingsService.ApplyChanges();
                 await this.SettingsService.SaveChangesAsync();
             };

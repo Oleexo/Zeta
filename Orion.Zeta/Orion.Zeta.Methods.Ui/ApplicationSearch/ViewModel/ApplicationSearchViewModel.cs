@@ -8,6 +8,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Orion.Zeta.Methods.ApplicationSearch;
 using Orion.Zeta.Methods.Dev;
+using Orion.Zeta.Methods.Dev.Setting;
 using Orion.Zeta.Methods.Ui.ApplicationSearch.Models;
 using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Settings.Models;
@@ -21,7 +22,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 
         public ICommand RemoveDirectoryCommand { get; private set; }
 
-        public ApplicationSearchViewModel(IDataService dataService, ISearchMethod method) : base(dataService, method) {
+        public ApplicationSearchViewModel(ISearchMethodSettingService searchMethodSettingService) : base(searchMethodSettingService) {
             this.Directories = new ObservableCollection<DirectoryModel>();
             this.AddDirectoryCommand = new RelayCommand(this.OnAddDirectoryCommand);
             this.RemoveDirectoryCommand = new RelayCommand(this.OnRemoveDirectoryCommand);

@@ -123,6 +123,8 @@
     <Compile Include="Persistence\PersistenceException.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\SearchMethodSettingService.cs" />
+    <Compile Include="Services\ISearchMethodService.cs" />
     <Compile Include="Services\SearchMethodService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Settings\Models\GeneralModel.cs" />

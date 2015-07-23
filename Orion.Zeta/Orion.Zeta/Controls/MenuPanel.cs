@@ -113,6 +113,6 @@ namespace Orion.Zeta.Controls {
             return result.First().ToString().ToUpper() + result.Substring(1).ToLower();
         }
 
-        public UserControl Control { get; set; }
+        public virtual UserControl Control { get; set; }
     }
 }

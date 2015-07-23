@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orion.Zeta.Core.Settings;
-using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Services {
@@ -11,7 +10,9 @@ namespace Orion.Zeta.Services {
         private readonly IList<IGeneralSettingContainer> _globalSettingContainers;
         private DataApplication _dataApplication;
 
-        public SettingsService(ISettingRepository settingRepository) {
+	    public ISettingRepository SettingRepository => this._settingRepository;
+
+	    public SettingsService(ISettingRepository settingRepository) {
             this._settingRepository = settingRepository;
             this._settingContainers = new List<ISettingContainer>();
             this._globalSettingContainers = new List<IGeneralSettingContainer>();
@@ -71,10 +72,6 @@ namespace Orion.Zeta.Services {
 
         public async Task ApplyChangesAsync() {
             await Task.Run(() => this.ApplyChanges());
-        }
-
-        public IDataService For(string name) {
-            return new DataService(name, this._settingRepository);
         }
 
         public void ToggleMethod(string header, bool? value) {

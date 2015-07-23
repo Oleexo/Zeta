@@ -41,11 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDataService.cs" />
     <Compile Include="IModifiableSettings.cs" />
     <Compile Include="ISearchMethod.cs" />
     <Compile Include="ISearchMethodAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setting\IDataService.cs" />
+    <Compile Include="Setting\ISearchMethodSettingService.cs" />
     <Compile Include="Shared\Execute.cs" />
     <Compile Include="Shared\FileSystemSearch.cs" />
     <Compile Include="Shared\IconHelper.cs" />

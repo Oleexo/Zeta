@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Orion.Zeta.Methods.Dev;
+using Orion.Zeta.Methods.Dev.Setting;
 using Orion.Zeta.Methods.ExplorerSearch;
 using Orion.Zeta.Methods.Ui.Dev;
 
@@ -10,11 +11,18 @@ namespace Orion.Zeta.Methods.Ui.ExplorerSearch {
 
         public bool HaveSettingControl => false;
 
-        public UserControl CreateSettingControl(IDataService dataService, ISearchMethod method) {
+        public UserControl CreateSettingControl(ISearchMethodSettingService searchMethodSettingService) {
             throw new System.NotImplementedException();
         }
 
-        public ISearchMethodAsync SearchMethod => new ExplorerSearchMethod();
         public string Name => "Explorer";
+
+		ISearchMethod IMethodContainer.GetNewInstanceOfSearchMethod(IDataService dataService) {
+		    return this.GetNewInstanceOfSearchMethod(dataService);
+	    }
+
+	    public ISearchMethodAsync GetNewInstanceOfSearchMethod(IDataService dataService) {
+		    return new ExplorerSearchMethod();
+	    }
     }
 }

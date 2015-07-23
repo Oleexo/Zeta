@@ -86,13 +86,18 @@ namespace Orion.Zeta.Settings.ViewModels {
             this.Enabled = this._currentItemPanel?.Enabled;
         }
 
-        public class MenuPanelItemSetting : MenuPanelItem {
+        public sealed class MenuPanelItemSetting : MenuPanelItem {
             private readonly ISettingContainer _settingContainer;
 
-            public MenuPanelItemSetting(ISettingContainer settingContainer) {
+	        public override UserControl Control
+	        {
+		        get { return this._settingContainer.CreateControl(); }
+				set { }
+	        }
+
+	        public MenuPanelItemSetting(ISettingContainer settingContainer) {
                 this._settingContainer = settingContainer;
                 this.Header = settingContainer.Header;
-                this.Control = settingContainer.CreateControl();
             }
 
             public bool? Enabled {
