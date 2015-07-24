@@ -1,4 +1,4 @@
-using Orion.Zeta.Core;
+using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Services {
 	public interface ISearchMethodService {
@@ -7,5 +7,7 @@ namespace Orion.Zeta.Services {
 		void ManageMethodsBySetting(SettingsService settingsService);
 
 		void RegisterSettings(SettingsService settingsService);
+
+		void ToggleMethod(string searchMethodName, SettingsService settingsService, bool value);
 	}
 }

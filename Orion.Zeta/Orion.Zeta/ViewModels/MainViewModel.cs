@@ -142,7 +142,7 @@ namespace Orion.Zeta.ViewModels {
         #region Commands
         private async void OnOpenSettingCommand() {
             await this._initialisationTask;
-            var settingWindow = new SettingWindow(this.SettingsService);
+            var settingWindow = new SettingWindow(this.SettingsService, this.SearchMethodService);
             settingWindow.Closed += async (sender, args) => {
                 this.SearchMethodService.ManageMethodsBySetting(this.SettingsService);
                 this.SettingsService.ApplyChanges();

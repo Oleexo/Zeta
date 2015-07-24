@@ -4,18 +4,82 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:models="clr-namespace:Orion.Zeta.Methods.Ui.ApplicationSearch.Models"
-             xmlns:settings="clr-namespace:Orion.Zeta.Methods.Ui.Dev;assembly=Orion.Zeta.Methods.Ui.Dev"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              x:Name="ApplicationSearchViewName"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignData ApplicationSearchViewModel}">
   <Grid>
-    <ScrollViewer Margin="30 0 30 0">
+    <ScrollViewer Margin="30 0 30 0" HorizontalContentAlignment="Stretch">
       <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />
-          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource SettingTitle}">Directories</Label>
+        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+          <Button Command="{Binding AddDirectoryCommand}">Add</Button>
+          <Button Command="{Binding RemoveDirectoryCommand}" Margin="10 0 0 0">Remove
+            <Button.Style>
+              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="IsEnabled" Value="True" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CurrentDirectorySelected}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Button.Style>
+          </Button>
+        </WrapPanel>
+        <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Directories}" SelectedItem="{Binding CurrentDirectorySelected}" SelectionMode="Single"
+						Margin="0 5 0 0">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDoubleClick">
+              <i:InvokeCommandAction Command="{Binding ChangePathDirectoryCommand}"/>
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type models:DirectoryModel}">
+              <Label Content="{Binding Path}"></Label>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+          <Button Command="{Binding AddExtensionCommand}">Add
+            <Button.Style>
+              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="IsEnabled" Value="True" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CurrentDirectorySelected}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Button.Style>
+          </Button>
+          <Button Command="{Binding RemoveExtensionCommand}" Margin="10 0 0 0">Remove
+            <Button.Style>
+              <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="IsEnabled" Value="True" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding CurrentExtensionSelected}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Button.Style>
+          </Button>
+        </WrapPanel>
+        <ListBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding CurrentExtensionsOfDirectorySelected}" SelectionMode="Single" SelectedItem="{Binding CurrentExtensionSelected}"
+						BorderThickness="1 0 0 0" BorderBrush="LightGray" Margin="0 5 0 0">
+        </ListBox>
+      </Grid>
+      <!--<Grid Grid.Row="0">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -27,6 +91,7 @@
           </Grid.RowDefinitions>
           <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SettingTitle}">Directories</Label>
           <Button Grid.Row="0" Grid.Column="1" Command="{Binding AddDirectoryCommand}">Add</Button>
+
           <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Directories}">
             <ListBox.ItemTemplate>
               <DataTemplate DataType="{x:Type models:DirectoryModel}">
@@ -84,8 +149,7 @@
               </Style>
             </ListBox.ItemContainerStyle>
           </ListBox>
-        </Grid>
-      </Grid>
+        </Grid>-->
     </ScrollViewer>
   </Grid>
 </UserControl>

@@ -1,14 +1,13 @@
 ﻿using System.Windows.Controls;
-using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Dev.Setting;
 using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Core.Settings {
     public class SettingContainer : ISettingContainer {
-        private readonly IBaseMethodContainer _methodContainer;
+        private readonly IMethodContainer _methodContainer;
         private readonly ISearchMethodSettingService _searchMethodSettingService;
 
-        public SettingContainer(IBaseMethodContainer methodContainer, ISearchMethodSettingService searchMethodSettingService) {
+        public SettingContainer(IMethodContainer methodContainer, ISearchMethodSettingService searchMethodSettingService) {
             this._methodContainer = methodContainer;
             this._searchMethodSettingService = searchMethodSettingService;
         }

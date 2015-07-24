@@ -18,6 +18,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch {
         }
 
         public string Name => "Applications";
+
 	    ISearchMethod IMethodContainer.GetNewInstanceOfSearchMethod(IDataService dataService) {
 		    return this.GetNewInstanceOfSearchMethod(dataService);
 	    }

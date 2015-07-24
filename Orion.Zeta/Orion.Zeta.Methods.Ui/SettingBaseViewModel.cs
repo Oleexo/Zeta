@@ -8,6 +8,17 @@ namespace Orion.Zeta.Methods.Ui {
         protected TData _model;
 	    protected string _defaultConfigurationFilename = "config";
 
+	    protected TSearchMethod SearchMethod
+	    {
+		    get
+		    {
+			    if (this.SearchMethodSettingService.IsEnabled()) {
+				    return this.SearchMethodSettingService.GetInstanceOfSearchMethod() as TSearchMethod;
+			    }
+			    return null;
+		    }
+	    }
+
         protected SettingBaseViewModel(ISearchMethodSettingService searchMethodSettingService) {
             this.SearchMethodSettingService = searchMethodSettingService;
         }

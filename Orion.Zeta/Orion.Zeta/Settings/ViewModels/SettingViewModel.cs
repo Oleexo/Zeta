@@ -3,13 +3,15 @@ using System.Linq;
 using System.Windows.Controls;
 using Orion.Zeta.Controls;
 using Orion.Zeta.Core.Settings;
+using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Services;
-using Orion.Zeta.ViewModels;
+using BaseViewModel = Orion.Zeta.ViewModels.BaseViewModel;
 
 namespace Orion.Zeta.Settings.ViewModels {
     public class SettingViewModel : BaseViewModel {
         private readonly SettingsService _settingsService;
-        private UserControl _currentSetting;
+	    private readonly ISearchMethodService _searchMethodService;
+	    private UserControl _currentSetting;
         private object _currentSelectedItem;
         private string _currentSettingName;
         private bool _isDisactivable;
@@ -56,14 +58,17 @@ namespace Orion.Zeta.Settings.ViewModels {
             set {
                 this._enabled = value;
                 this._settingsService.ToggleMethod(this._currentItemPanel.Header, value);
+				if (value.HasValue)
+					this._searchMethodService.ToggleMethod(this._currentItemPanel.Header, this._settingsService, value.Value);
                 this._currentItemPanel.Enabled = value;
                 this.OnPropertyChanged();
             }
         }
 
-        public SettingViewModel(SettingsService settingsService) {
+        public SettingViewModel(SettingsService settingsService, ISearchMethodService searchMethodService) {
             this._settingsService = settingsService;
-            var settingContainers = this._settingsService.GetSettingContainers();
+	        this._searchMethodService = searchMethodService;
+	        var settingContainers = this._settingsService.GetSettingContainers();
             var globalSettingContainers = this._settingsService.GetGlobalSettingContainers();
             this.MenuItems = new ObservableCollection<MenuPanelItemSetting>();
             foreach (var globalSettingContainer in globalSettingContainers) {

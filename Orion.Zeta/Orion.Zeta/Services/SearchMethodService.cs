@@ -1,67 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using Orion.Zeta.Core;
 using Orion.Zeta.Core.Settings;
-using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Services {
-	public class SearchMethodPool : ISearchMethodPoolModifiable, ISearchMethodPoolLookable {
-		private readonly ISearchEngine _searchEngine;
-		private readonly Dictionary<IBaseMethodContainer, ISearchMethod> _instanceOfMethods;
-
-		public SearchMethodPool(ISearchEngine searchEngine) {
-			this._searchEngine = searchEngine;
-			this._instanceOfMethods = new Dictionary<IBaseMethodContainer, ISearchMethod>();
-		}
-
-		public void Add(IMethodContainer methodContainer, SettingsService settingsService) {
-			if (this._instanceOfMethods.ContainsKey(methodContainer)) {
-				throw new Exception("Method already activated");
-			}
-			var instance = methodContainer.GetNewInstanceOfSearchMethod(new DataService(methodContainer.Name, settingsService.SettingRepository));
-			this._instanceOfMethods.Add(methodContainer, instance);
-			this._searchEngine.RegisterMethod(instance);
-		}
-
-		public void Remove(IBaseMethodContainer methodContainer) {
-			if (!this._instanceOfMethods.ContainsKey(methodContainer)) {
-				throw new Exception("Method not found");
-			}
-			this._searchEngine.UnRegister(this._instanceOfMethods[methodContainer]);
-			this._instanceOfMethods.Remove(methodContainer);
-		}
-
-		public bool ContainSearchMethod(IBaseMethodContainer methodContainer) {
-			return this._instanceOfMethods.ContainsKey(methodContainer);
-		}
-
-		public ISearchMethod GetInstanceOf(IBaseMethodContainer methodContainer) {
-			ISearchMethod value;
-			return !this._instanceOfMethods.TryGetValue(methodContainer, out value) ? null : value;
-		}
-
-		public ISearchMethod GetInstanceOf(string applicationName) {
-			var value = this._instanceOfMethods.FirstOrDefault(i => i.Key.Name.Equals(applicationName));
-			return value.Value;
-		}
-	}
-
-	public interface ISearchMethodPoolLookable {
-		bool ContainSearchMethod(IBaseMethodContainer methodContainer);
-		ISearchMethod GetInstanceOf(IBaseMethodContainer methodContainer);
-		ISearchMethod GetInstanceOf(string applicationName);
-	}
-
-	public interface ISearchMethodPoolModifiable {
-		void Add(IMethodContainer methodContainer, SettingsService settingsService);
-
-		void Remove(IBaseMethodContainer methodContainer);
-	}
-
 	public class SearchMethodService : ISearchMethodService {
         [ImportMany(typeof(IMethodContainer))]
         private IEnumerable<IMethodContainer> _searchMethods;
@@ -147,13 +91,27 @@ namespace Orion.Zeta.Services {
 			}
 		}
 
+		public void ToggleMethod(string searchMethodName, SettingsService settingsService, bool value) {
+			if (this._searchMethodPool.ContainSearchMethod(searchMethodName) && !value) {
+				this._searchMethodPool.Remove(this.FindByName(searchMethodName));
+			}
+			else if (!this._searchMethodPool.ContainSearchMethod(searchMethodName) && value) {
+				this._searchMethodPool.Add(this.FindByName(searchMethodName), settingsService);
+			}
+		}
 
-			
+		private IMethodContainer FindByName(string searchMethodName) {
+			var container = this._searchMethods.FirstOrDefault(sm => sm.Name.Equals(searchMethodName));
+			if (container == null)
+				return this._searchMethodsAsync.FirstOrDefault(sma => sma.Name.Equals(searchMethodName));
+			return container;
+		}
+
 		/// <summary>
 		/// Register method in setting panel
 		/// </summary>
 		/// <param name="settingsService"></param>
-        public void RegisterSettings(SettingsService settingsService) {
+		public void RegisterSettings(SettingsService settingsService) {
             foreach (var methodContainer in this._searchMethods) {
                 settingsService.Register(new SettingContainer(methodContainer, new SearchMethodSettingService(methodContainer.Name, settingsService, this._searchMethodPool)));
             }
