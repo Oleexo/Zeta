@@ -5,10 +5,10 @@ using Orion.Zeta.Methods.Dev.Setting;
 namespace Orion.Zeta.Services {
     public class SearchMethodSettingService : DataService, ISearchMethodSettingService {
         private readonly string _applicationName;
-	    private readonly SettingsService _settingsService;
+	    private readonly ISettingsService _settingsService;
 	    private readonly ISearchMethodPoolLookable _searchMethodPoolLookable;
 
-	    public SearchMethodSettingService(string applicationName, SettingsService settingRepository, ISearchMethodPoolLookable searchMethodPoolLookable) : base(applicationName, settingRepository.SettingRepository) {
+	    public SearchMethodSettingService(string applicationName, ISettingsService settingRepository, ISearchMethodPoolLookable searchMethodPoolLookable) : base(applicationName, settingRepository.SettingRepository) {
 		    this._applicationName = applicationName;
 		    this._settingsService = settingRepository;
 		    this._searchMethodPoolLookable = searchMethodPoolLookable;

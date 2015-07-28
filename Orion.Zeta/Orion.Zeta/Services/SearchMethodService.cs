@@ -28,7 +28,7 @@ namespace Orion.Zeta.Services {
 		/// Enable method in engine at initialisation
 		/// </summary>
 		/// <param name="settingsService"></param>
-		public void RegisterSearchMethods(SettingsService settingsService) {
+		public void RegisterSearchMethods(ISettingsService settingsService) {
             foreach (var searchMethod in this._searchMethods) {
 				this.RegisterSearchMethod(searchMethod, settingsService);
             }
@@ -38,7 +38,7 @@ namespace Orion.Zeta.Services {
             }
         }
 
-		private void RegisterSearchMethod(IMethodContainer searchMethod, SettingsService settingsService) {
+		private void RegisterSearchMethod(IMethodContainer searchMethod, ISettingsService settingsService) {
 			if (!this.IsCorrectSearchMethodName(searchMethod.Name)) {
 				this.RemoveSearchMethod(searchMethod);
 			}
@@ -65,7 +65,7 @@ namespace Orion.Zeta.Services {
 		/// Enable or disable method
 		/// </summary>
 		/// <param name="settingsService"></param>
-		public void ManageMethodsBySetting(SettingsService settingsService) {
+		public void ManageMethodsBySetting(ISettingsService settingsService) {
             foreach (var searchMethod in this._searchMethods) {
                 var status = settingsService.IsEnabled(searchMethod.Name);
                 if (status) {
@@ -94,7 +94,7 @@ namespace Orion.Zeta.Services {
 
         }
 
-		public void ToggleMethod(IMethodContainer searchMethod, SettingsService settingsService) {
+		public void ToggleMethod(IMethodContainer searchMethod, ISettingsService settingsService) {
 			if (this._searchMethodPool.ContainSearchMethod(searchMethod)) {
 				this._searchMethodPool.Remove(searchMethod);
 			} else {
@@ -102,7 +102,7 @@ namespace Orion.Zeta.Services {
 			}
 		}
 
-		public void ToggleMethod(string searchMethodName, SettingsService settingsService, bool value) {
+		public void ToggleMethod(string searchMethodName, ISettingsService settingsService, bool value) {
 			if (this._searchMethodPool.ContainSearchMethod(searchMethodName) && !value) {
 				this._searchMethodPool.Remove(this.FindByName(searchMethodName));
 			}
@@ -122,7 +122,7 @@ namespace Orion.Zeta.Services {
 		/// Register method in setting panel
 		/// </summary>
 		/// <param name="settingsService"></param>
-		public void RegisterSettings(SettingsService settingsService) {
+		public void RegisterSettings(ISettingsService settingsService) {
             foreach (var methodContainer in this._searchMethods) {
                 settingsService.Register(new SettingContainer(methodContainer, new SearchMethodSettingService(methodContainer.Name, settingsService, this._searchMethodPool)));
             }

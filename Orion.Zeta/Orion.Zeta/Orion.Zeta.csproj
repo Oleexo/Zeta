@@ -126,6 +126,7 @@
     <Compile Include="Services\IApplicationSettingService.cs" />
     <Compile Include="Services\ISearchMethodPoolLookable.cs" />
     <Compile Include="Services\ISearchMethodPoolModifiable.cs" />
+    <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\SearchMethodPool.cs" />
     <Compile Include="Services\SearchMethodSettingService.cs" />
     <Compile Include="Services\ISearchMethodService.cs" />

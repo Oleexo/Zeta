@@ -15,7 +15,7 @@ namespace Orion.Zeta.Services {
 			this._instanceOfMethods = new Dictionary<IBaseMethodContainer, ISearchMethod>();
 		}
 
-		public void Add(IMethodContainer methodContainer, SettingsService settingsService) {
+		public void Add(IMethodContainer methodContainer, ISettingsService settingsService) {
 			if (this._instanceOfMethods.ContainsKey(methodContainer)) {
 				throw new Exception("Method already activated");
 			}

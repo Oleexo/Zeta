@@ -10,7 +10,7 @@ using BaseViewModel = Orion.Zeta.ViewModels.BaseViewModel;
 
 namespace Orion.Zeta.Settings.ViewModels {
     public class SettingViewModel : BaseViewModel {
-        private readonly SettingsService _settingsService;
+        private readonly ISettingsService _settingsService;
 	    private readonly ISearchMethodService _searchMethodService;
 	    private UserControl _currentSetting;
         private object _currentSelectedItem;
@@ -68,7 +68,7 @@ namespace Orion.Zeta.Settings.ViewModels {
 
 		public ICommand WindowClosingCommand { get; private set; }
 
-		public SettingViewModel(SettingsService settingsService, ISearchMethodService searchMethodService) {
+		public SettingViewModel(ISettingsService settingsService, ISearchMethodService searchMethodService) {
             this._settingsService = settingsService;
 	        this._searchMethodService = searchMethodService;
 			this.WindowClosingCommand = new RelayCommand(this.OnWindowClosingCommand);

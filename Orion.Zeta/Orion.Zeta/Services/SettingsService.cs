@@ -5,7 +5,7 @@ using Orion.Zeta.Persistence;
 using Orion.Zeta.Settings.Containers;
 
 namespace Orion.Zeta.Services {
-    public class SettingsService {
+	public class SettingsService : ISettingsService {
         private readonly ISettingRepository _settingRepository;
         private readonly IList<ISettingContainer> _settingContainers;
         private readonly IList<IApplicationSettingContainer> _globalSettingContainers;
@@ -67,7 +67,7 @@ namespace Orion.Zeta.Services {
         }
     }
 
-    internal class DataApplication {
+	internal class DataApplication {
         public DataApplication() {
             this.EnableMethods = new Dictionary<string, bool>();
         }

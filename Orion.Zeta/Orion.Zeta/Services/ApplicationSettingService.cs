@@ -2,9 +2,9 @@
 
 namespace Orion.Zeta.Services {
 	public class ApplicationSettingService : DataService, IApplicationSettingService {
-		private readonly SettingsService _settingsService;
+		private readonly ISettingsService _settingsService;
 
-		public ApplicationSettingService(SettingsService settingsService) : base(null, settingsService.SettingRepository) {
+		public ApplicationSettingService(ISettingsService settingsService) : base(null, settingsService.SettingRepository) {
 			this._settingsService = settingsService;
 		}
 

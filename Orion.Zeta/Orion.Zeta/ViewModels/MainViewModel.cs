@@ -100,18 +100,13 @@ namespace Orion.Zeta.ViewModels {
 
         public ObservableCollection<IItem> Suggestions { get; set; }
 
-        private ISearchEngine SearchEngine {
-            get { return this._searchEngine.Value; }
-        }
+        private ISearchEngine SearchEngine => this._searchEngine.Value;
 
-        private SettingsService SettingsService {
-            get { return this._settingsService.Value; }
-        }
+	    private ISettingsService SettingsService => this._settingsService.Value;
 
-        private ISearchMethodService SearchMethodService {
-            get { return this._methodService.Value; }
-        }
-        #endregion
+	    private ISearchMethodService SearchMethodService => this._methodService.Value;
+
+	    #endregion
 
         #region Events
         public event EventHandler OnAutoComplete;
@@ -159,9 +154,7 @@ namespace Orion.Zeta.ViewModels {
                 if (item.IsValid()) {
                     item.Execute.Start();
                     this.Suggestions.Clear();
-                    if (this.OnProgramStart != null) {
-                        this.OnProgramStart(this, new EventArgs());
-                    }
+	                this.OnProgramStart?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -169,9 +162,7 @@ namespace Orion.Zeta.ViewModels {
         private void OnExpressionRunCommand() {
             if (this._suggestion == null || !this._suggestion.IsValid()) return;
             this._suggestion.Execute.Start();
-            if (this.OnProgramStart != null) {
-                this.OnProgramStart(this, new EventArgs());
-            }
+	        this.OnProgramStart?.Invoke(this, new EventArgs());
         }
 
         private void OnExpressionAutoCompleteCommand() {
@@ -181,9 +172,7 @@ namespace Orion.Zeta.ViewModels {
             this._expression = this.Suggestion.Value;
             this.OnPropertyChanged("Expression");
             this.Suggestions.Clear();
-            if (this.OnAutoComplete != null) {
-                this.OnAutoComplete(this, new EventArgs());
-            }
+	        this.OnAutoComplete?.Invoke(this, new EventArgs());
         }
         #endregion
 
