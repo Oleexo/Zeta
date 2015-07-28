@@ -112,9 +112,6 @@
     <Compile Include="Core\Settings\GeneralApplicable.cs" />
     <Compile Include="Core\Settings\IGeneralSettingContainer.cs" />
     <Compile Include="Core\Settings\ISettingContainer.cs" />
-    <Compile Include="Core\Settings\SearchMethods\SearchMethodAsyncContainer.cs" />
-    <Compile Include="Core\Settings\SearchMethods\SearchMethodContainer.cs" />
-    <Compile Include="Core\Settings\SearchMethods\SearchMethodContainerBase.cs" />
     <Compile Include="Core\Settings\SettingContainer.cs" />
     <Compile Include="Core\Settings\StyleApplicable.cs" />
     <Compile Include="Core\Shortcut.cs" />

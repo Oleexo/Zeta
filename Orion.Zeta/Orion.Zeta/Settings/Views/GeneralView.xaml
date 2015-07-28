@@ -19,7 +19,7 @@
         <Label Style="{StaticResource SettingTitle}">Application Options</Label>
         <controls:ToggleSwitch x:Name="autoRefresh" Header="Auto Refresh" OnLabel="On" OffLabel="Off" IsCheckedChanged="autoRefresh_OnIsCheckedChanged" IsChecked="{Binding IsAutoRefreshEnbabled, Mode=TwoWay}" />
         <controls:NumericUpDown x:Name="autoRefreshValue" Visibility="Collapsed" Minimum="1" Maximum="999999" StringFormat="{}{0} minutes" Width="150" Value="{Binding AutoRefresh, Mode=TwoWay}" />
-        <controls:ToggleSwitch Header="Startup" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsStartOnBoot, Mode=TwoWay}" />
+        <controls:ToggleSwitch Header="Auto Startup" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsStartOnBoot, Mode=TwoWay}" />
       </WrapPanel>
     </ScrollViewer>
   </Grid>

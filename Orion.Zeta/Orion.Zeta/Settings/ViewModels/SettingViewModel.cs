@@ -20,7 +20,7 @@ namespace Orion.Zeta.Settings.ViewModels {
         private MenuPanelItemSetting _currentItemPanel;
 
 
-        public ObservableCollection<MenuPanelItemSetting> MenuItems { get; private set; }
+        public ObservableCollection<MenuPanelItemSetting> MenuItems { get; }
 
         public UserControl CurrentSetting {
             get { return this._currentSetting; }
@@ -103,7 +103,8 @@ namespace Orion.Zeta.Settings.ViewModels {
             this.Enabled = this._currentItemPanel?.Enabled;
         }
 
-        public sealed class MenuPanelItemSetting : MenuPanelItem {
+		#region MenuPanelCustom
+		public sealed class MenuPanelItemSetting : MenuPanelItem {
             private readonly ISettingContainer _settingContainer;
 
 	        public override UserControl Control
@@ -126,5 +127,6 @@ namespace Orion.Zeta.Settings.ViewModels {
 		        this._settingContainer.OnCloseControl();
 	        }
         }
-    }
+		#endregion
+	}
 }
