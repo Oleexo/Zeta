@@ -7,5 +7,7 @@ namespace Orion.Zeta.Core.Settings {
         bool? Enabled { get; set; }
 
         UserControl CreateControl();
+
+	    void OnCloseControl();
     }
 }

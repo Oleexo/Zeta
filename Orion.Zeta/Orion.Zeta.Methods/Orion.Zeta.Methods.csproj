@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ApplicationSearch\ApplicationsContainer.cs" />
     <Compile Include="ApplicationSearch\ApplicationSearchMethod.cs" />
+    <Compile Include="ApplicationSearch\PathUnRegisteredException.cs" />
     <Compile Include="ApplicationSearch\RankApplicationStrategy.cs" />
     <Compile Include="ExplorerSearch\CollectionExpressionPath.cs" />
     <Compile Include="ExplorerSearch\ExplorerSearchMethod.cs" />

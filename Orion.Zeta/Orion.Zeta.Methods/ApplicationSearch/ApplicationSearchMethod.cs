@@ -44,6 +44,15 @@ namespace Orion.Zeta.Methods.ApplicationSearch {
 			this._applications.Add(new ApplicationsContainer(path, patterns, this._fileSystemSearch, false));
 		}
 
+		public void UnregisterPath(string path) {
+			var applicationsContainer = this._applications.FirstOrDefault(a => a.Path.Equals(path));
+			if (applicationsContainer == null) {
+				throw new PathUnRegisteredException(path);
+			}
+			applicationsContainer.ClearCache();
+			this._applications.Remove(applicationsContainer);
+		}
+
 		public bool IsRegistered(string path) {
 			return this._applications.Any(a => a.Path.Equals(path));
 		}

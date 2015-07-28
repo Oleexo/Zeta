@@ -38,5 +38,14 @@ namespace Orin.Zeta.Core.Tests.SearchMethods.ApplicationSearch {
 
 			Assert.IsTrue(this._applicationSearchMethod.IsRegistered(PathToRegister));
 		}
+
+		[Test]
+		public void GivenApplicationSearchWithRegisteredPath_WhenUnregisterPath_ThenShouldUnRegisterTheGivenPath() {
+			this._applicationSearchMethod.RegisterPath(PathToRegister, this._patterns);
+
+			this._applicationSearchMethod.UnregisterPath(PathToRegister);
+
+			Assert.IsFalse(this._applicationSearchMethod.IsRegistered(PathToRegister));
+		}
 	}
 }

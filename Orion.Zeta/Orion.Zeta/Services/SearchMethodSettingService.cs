@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Dev.Setting;
 
@@ -22,5 +22,10 @@ namespace Orion.Zeta.Services {
 		    return this._searchMethodPoolLookable.GetInstanceOf(this._applicationName);
 	    }
 
+	    public event EventHandler Closing;
+
+	    public void OnClosing() {
+		    this.Closing?.Invoke(this, EventArgs.Empty);
+	    }
     }
 }

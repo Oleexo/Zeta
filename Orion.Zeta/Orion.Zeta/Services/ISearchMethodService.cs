@@ -1,5 +1,3 @@
-using Orion.Zeta.Methods.Ui.Dev;
-
 namespace Orion.Zeta.Services {
 	public interface ISearchMethodService {
 		void RegisterSearchMethods(SettingsService settingsService);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Orion.Zeta.Controls;
 using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Methods.Ui.Dev;
@@ -65,9 +66,12 @@ namespace Orion.Zeta.Settings.ViewModels {
             }
         }
 
-        public SettingViewModel(SettingsService settingsService, ISearchMethodService searchMethodService) {
+		public ICommand WindowClosingCommand { get; private set; }
+
+		public SettingViewModel(SettingsService settingsService, ISearchMethodService searchMethodService) {
             this._settingsService = settingsService;
 	        this._searchMethodService = searchMethodService;
+			this.WindowClosingCommand = new RelayCommand(this.OnWindowClosingCommand);
 	        var settingContainers = this._settingsService.GetSettingContainers();
             var globalSettingContainers = this._settingsService.GetGlobalSettingContainers();
             this.MenuItems = new ObservableCollection<MenuPanelItemSetting>();
@@ -79,14 +83,22 @@ namespace Orion.Zeta.Settings.ViewModels {
                 this.MenuItems.Add(new MenuPanelItemSetting(settingContainer));
             }
             var item = this.MenuItems.FirstOrDefault();
-            this.CurrentSetting = item?.Control;
-            this.CurrentSettingName = item?.Header ?? "No setting module";
+			this.SetCurrentSetting(item);
         }
 
+	    private void OnWindowClosingCommand() {
+		    this._currentItemPanel?.OnCloseControl();
+	    }
 
-        private void SetCurrentSetting(object item) {
+
+	    private void SetCurrentSetting(object item) {
+			this._currentItemPanel?.OnCloseControl();
             this._currentItemPanel = item as MenuPanelItemSetting;
-            this.CurrentSetting = this._currentItemPanel?.Control;
+			if (item == null) {
+				this.CurrentSettingName = "No setting selected";
+				return;
+			}
+			this.CurrentSetting = this._currentItemPanel?.Control;
             this.CurrentSettingName = this._currentItemPanel?.Header ?? "Setting";
             this.Enabled = this._currentItemPanel?.Enabled;
         }
@@ -109,6 +121,10 @@ namespace Orion.Zeta.Settings.ViewModels {
                 get { return this._settingContainer.Enabled; }
                 set { this._settingContainer.Enabled = value; }
             }
+
+	        public void OnCloseControl() {
+		        this._settingContainer.OnCloseControl();
+	        }
         }
     }
 }

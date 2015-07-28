@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -52,6 +50,9 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 		public ICommand ChangePathDirectoryCommand { get; private set; }
 
 		public ApplicationSearchViewModel(ISearchMethodSettingService searchMethodSettingService) : base(searchMethodSettingService) {
+			this.SearchMethodSettingService.Closing += (sender, args) => {
+				this.SaveDataSettingAsync();
+			};
 			this.Directories = new ObservableCollection<DirectoryModel>();
 			this.AddDirectoryCommand = new RelayCommand(this.OnAddDirectoryCommand);
 			this.RemoveDirectoryCommand = new RelayCommand(this.OnRemoveDirectoryCommand);
@@ -79,6 +80,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 			if (this.CurrentDirectorySelected != null) {
 				this.Directories.Remove(this.CurrentDirectorySelected);
 				this._model.Directories.RemoveAll(d => d.Path.Equals(this.CurrentDirectorySelected.Path));
+				this.ModelModified();
 			}
 		}
 
@@ -98,6 +100,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 				var directoryModel = new DirectoryModel(directory);
 				this.Directories.Add(directoryModel);
 				this.SearchMethod?.RegisterPath(directory.Path, directory.Extensions);
+				this.ModelModified();
 			}
 		}
 
@@ -107,6 +110,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 			var result = await metroWindow.ShowInputAsync("Adding extensions", "What extensions you want to add ?");
 			if (result != null) {
 				this.CurrentDirectorySelected.Extensions.Add(result);
+				this.ModelModified();
 			}
 		}
 
@@ -114,6 +118,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 			var extension = this.CurrentExtensionSelected;
 			this.CurrentExtensionSelected = null;
 			this.CurrentDirectorySelected.Extensions.Remove(extension);
+			this.ModelModified();
 		}
 
 		private void OnChangePathDirectoryCommand() {
@@ -123,6 +128,7 @@ namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
 
 			if (DialogResult.OK == dialog.ShowDialog()) {
 				this.CurrentDirectorySelected.Path = dialog.SelectedPath;
+				this.ModelModified();
 			}
 		}
 	}
