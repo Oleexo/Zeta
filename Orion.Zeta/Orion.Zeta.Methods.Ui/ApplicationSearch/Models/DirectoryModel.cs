@@ -1,12 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using Orion.Zeta.Methods.Ui.Dev;
-using Application = System.Windows.Application;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch.Models {
     public class DirectoryModel : BaseViewModel {

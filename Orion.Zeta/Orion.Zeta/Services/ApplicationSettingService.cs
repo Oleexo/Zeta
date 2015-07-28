@@ -1,5 +1,4 @@
 ﻿using System;
-using Orion.Zeta.Persistence;
 
 namespace Orion.Zeta.Services {
 	public class ApplicationSettingService : DataService, IApplicationSettingService {

@@ -8,15 +8,12 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Orion.Zeta.Core;
-using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Methods.Dev.Shared;
 using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Persistence.LocalStorage;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings;
 using Orion.Zeta.Settings.Containers;
-using Orion.Zeta.Settings.Models;
-using Orion.Zeta.Settings.Views;
 
 namespace Orion.Zeta.ViewModels {
     public class MainViewModel : BaseViewModel, IModifiableGeneralSetting, IModifiableStyleSetting {

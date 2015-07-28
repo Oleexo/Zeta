@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using Orion.Zeta.Methods.Dev.Setting;
 using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings.Models;

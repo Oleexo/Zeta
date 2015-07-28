@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Services;
 using Orion.Zeta.ViewModels;
 

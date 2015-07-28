@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Dev.Setting;
@@ -12,7 +13,7 @@ namespace Orion.Zeta.Methods.Ui.ExplorerSearch {
         public bool HaveSettingControl => false;
 
         public UserControl CreateSettingControl(ISearchMethodSettingService searchMethodSettingService) {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string Name => "Explorer";
