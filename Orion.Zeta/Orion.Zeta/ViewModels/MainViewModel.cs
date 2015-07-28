@@ -57,6 +57,7 @@ namespace Orion.Zeta.ViewModels {
                 this.AutoRefreshSearchEngine();
             };
             this._initialisationTask = this.InitialisationSearchEngineAsync();
+	        this._IsSettingOpen = false;
         }
         #endregion
 
@@ -133,11 +134,14 @@ namespace Orion.Zeta.ViewModels {
 
         #region Commands
         private async void OnOpenSettingCommand() {
+	        this._IsSettingOpen = true;
+			this.OnPropertyChanged("IsHideWhenLostFocus");
             await this._initialisationTask;
             var settingWindow = new SettingWindow(this.SettingsService, this.SearchMethodService);
             settingWindow.Closed += async (sender, args) => {
                 this.SearchMethodService.ManageMethodsBySetting(this.SettingsService);
                 await this.SettingsService.SaveChangesAsync();
+	            this._IsSettingOpen = false;
             };
             settingWindow.Show();
         }
@@ -249,10 +253,14 @@ namespace Orion.Zeta.ViewModels {
         private bool _isHideWhenLostFocus;
         private bool _isAlwaysOnTop;
         private bool _startOnBoot;
+	    private bool _IsSettingOpen;
 
-        public bool IsHideWhenLostFocus {
-            get { return this._isHideWhenLostFocus; }
-            set {
+	    public bool IsHideWhenLostFocus {
+		    get
+		    {
+			    return !this._IsSettingOpen && this._isHideWhenLostFocus;
+		    }
+		    set {
                 this._isHideWhenLostFocus = value;
                 this.OnPropertyChanged();
             }
