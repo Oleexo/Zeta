@@ -1,39 +1,34 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Linq;
+using Orion.Zeta.Core;
 using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Services {
 	public class SearchMethodService : ISearchMethodService {
-        [ImportMany(typeof(IMethodContainer))]
-        private IEnumerable<IMethodContainer> _searchMethods;
-        [ImportMany(typeof(IMethodAsyncContainer))]
-        private IEnumerable<IMethodAsyncContainer> _searchMethodsAsync;
+        private ICollection<IMethodContainer> _searchMethods;
+        private ICollection<IMethodAsyncContainer> _searchMethodsAsync;
 
 		private readonly SearchMethodPool _searchMethodPool;
+		private readonly ISearchMethodLoader _methodsLoader;
 
-        public SearchMethodService(SearchMethodPool searchMethodPool) {
+		public SearchMethodService(SearchMethodPool searchMethodPool, ISearchMethodLoader methodsLoader) {
 	        this._searchMethodPool = searchMethodPool;
-	        this.Initialisation();
+			this._methodsLoader = methodsLoader;
+			this.Initialisation();
         }
 
 		private void Initialisation() {
-            var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog("Orion.Zeta.Methods.Ui.dll"));
-            var directoryCatalog = new DirectoryCatalog(@"Plugins/");
-            catalog.Catalogs.Add(directoryCatalog);
-            var container = new CompositionContainer(catalog);
-            container.ComposeParts(this);
+			this._searchMethods = new List<IMethodContainer>();
+			this._searchMethodsAsync = new List<IMethodAsyncContainer>();
+			this._methodsLoader.Load(this._searchMethods, this._searchMethodsAsync);
         }
 
 		/// <summary>
 		/// Enable method in engine at initialisation
 		/// </summary>
-		/// <param name="searchEngine"></param>
 		/// <param name="settingsService"></param>
-        public void RegisterSearchMethods(SettingsService settingsService) {
+		public void RegisterSearchMethods(SettingsService settingsService) {
             foreach (var searchMethod in this._searchMethods) {
 				this.RegisterSearchMethod(searchMethod, settingsService);
             }
@@ -44,17 +39,33 @@ namespace Orion.Zeta.Services {
         }
 
 		private void RegisterSearchMethod(IMethodContainer searchMethod, SettingsService settingsService) {
+			if (!this.IsCorrectSearchMethodName(searchMethod.Name)) {
+				this.RemoveSearchMethod(searchMethod);
+			}
 			if (settingsService.IsEnabled(searchMethod.Name)) {
 				this._searchMethodPool.Add(searchMethod, settingsService);
 			}
 		}
 
+		private void RemoveSearchMethod(IMethodContainer searchMethod) {
+			if (this._searchMethods.Contains(searchMethod)) {
+				this._searchMethods.Remove(searchMethod);
+			}
+		}
+
+		private bool IsCorrectSearchMethodName(string searchMethodName) {
+			// Todo protected against . & / in name
+			if (string.IsNullOrWhiteSpace(searchMethodName)) {
+				return false;
+			}
+			return true;
+		}
+
 		/// <summary>
 		/// Enable or disable method
 		/// </summary>
-		/// <param name="searchEngine"></param>
 		/// <param name="settingsService"></param>
-        public void ManageMethodsBySetting(SettingsService settingsService) {
+		public void ManageMethodsBySetting(SettingsService settingsService) {
             foreach (var searchMethod in this._searchMethods) {
                 var status = settingsService.IsEnabled(searchMethod.Name);
                 if (status) {

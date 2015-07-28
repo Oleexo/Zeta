@@ -13,7 +13,7 @@ using Orion.Zeta.Methods.Ui.Dev;
 using Application = System.Windows.Application;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {
-	public class ApplicationSearchViewModel : SettingBaseViewModel<ApplicationSearchMethod, ApplicationSearchModel> {
+	public class ApplicationSearchViewModel : SearchMethodSettingBaseViewModel<ApplicationSearchMethod, ApplicationSearchModel> {
 		private DirectoryModel _currentDirectorySelected;
 		private string _currentExtensionSelected;
 		public ObservableCollection<DirectoryModel> Directories { get; set; }

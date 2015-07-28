@@ -49,6 +49,8 @@
     <Compile Include="IMethodAsyncContainer.cs" />
     <Compile Include="IMethodContainer.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="SearchMethodSettingBaseViewModel.cs" />
+    <Compile Include="SettingBaseViewModel.cs" />
     <Compile Include="SettingControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

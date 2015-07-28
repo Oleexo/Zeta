@@ -14,6 +14,7 @@ using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Persistence.LocalStorage;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings;
+using Orion.Zeta.Settings.Containers;
 using Orion.Zeta.Settings.Models;
 using Orion.Zeta.Settings.Views;
 
@@ -39,7 +40,7 @@ namespace Orion.Zeta.ViewModels {
             this._settingRepository = new SettingRepository();
             this._searchEngine = new Lazy<ISearchEngine>(() => new SearchEngine());
             this._settingsService = new Lazy<SettingsService>(() => new SettingsService(this._settingRepository));
-            this._methodService = new Lazy<ISearchMethodService>(() => new SearchMethodService(new SearchMethodPool(this.SearchEngine)));
+            this._methodService = new Lazy<ISearchMethodService>(() => new SearchMethodService(new SearchMethodPool(this.SearchEngine), new MefSearchMethodLoader()));
             this.IsSearching = false;
             this.ExpressionAutoCompleteCommand = new RelayCommand(this.OnExpressionAutoCompleteCommand);
             this.ExpressionRunCommand = new RelayCommand(this.OnExpressionRunCommand);
@@ -122,14 +123,8 @@ namespace Orion.Zeta.ViewModels {
 
         #region Initialisation
         private void InitialisationSearchEngine() {
-            this.SettingsService.RegisterGlobal(new GeneralSettingContainer<GeneralModel>("General", typeof(GeneralView), new GeneralApplicable(this), new GeneralModel {
-                AutoRefresh = 60,
-                IsAutoRefreshEnbabled = true,
-                IsAlwaysOnTop = true,
-                IsHideWhenLostFocus = true,
-                IsStartOnBoot = true
-            }));
-            this.SettingsService.RegisterGlobal(new GeneralSettingContainer<StyleModel>("Style", typeof(StyleView), new StyleApplicable(this)));
+            this.SettingsService.RegisterGlobal(new GeneralSettingContainer(new ApplicationSettingService(this.SettingsService), this));
+            this.SettingsService.RegisterGlobal(new StyleSettingContainer(new ApplicationSettingService(this.SettingsService), this));
             this.SearchMethodService.RegisterSearchMethods(this.SettingsService);
             this.SearchMethodService.RegisterSettings(this.SettingsService);
         }
@@ -145,7 +140,6 @@ namespace Orion.Zeta.ViewModels {
             var settingWindow = new SettingWindow(this.SettingsService, this.SearchMethodService);
             settingWindow.Closed += async (sender, args) => {
                 this.SearchMethodService.ManageMethodsBySetting(this.SettingsService);
-                this.SettingsService.ApplyChanges();
                 await this.SettingsService.SaveChangesAsync();
             };
             settingWindow.Show();

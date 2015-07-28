@@ -1,15 +1,22 @@
-﻿using Orion.Zeta.Settings.Models;
+﻿using System;
+using System.Windows;
+using System.Windows.Threading;
+using Orion.Zeta.Methods.Dev.Setting;
+using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Services;
+using Orion.Zeta.Settings.Models;
 using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta.Settings.ViewModels {
-    public class GeneralViewModel : BaseViewModel {
-        private readonly GeneralModel _model;
+    public class GeneralViewModel : SettingBaseViewModel<GeneralModel> {
+	    private readonly IModifiableGeneralSetting _modifiableGeneralSetting;
 
-        public bool IsHideWhenLostFocus {
+	    public bool IsHideWhenLostFocus {
             get { return this._model.IsHideWhenLostFocus; }
             set {
                 this._model.IsHideWhenLostFocus = value;
-                this.OnPropertyChanged();
+				this.ModelModified();
+				this.OnPropertyChanged();
             }
         }
 
@@ -17,7 +24,8 @@ namespace Orion.Zeta.Settings.ViewModels {
             get { return this._model.IsAlwaysOnTop; }
             set {
                 this._model.IsAlwaysOnTop = value;
-                this.OnPropertyChanged();
+				this.ModelModified();
+				this.OnPropertyChanged();
             }
         }
 
@@ -25,7 +33,8 @@ namespace Orion.Zeta.Settings.ViewModels {
             get { return this._model.AutoRefresh; }
             set {
                 this._model.AutoRefresh = value;
-                this.OnPropertyChanged();
+				this.ModelModified();
+				this.OnPropertyChanged();
             }
         }
 
@@ -33,7 +42,8 @@ namespace Orion.Zeta.Settings.ViewModels {
             get { return this._model.IsAutoRefreshEnbabled; }
             set {
                 this._model.IsAutoRefreshEnbabled = value;
-                this.OnPropertyChanged();
+				this.ModelModified();
+				this.OnPropertyChanged();
             }
         }
 
@@ -41,12 +51,28 @@ namespace Orion.Zeta.Settings.ViewModels {
             get { return this._model.IsStartOnBoot; }
             set {
                 this._model.IsStartOnBoot = value;
+				this.ModelModified();
                 this.OnPropertyChanged();
             }
         }
 
-        public GeneralViewModel(GeneralModel model) {
-            this._model = model;
-        }
+	    public GeneralViewModel(IApplicationSettingService searchMethodSettingService, IModifiableGeneralSetting modifiableGeneralSetting) : base(searchMethodSettingService, "ApplicationConfiguration") {
+		    this._modifiableGeneralSetting = modifiableGeneralSetting;
+		    this.Initialise();
+	    }
+
+	    private void Initialise() {
+		    this.LoadDataSettingAsync().ContinueWith((result) => {
+			    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(this.ApplyDataLoaded));
+		    });
+	    }
+
+	    private void ApplyDataLoaded() {
+		    this.OnPropertyChanged("IsStartOnBoot");
+			this.OnPropertyChanged("IsAutoRefreshEnbabled");
+			this.OnPropertyChanged("AutoRefresh");
+			this.OnPropertyChanged("IsAlwaysOnTop");
+			this.OnPropertyChanged("IsHideWhenLostFocus");
+		}
     }
 }

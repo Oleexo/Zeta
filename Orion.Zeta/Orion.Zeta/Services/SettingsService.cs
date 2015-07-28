@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using Orion.Zeta.Core.Settings;
 using Orion.Zeta.Persistence;
+using Orion.Zeta.Settings.Containers;
 
 namespace Orion.Zeta.Services {
     public class SettingsService {
         private readonly ISettingRepository _settingRepository;
         private readonly IList<ISettingContainer> _settingContainers;
-        private readonly IList<IGeneralSettingContainer> _globalSettingContainers;
+        private readonly IList<IApplicationSettingContainer> _globalSettingContainers;
         private DataApplication _dataApplication;
 
 	    public ISettingRepository SettingRepository => this._settingRepository;
@@ -15,7 +16,7 @@ namespace Orion.Zeta.Services {
 	    public SettingsService(ISettingRepository settingRepository) {
             this._settingRepository = settingRepository;
             this._settingContainers = new List<ISettingContainer>();
-            this._globalSettingContainers = new List<IGeneralSettingContainer>();
+            this._globalSettingContainers = new List<IApplicationSettingContainer>();
         }
 
         public IEnumerable<ISettingContainer> GetSettingContainers() {
@@ -26,11 +27,10 @@ namespace Orion.Zeta.Services {
             return this._globalSettingContainers;
         } 
 
-        public void RegisterGlobal(IGeneralSettingContainer settingContainer) {
+        public void RegisterGlobal(IApplicationSettingContainer settingContainer) {
             this._globalSettingContainers.Add(settingContainer);
-            settingContainer.ReadData(this._settingRepository);
             settingContainer.Enabled = null;
-            settingContainer.ApplyChanges();
+			settingContainer.ApplyConfiguration();
         }
 
         public void Register(ISettingContainer settingContainer) {
@@ -53,25 +53,12 @@ namespace Orion.Zeta.Services {
             this._dataApplication = this._settingRepository.Find<DataApplication>("Zeta") ?? new DataApplication();
         }
 
-        public void ApplyChanges() {
-            foreach (var globalSettingContainer in this._globalSettingContainers) {
-                globalSettingContainer.ApplyChanges();
-            }
-        }
-
         public void SaveChanges() {
-            foreach (var globalSettingContainer in this._globalSettingContainers) {
-                globalSettingContainer.WriteData(this._settingRepository);
-            }
             this._settingRepository.Persite("Zeta", this._dataApplication);
         }
 
         public async Task SaveChangesAsync() {
             await Task.Run((() => this.SaveChanges()));
-        }
-
-        public async Task ApplyChangesAsync() {
-            await Task.Run(() => this.ApplyChanges());
         }
 
         public void ToggleMethod(string header, bool? value) {
