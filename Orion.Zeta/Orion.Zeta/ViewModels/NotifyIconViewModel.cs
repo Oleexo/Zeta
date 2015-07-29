@@ -5,18 +5,27 @@ using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.ViewModels {
 	public class NotifyIconViewModel : BaseViewModel {
-		public ICommand WakeUpCommand { get; set; }
+		public ICommand WakeUpCommand { get; private set; }
 
-		public ICommand ShutDownApplicationCommand { get; set; }
+		public ICommand ShutDownApplicationCommand { get; private set; }
+
+		public ICommand OpenSettingCommand { get; private set; }
 
 		public event EventHandler WakeUpApplication;
+
+		public event EventHandler OpenSettingPanel;
 
 		public string ToopTipText { get; private set; }
 
 		public NotifyIconViewModel() {
 			this.WakeUpCommand = new RelayCommand(this.OnWakeUpCommand);
 			this.ShutDownApplicationCommand = new RelayCommand(this.OnShutDownApplicationCommand);
-			this.ToopTipText = "Zeta - Alpha Preview (Ctrl + Space)";
+			this.OpenSettingCommand = new RelayCommand(this.OnOpenSettingCommand);
+			this.ToopTipText = "Zeta - Alpha (Ctrl + Space)";
+		}
+
+		private void OnOpenSettingCommand() {
+			this.OpenSettingPanel?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnShutDownApplicationCommand() {
@@ -24,8 +33,7 @@ namespace Orion.Zeta.ViewModels {
 		}
 
 		private void OnWakeUpCommand() {
-			if (this.WakeUpApplication != null)
-				this.WakeUpApplication(this, new EventArgs());
+			this.WakeUpApplication?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

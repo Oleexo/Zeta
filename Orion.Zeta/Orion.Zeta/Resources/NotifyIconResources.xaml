@@ -8,10 +8,10 @@
 	ToolTipText="{Binding ToopTipText}" LeftClickCommand="{Binding WakeUpCommand}">
 		<notify:TaskbarIcon.ContextMenu>
 			<ContextMenu Background="{DynamicResource ControlBackgroundBrush}">
-				<MenuItem Header="Open" Command="{Binding WakeUpCommand}"></MenuItem>
-				<MenuItem Header="Settings"></MenuItem>
+				<MenuItem Header="Open" Command="{Binding WakeUpCommand}" />
+				<MenuItem Header="Settings" Command="{Binding OpenSettingCommand}" />
 				<Separator />
-				<MenuItem Header="Exit" Command="{Binding ShutDownApplicationCommand}"></MenuItem>
+				<MenuItem Header="Exit" Command="{Binding ShutDownApplicationCommand}" />
 			</ContextMenu>
 		</notify:TaskbarIcon.ContextMenu>
 	</notify:TaskbarIcon>

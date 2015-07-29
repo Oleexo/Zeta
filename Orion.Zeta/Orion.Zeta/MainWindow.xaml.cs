@@ -37,6 +37,11 @@ namespace Orion.Zeta {
 			this.ExpressionTextBox.SelectAll();
 		}
 
+		public void OpenSettingPanel() {
+			this.WakeUpApplication();
+			this._mainViewModel.OpenSettingCommand.Execute(null);
+		}
+
 		private void MainViewModelOnOnSearchFinished(object sender, EventArgs eventArgs) {
 			this.SuggestionsListBox.SelectedIndex = 0;
 			this.SuggestionTextBox.UpdateLayout();

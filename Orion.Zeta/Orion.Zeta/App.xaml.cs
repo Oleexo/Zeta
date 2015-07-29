@@ -40,6 +40,7 @@ namespace Orion.Zeta {
             NotifyIconViewModel = new NotifyIconViewModel();
             NotifyIcon.DataContext = NotifyIconViewModel;
             NotifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
+			NotifyIconViewModel.OpenSettingPanel +=	NotifyIconViewModelOnOpenSettingPanel;
             try {
                 HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Alt, this.OnWakeUpApplication);
             } catch (HotkeyAlreadyRegisteredException) {
@@ -51,7 +52,11 @@ namespace Orion.Zeta {
             }
         }
 
-        private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
+	    private void NotifyIconViewModelOnOpenSettingPanel(object sender, EventArgs eventArgs) {
+		    _mainWindow.OpenSettingPanel();
+	    }
+
+	    private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
             _mainWindow.WakeUpApplication();
         }
 
