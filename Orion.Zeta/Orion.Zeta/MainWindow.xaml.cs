@@ -32,7 +32,6 @@ namespace Orion.Zeta {
 			}
 			this.Show();
 			this.WindowState = WindowState.Normal;
-			this.Topmost = true;
 			this.ExpressionTextBox.Focus();
 			this.ExpressionTextBox.SelectAll();
 		}
