@@ -141,6 +141,7 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\ViewModels\SettingViewModel.cs" />
+    <Compile Include="Settings\ViewModels\StyleViewModel.cs" />
     <Compile Include="Settings\Views\GeneralView.cs">
       <DependentUpon>GeneralView.xaml</DependentUpon>
     </Compile>

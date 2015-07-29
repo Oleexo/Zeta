@@ -55,8 +55,9 @@ namespace Orion.Zeta.Settings.ViewModels {
             }
         }
 
-	    public GeneralViewModel(IApplicationSettingService searchMethodSettingService, IModifiableGeneralSetting modifiableGeneralSetting) : base(searchMethodSettingService, "ApplicationConfiguration") {
+	    public GeneralViewModel(IApplicationSettingService applicationSettingService, IModifiableGeneralSetting modifiableGeneralSetting) : base(applicationSettingService, "ApplicationConfiguration") {
 		    this._modifiableGeneralSetting = modifiableGeneralSetting;
+		    applicationSettingService.Closing += (sender, args) => this.SaveDataSetting();
 		    this.Initialise();
 	    }
 

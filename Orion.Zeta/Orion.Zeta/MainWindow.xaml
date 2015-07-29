@@ -12,10 +12,16 @@
 				d:DataContext="{viewModels:MainViewModel}"
 				ShowMaxRestoreButton="False"
 				GlowBrush="{DynamicResource AccentColorBrush}"
+				WindowStartupLocation="CenterScreen"
+				UseNoneWindowStyle="{Binding UseNoneWindowStyle, Mode=OneWay}"
         Title="Zeta"
-				Width="525" MaxHeight="400"
-				SizeToContent="Height"
+				Width="{Binding Width, Mode=OneWay}"
+				MaxWidth="{Binding Width, Mode=OneWay}"
+				MinWidth="{Binding Width, Mode=OneWay}"
+				MaxHeight="400"
+				SizeToContent="WidthAndHeight"
 				Topmost="{Binding IsAlwaysOnTop, Mode=OneWay}"
+				ResizeMode="NoResize"
 				StateChanged="MainWindow_OnStateChanged">
 	<controls:MetroWindow.Resources>
 		<converters:IconToImageSourceConverter x:Key="IconToImageSourceConverter"></converters:IconToImageSourceConverter>
@@ -25,7 +31,7 @@
 	</controls:MetroWindow.Background>
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
-			<Label Foreground="White">Alpha Preview</Label>
+			<Label Foreground="White">Alpha</Label>
 			<Button Content="Settings" Command="{Binding OpenSettingCommand}"></Button>
 		</controls:WindowCommands>
 	</controls:MetroWindow.RightWindowCommands>

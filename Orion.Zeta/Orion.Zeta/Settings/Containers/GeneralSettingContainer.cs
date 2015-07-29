@@ -6,11 +6,11 @@ using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta.Settings.Containers {
 	public class GeneralSettingContainer : IApplicationSettingContainer {
-		private readonly IApplicationSettingService _searchMethodSettingService;
+		private readonly IApplicationSettingService _applicationSettingService;
 		private readonly IModifiableGeneralSetting _modifiableGeneralSetting;
 
-		public GeneralSettingContainer(IApplicationSettingService searchMethodSettingService, IModifiableGeneralSetting modifiableGeneralSetting) {
-			this._searchMethodSettingService = searchMethodSettingService;
+		public GeneralSettingContainer(IApplicationSettingService applicationSettingService, IModifiableGeneralSetting modifiableGeneralSetting) {
+			this._applicationSettingService = applicationSettingService;
 			this._modifiableGeneralSetting = modifiableGeneralSetting;
 		}
 
@@ -19,18 +19,15 @@ namespace Orion.Zeta.Settings.Containers {
 		public bool? Enabled { get; set; }
 
 		public UserControl CreateControl() {
-			return new GeneralView(this._searchMethodSettingService, this._modifiableGeneralSetting);
+			return new GeneralView(this._applicationSettingService, this._modifiableGeneralSetting);
 		}
 
 		public void OnCloseControl() {
-			this._searchMethodSettingService.OnClosing();
+			this._applicationSettingService.OnClosing();
 		}
 
 		public void ApplyConfiguration() {
-			var model = this._searchMethodSettingService.Retrieve<GeneralModel>("ApplicationConfiguration");
-			if (model == null) {
-				model = this.DefaultData();
-			}
+			var model = this._applicationSettingService.Retrieve<GeneralModel>("ApplicationConfiguration") ?? this.DefaultData();
 			this._modifiableGeneralSetting.IsAlwaysOnTop = model.IsAlwaysOnTop;
 			this._modifiableGeneralSetting.IsHideWhenLostFocus = model.IsHideWhenLostFocus;
 			this._modifiableGeneralSetting.StartOnBoot = model.IsStartOnBoot;
@@ -40,13 +37,7 @@ namespace Orion.Zeta.Settings.Containers {
 		}
 
 		private GeneralModel DefaultData() {
-			return new GeneralModel {
-				AutoRefresh = 60,
-				IsAutoRefreshEnbabled = true,
-				IsAlwaysOnTop = true,
-				IsHideWhenLostFocus = true,
-				IsStartOnBoot = true
-			};
+			return new GeneralModel();
 		}
 	}
 }

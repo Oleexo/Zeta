@@ -19,7 +19,6 @@ namespace Orion.Zeta.Settings.ViewModels {
         private bool? _enabled;
         private MenuPanelItemSetting _currentItemPanel;
 
-
         public ObservableCollection<MenuPanelItemSetting> MenuItems { get; }
 
         public UserControl CurrentSetting {
