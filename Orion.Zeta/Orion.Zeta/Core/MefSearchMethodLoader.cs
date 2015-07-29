@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.IO;
 using Orion.Zeta.Methods.Ui.Dev;
 
 namespace Orion.Zeta.Core {
@@ -10,11 +11,15 @@ namespace Orion.Zeta.Core {
 		[ImportMany(typeof(IMethodAsyncContainer))]
 		private IEnumerable<IMethodAsyncContainer> _searchMethodsAsync;
 
+		private string defaultPluginsFolder = @"Plugins/";
+
 		public void Load(ICollection<IMethodContainer> searchMethods, ICollection<IMethodAsyncContainer> searchMethodsAsync) {
 			var catalog = new AggregateCatalog();
 			catalog.Catalogs.Add(new AssemblyCatalog("Orion.Zeta.Methods.Ui.dll"));
-			var directoryCatalog = new DirectoryCatalog(@"Plugins/");
-			catalog.Catalogs.Add(directoryCatalog);
+			if (Directory.Exists(this.defaultPluginsFolder)) {
+				var directoryCatalog = new DirectoryCatalog(this.defaultPluginsFolder);
+				catalog.Catalogs.Add(directoryCatalog);
+			}
 			var container = new CompositionContainer(catalog);
 			container.ComposeParts(this);
 
