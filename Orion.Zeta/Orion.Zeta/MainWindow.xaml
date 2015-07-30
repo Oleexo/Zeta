@@ -12,7 +12,7 @@
 				d:DataContext="{viewModels:MainViewModel}"
 				ShowMaxRestoreButton="False"
 				GlowBrush="{DynamicResource AccentColorBrush}"
-				WindowStartupLocation="CenterScreen"
+				WindowStartupLocation="Manual"
 				UseNoneWindowStyle="{Binding UseNoneWindowStyle, Mode=OneWay}"
         Title="Zeta"
 				Width="{Binding Width, Mode=OneWay}"

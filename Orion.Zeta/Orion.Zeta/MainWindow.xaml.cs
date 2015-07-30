@@ -8,6 +8,7 @@ using Orion.Zeta.ViewModels;
 namespace Orion.Zeta {
 	public partial class MainWindow : MetroWindow {
 		private readonly MainViewModel _mainViewModel;
+		private bool _isFirstTime;
 
 		public MainWindow() {
 			this.InitializeComponent();
@@ -19,11 +20,13 @@ namespace Orion.Zeta {
 			this._mainViewModel.OnSearchFinished += this.MainViewModelOnOnSearchFinished;
 			this.ExpressionTextBox.Focus();
 			this.Deactivated += this.OnDeactivated;
+			this._isFirstTime = true;
+			this.MinimizeApplication();
 		}
 
 		private void OnDeactivated(object sender, EventArgs eventArgs) {
-            if (this._mainViewModel.IsHideWhenLostFocus)
-    			this.MinimizeApplication();
+			if (this._mainViewModel.IsHideWhenLostFocus)
+				this.MinimizeApplication();
 		}
 
 		public void WakeUpApplication() {
@@ -34,6 +37,17 @@ namespace Orion.Zeta {
 			this.WindowState = WindowState.Normal;
 			this.ExpressionTextBox.Focus();
 			this.ExpressionTextBox.SelectAll();
+			this.CenterInScreen();
+		}
+
+		private void CenterInScreen() {
+			this.Top = 0;
+			var width = this.ActualWidth;
+			if (this._isFirstTime) {
+				if (!double.IsNaN(this.Width)) { width = this.Width; }
+				this._isFirstTime = false;
+			}
+			this.Left = (SystemParameters.WorkArea.Width - width) / 2 + SystemParameters.WorkArea.Left;
 		}
 
 		public void OpenSettingPanel() {
