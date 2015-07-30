@@ -27,7 +27,9 @@ namespace Orion.Zeta {
         public static NotifyIconViewModel NotifyIconViewModel { get; private set; }
 
         private void App_OnStartup(object sender, StartupEventArgs e) {
+			log4net.Config.XmlConfigurator.Configure();
 #if !(DEBUG)
+			Logger.LogInfo("Application Start");
 			var process = Process.GetCurrentProcess();
 			if (Process.GetProcesses().Count(p => p.ProcessName.Equals(process.ProcessName)) > 1) {
 				Current.Shutdown();
@@ -42,7 +44,7 @@ namespace Orion.Zeta {
             NotifyIconViewModel = new NotifyIconViewModel();
             NotifyIcon.DataContext = NotifyIconViewModel;
             NotifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
-			NotifyIconViewModel.OpenSettingPanel +=	NotifyIconViewModelOnOpenSettingPanel;
+			NotifyIconViewModel.OpenSettingPanel += this.NotifyIconViewModelOnOpenSettingPanel;
             try {
                 HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Alt, this.OnWakeUpApplication);
             } catch (HotkeyAlreadyRegisteredException) {
