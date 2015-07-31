@@ -48,7 +48,7 @@ namespace Orion.Zeta.Methods.ApplicationSearch {
 		}
 
 		public void ClearCache() {
-			this._items.Clear();
+			this._items?.Clear();
 		}
 
 		public IEnumerable<IItem> Search(string expression) {
