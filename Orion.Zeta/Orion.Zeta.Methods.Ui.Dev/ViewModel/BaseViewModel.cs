@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Orion.Zeta.Methods.Ui.Dev {
+namespace Orion.Zeta.Methods.Ui.Dev.ViewModel {
 	public abstract class BaseViewModel : INotifyPropertyChanged {
 		public event PropertyChangedEventHandler PropertyChanged;
 

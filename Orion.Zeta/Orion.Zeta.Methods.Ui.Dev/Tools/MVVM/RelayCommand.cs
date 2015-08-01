@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Orion.Zeta.Methods.Ui.Dev
+namespace Orion.Zeta.Methods.Ui.Dev.Tools.MVVM
 {
     public class RelayCommand : ICommand
     {

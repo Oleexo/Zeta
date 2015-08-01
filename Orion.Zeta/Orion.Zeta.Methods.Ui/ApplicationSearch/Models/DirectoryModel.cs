@@ -3,6 +3,8 @@ using System.Collections.Specialized;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Methods.Ui.Dev.Tools.MVVM;
+using Orion.Zeta.Methods.Ui.Dev.ViewModel;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch.Models {
     public class DirectoryModel : BaseViewModel {
