@@ -223,10 +223,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orion.Zeta.Core\Orion.Zeta.Core.csproj">
-      <Project>{8f5f52fb-b110-4f34-8046-a56a8e24f71c}</Project>
-      <Name>Orion.Zeta.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Orion.Zeta.Methods.Dev\Orion.Zeta.Methods.Dev.csproj">
       <Project>{e94f58e3-199d-4562-a2bb-582bc616fb89}</Project>
       <Name>Orion.Zeta.Methods.Dev</Name>
@@ -274,6 +270,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <Import Project="..\Orion.Zeta.Core\Orion.Zeta.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
