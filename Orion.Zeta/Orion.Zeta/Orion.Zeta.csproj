@@ -110,12 +110,8 @@
     <Compile Include="Converters\IconToImageSourceConverter.cs" />
     <Compile Include="Core\ISearchMethodLoader.cs" />
     <Compile Include="Core\MefSearchMethodLoader.cs" />
-    <Compile Include="Core\Settings\GeneralSettingContainer.cs" />
-    <Compile Include="Core\Settings\GeneralApplicable.cs" />
-    <Compile Include="Core\Settings\IGeneralSettingContainer.cs" />
     <Compile Include="Core\Settings\ISettingContainer.cs" />
     <Compile Include="Core\Settings\SettingContainer.cs" />
-    <Compile Include="Core\Settings\StyleApplicable.cs" />
     <Compile Include="Core\Shortcut.cs" />
     <Compile Include="Persistence\ISettingRepository.cs" />
     <Compile Include="Persistence\LocalStorage\SettingRepository.cs" />

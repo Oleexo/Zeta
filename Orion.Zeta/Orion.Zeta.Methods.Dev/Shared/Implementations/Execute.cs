@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Orion.Zeta.Methods.Dev.Shared {
+namespace Orion.Zeta.Methods.Dev.Shared.Implementations {
 	public class Execute : IExecute {
 		public string Program { get; set; }
 

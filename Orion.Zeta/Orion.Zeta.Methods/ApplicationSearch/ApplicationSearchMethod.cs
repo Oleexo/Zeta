@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Dev.Shared;
+using Orion.Zeta.Methods.Dev.Shared.Implementations;
 
 namespace Orion.Zeta.Methods.ApplicationSearch {
 	public class ApplicationSearchMethod : ISearchMethodAsync {

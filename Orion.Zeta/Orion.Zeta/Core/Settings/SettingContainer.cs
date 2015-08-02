@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using Orion.Zeta.Methods.Dev.Setting;
-using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Methods.Ui.Dev.MethodContainers;
 
 namespace Orion.Zeta.Core.Settings {
