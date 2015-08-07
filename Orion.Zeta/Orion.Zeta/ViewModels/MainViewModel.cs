@@ -284,6 +284,7 @@ namespace Orion.Zeta.ViewModels {
 			if (interval <= 0) {
 				return;
 			}
+			this._autoRefreshTimer.Stop();
 			this._autoRefreshTimer.Interval = interval * 60000;
 			this._autoRefreshTimer.Start();
 		}
