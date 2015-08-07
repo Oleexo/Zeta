@@ -53,6 +53,7 @@ namespace Orion.Zeta.Settings.ViewModels {
                 this._model.IsStartOnBoot = value;
 				this.ModelModified();
                 this.OnPropertyChanged();
+	            this._modifiableGeneralSetting.StartOnBoot = value;
             }
         }
 

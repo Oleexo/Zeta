@@ -68,7 +68,7 @@ namespace Orion.Zeta {
 
         public void ToggleStartOnBoot(bool value) {
             var startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var exePath = Assembly.GetExecutingAssembly().Location;
             var shortcutName = "Zeta";
             var completePath = Path.Combine(startupPath, shortcutName + ".lnk");
             if (value) {
