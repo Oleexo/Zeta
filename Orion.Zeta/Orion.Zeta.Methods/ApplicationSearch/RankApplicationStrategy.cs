@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Orion.Zeta.Methods.Dev.Shared;
+using Orion.Zeta.Methods.Dev.Shared.Implementations;
 
 namespace Orion.Zeta.Methods.ApplicationSearch {
 	public class RankApplicationStrategy {

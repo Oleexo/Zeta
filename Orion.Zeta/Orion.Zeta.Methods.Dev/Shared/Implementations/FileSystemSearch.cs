@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using Orion.Zeta.Methods.Dev.Shared.Helpers;
 
-namespace Orion.Zeta.Methods.Dev.Shared {
+namespace Orion.Zeta.Methods.Dev.Shared.Implementations {
 	public class FileSystemSearch : IFileSystemSearch {
 		public IEnumerable<string> GetFiles(string path, string pattern, SearchOption searchOption = SearchOption.TopDirectoryOnly) {
 			return Directory.GetFiles(path, pattern, searchOption);

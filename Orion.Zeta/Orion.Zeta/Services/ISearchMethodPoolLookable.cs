@@ -1,5 +1,6 @@
 ﻿using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Methods.Ui.Dev.MethodContainers;
 
 namespace Orion.Zeta.Services {
 	public interface ISearchMethodPoolLookable {

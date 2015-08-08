@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Orion.Zeta.Methods.Dev.Setting;
 
-namespace Orion.Zeta.Methods.Ui.Dev {
+namespace Orion.Zeta.Methods.Ui.Dev.ViewModel {
 	public abstract class SettingBaseViewModel<TData> : BaseViewModel where TData : class, new() {
 		protected readonly IDataService DataService;
 		protected TData _model;

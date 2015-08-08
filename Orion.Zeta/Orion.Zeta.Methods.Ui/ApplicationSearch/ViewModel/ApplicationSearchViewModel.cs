@@ -10,6 +10,8 @@ using Orion.Zeta.Methods.ApplicationSearch;
 using Orion.Zeta.Methods.Dev.Setting;
 using Orion.Zeta.Methods.Ui.ApplicationSearch.Models;
 using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Methods.Ui.Dev.Tools.MVVM;
+using Orion.Zeta.Methods.Ui.Dev.ViewModel;
 using Application = System.Windows.Application;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch.ViewModel {

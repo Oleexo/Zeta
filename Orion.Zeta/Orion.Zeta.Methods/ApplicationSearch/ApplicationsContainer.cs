@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Orion.Zeta.Methods.Dev.Shared;
+using Orion.Zeta.Methods.Dev.Shared.Implementations;
 
 namespace Orion.Zeta.Methods.ApplicationSearch {
 	public class ApplicationsContainer {
@@ -48,7 +49,7 @@ namespace Orion.Zeta.Methods.ApplicationSearch {
 		}
 
 		public void ClearCache() {
-			this._items.Clear();
+			this._items?.Clear();
 		}
 
 		public IEnumerable<IItem> Search(string expression) {

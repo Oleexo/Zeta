@@ -50,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>CB8D23D9BF103F1DA7BC099C04DFF1C4012B8625</ManifestCertificateThumbprint>
@@ -115,12 +116,8 @@
     <Compile Include="Core\ISearchMethodLoader.cs" />
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\MefSearchMethodLoader.cs" />
-    <Compile Include="Core\Settings\GeneralSettingContainer.cs" />
-    <Compile Include="Core\Settings\GeneralApplicable.cs" />
-    <Compile Include="Core\Settings\IGeneralSettingContainer.cs" />
     <Compile Include="Core\Settings\ISettingContainer.cs" />
     <Compile Include="Core\Settings\SettingContainer.cs" />
-    <Compile Include="Core\Settings\StyleApplicable.cs" />
     <Compile Include="Core\Shortcut.cs" />
     <Compile Include="Persistence\ISettingRepository.cs" />
     <Compile Include="Persistence\LocalStorage\SettingRepository.cs" />

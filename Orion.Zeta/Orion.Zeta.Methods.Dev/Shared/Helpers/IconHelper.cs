@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace Orion.Zeta.Methods.Dev.Shared {
+namespace Orion.Zeta.Methods.Dev.Shared.Helpers {
 	public class IconHelper {
 		[DllImport("shell32.dll", CharSet = CharSet.Auto)]
 		public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);

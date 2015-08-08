@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
 using Orion.Zeta.Methods.Dev.Shared;
+using Orion.Zeta.Methods.Dev.Shared.Helpers;
+using Orion.Zeta.Methods.Dev.Shared.Implementations;
 
 namespace Orion.Zeta.Methods.ExplorerSearch {
     public class PossibilityPath {

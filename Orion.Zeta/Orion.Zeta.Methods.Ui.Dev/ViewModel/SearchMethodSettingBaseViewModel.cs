@@ -1,6 +1,6 @@
 ﻿using Orion.Zeta.Methods.Dev.Setting;
 
-namespace Orion.Zeta.Methods.Ui.Dev {
+namespace Orion.Zeta.Methods.Ui.Dev.ViewModel {
 	public abstract class SearchMethodSettingBaseViewModel<TSearchMethod, TData> : SettingBaseViewModel<TData> where TData : class, new() where TSearchMethod : class {
 		protected readonly ISearchMethodSettingService SearchMethodSettingService;
 

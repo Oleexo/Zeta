@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Methods.Ui.Dev.Tools.MVVM;
 
 namespace Orion.Zeta.ViewModels {
 	public class NotifyIconViewModel : BaseViewModel {

@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using Orion.Zeta.Core;
 using Orion.Zeta.Methods.Dev.Shared;
 using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Methods.Ui.Dev.Tools.MVVM;
 using Orion.Zeta.Persistence.LocalStorage;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings;
@@ -283,6 +284,7 @@ namespace Orion.Zeta.ViewModels {
 			if (interval <= 0) {
 				return;
 			}
+			this._autoRefreshTimer.Stop();
 			this._autoRefreshTimer.Interval = interval * 60000;
 			this._autoRefreshTimer.Start();
 		}

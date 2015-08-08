@@ -7,6 +7,7 @@ using Orion.Zeta.Methods.Dev;
 using Orion.Zeta.Methods.Dev.Setting;
 using Orion.Zeta.Methods.Ui.ApplicationSearch.Models;
 using Orion.Zeta.Methods.Ui.Dev;
+using Orion.Zeta.Methods.Ui.Dev.MethodContainers;
 
 namespace Orion.Zeta.Methods.Ui.ApplicationSearch {
     [Export(typeof(IMethodAsyncContainer))]

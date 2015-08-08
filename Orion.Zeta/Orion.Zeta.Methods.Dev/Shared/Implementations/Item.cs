@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Orion.Zeta.Methods.Dev.Shared {
+namespace Orion.Zeta.Methods.Dev.Shared.Implementations {
 	public class Item : IItem {
 		public Item(string value, Icon icon) {
 			this.Value = value;
