@@ -44,6 +44,7 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -65,6 +66,7 @@
     <Compile Include="SearchMethods\ExplorerSearch\ExplorerSearchMethodTests.cs" />
     <Compile Include="SearchMethods\ExplorerSearch\ExpressionPathTests.cs" />
     <Compile Include="SearchMethods\Shared\FileSystemSearchTests.cs" />
+    <Compile Include="SearchMethods\WebSearch\WebSearchMethodTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,7 @@
     <Compile Include="ExplorerSearch\SortPathBetterMatchStrategy.cs" />
     <Compile Include="ExplorerSearch\SortPathWindowsStyle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebSearch\WebSearchMethod.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Orion.Zeta.Methods.Dev\Orion.Zeta.Methods.Dev.csproj">
