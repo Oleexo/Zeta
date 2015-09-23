@@ -10,3 +10,5 @@ Zeta is a launch bar project for Windows in WPF.
 # Road Map
 * Advanced Settings Panel
 * Web Fast Search
+* Open SSH terminal
+* Open Remote Desktop Connection

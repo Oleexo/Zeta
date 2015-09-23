@@ -17,7 +17,6 @@ namespace Orion.Zeta.ViewModels {
 		private IItem _suggestion;
 		private string _expression;
 		private bool _isSearching;
-		private readonly TimeSpan _delaySearching;
 		private readonly Timer _expressionSearchTimer;
 		private DateTime _lastTimeStartSearching;
 		private Zeta Zeta => Zeta.Instance;
@@ -35,8 +34,8 @@ namespace Orion.Zeta.ViewModels {
 			Suggestions = new ObservableCollection<IItem>();
 			Suggestion = null;
 			_expression = string.Empty;
-			_delaySearching = new TimeSpan(0, 0, 0, 0, 250);
-			_expressionSearchTimer = new Timer(_delaySearching.TotalMilliseconds) { AutoReset = false };
+			var delaySearching = new TimeSpan(0, 0, 0, 0, 250);
+			_expressionSearchTimer = new Timer(delaySearching.TotalMilliseconds) { AutoReset = false };
 			_expressionSearchTimer.Elapsed += (sender, args) => {
 				StartSearching(Expression);
 			};

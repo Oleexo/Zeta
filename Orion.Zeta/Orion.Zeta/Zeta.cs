@@ -101,7 +101,6 @@ namespace Orion.Zeta {
 		}
 
 		#region IModifiableGeneralSetting
-
 		private bool _startOnBoot;
 		public bool StartOnBoot {
 			get { return _startOnBoot; }
