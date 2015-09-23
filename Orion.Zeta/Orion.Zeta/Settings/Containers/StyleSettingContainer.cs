@@ -30,6 +30,8 @@ namespace Orion.Zeta.Settings.Containers {
 			var model = this._applicationSettingService.Retrieve<StyleModel>("ApplicationStyle") ?? this.DefaultData();
 			this._modifiableStyleSetting.UseNoneWindowStyle = model.IsSlimDesign;
 			this._modifiableStyleSetting.Width = model.Width;
+			this._modifiableStyleSetting.IsAlwaysOnTop = model.IsAlwaysOnTop;
+			this._modifiableStyleSetting.IsHideWhenLostFocus = model.IsHideWhenLostFocus;
 		}
 
 		private StyleModel DefaultData() {

@@ -10,9 +10,6 @@
   <Grid>
     <ScrollViewer Margin="30 0 30 0">
       <WrapPanel Orientation="Vertical">
-        <Label Style="{StaticResource SettingTitle}">User Interface</Label>
-        <controls:ToggleSwitch Header="Hide when it loses focus" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsHideWhenLostFocus, Mode=TwoWay}" />
-        <controls:ToggleSwitch Header="Always on top" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsAlwaysOnTop, Mode=TwoWay}" />
         <!--HotKey Setting-->
         <Label Style="{StaticResource SettingTitle}">Suggestion Options</Label>
         <Label>Comming Soon</Label>

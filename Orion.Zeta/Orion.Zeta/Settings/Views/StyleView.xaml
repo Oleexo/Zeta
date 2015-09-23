@@ -18,7 +18,11 @@
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label HorizontalAlignment="Left" Grid.Row="0" Style="{StaticResource SettingTitle}">User Interface</Label>
-        <controls:ToggleSwitch HorizontalAlignment="Left" Grid.Row="1" Width="200" Header="Slim design (Need restart)" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsSlimDesign, Mode=TwoWay}" />
+        <WrapPanel Orientation="Vertical" Grid.Row="1" >
+          <controls:ToggleSwitch HorizontalAlignment="Left" Width="200" Header="Slim design (Need restart)" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsSlimDesign, Mode=TwoWay}" />
+          <controls:ToggleSwitch Header="Hide when it loses focus" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsHideWhenLostFocus, Mode=TwoWay}" />
+          <controls:ToggleSwitch Header="Always on top" OnLabel="On" OffLabel="Off" IsChecked="{Binding IsAlwaysOnTop, Mode=TwoWay}" />
+        </WrapPanel>
         <Label HorizontalAlignment="Left" Grid.Row="2">Width</Label>
         <Slider Grid.Row="3" Minimum="200" Maximum="1200" Value="{Binding Width, Mode=TwoWay}" />
       </Grid>

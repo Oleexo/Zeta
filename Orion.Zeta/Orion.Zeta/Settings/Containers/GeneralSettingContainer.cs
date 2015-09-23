@@ -2,7 +2,6 @@
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings.Models;
 using Orion.Zeta.Settings.Views;
-using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta.Settings.Containers {
 	public class GeneralSettingContainer : IApplicationSettingContainer {
@@ -28,8 +27,6 @@ namespace Orion.Zeta.Settings.Containers {
 
 		public void ApplyConfiguration() {
 			var model = this._applicationSettingService.Retrieve<GeneralModel>("ApplicationConfiguration") ?? this.DefaultData();
-			this._modifiableGeneralSetting.IsAlwaysOnTop = model.IsAlwaysOnTop;
-			this._modifiableGeneralSetting.IsHideWhenLostFocus = model.IsHideWhenLostFocus;
 			this._modifiableGeneralSetting.StartOnBoot = model.IsStartOnBoot;
 			if (model.IsAutoRefreshEnbabled) {
 				this._modifiableGeneralSetting.EnabledAutoRefresh(model.AutoRefresh);

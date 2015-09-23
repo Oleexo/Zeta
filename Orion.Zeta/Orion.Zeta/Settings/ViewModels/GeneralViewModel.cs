@@ -1,35 +1,13 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using Orion.Zeta.Methods.Ui.Dev;
 using Orion.Zeta.Methods.Ui.Dev.ViewModel;
 using Orion.Zeta.Services;
 using Orion.Zeta.Settings.Models;
-using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta.Settings.ViewModels {
 	public class GeneralViewModel : SettingBaseViewModel<GeneralModel> {
 		private readonly IModifiableGeneralSetting _modifiableGeneralSetting;
-
-		public bool IsHideWhenLostFocus {
-			get { return this._model.IsHideWhenLostFocus; }
-			set {
-				this._model.IsHideWhenLostFocus = value;
-				this.ModelModified();
-				this.OnPropertyChanged();
-				this._modifiableGeneralSetting.IsHideWhenLostFocus = value;
-			}
-		}
-
-		public bool IsAlwaysOnTop {
-			get { return this._model.IsAlwaysOnTop; }
-			set {
-				this._model.IsAlwaysOnTop = value;
-				this.ModelModified();
-				this.OnPropertyChanged();
-				this._modifiableGeneralSetting.IsAlwaysOnTop = value;
-			}
-		}
 
 		public int AutoRefresh {
 			get { return this._model.AutoRefresh; }
@@ -82,8 +60,6 @@ namespace Orion.Zeta.Settings.ViewModels {
 			this.OnPropertyChanged("IsStartOnBoot");
 			this.OnPropertyChanged("IsAutoRefreshEnbabled");
 			this.OnPropertyChanged("AutoRefresh");
-			this.OnPropertyChanged("IsAlwaysOnTop");
-			this.OnPropertyChanged("IsHideWhenLostFocus");
 		}
 	}
 }

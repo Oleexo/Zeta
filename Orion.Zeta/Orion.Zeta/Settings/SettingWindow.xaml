@@ -14,7 +14,7 @@
   <controls:MetroWindow.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Orion.Zeta;component/Resources/Icons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Zeta;component/Resources/Icons.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </controls:MetroWindow.Resources>

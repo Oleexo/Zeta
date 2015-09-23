@@ -32,6 +32,26 @@ namespace Orion.Zeta.Settings.ViewModels {
 			}
 		}
 
+		public bool IsHideWhenLostFocus {
+			get { return this._model.IsHideWhenLostFocus; }
+			set {
+				this._model.IsHideWhenLostFocus = value;
+				this.ModelModified();
+				this.OnPropertyChanged();
+				this._modifiableStyleSetting.IsHideWhenLostFocus = value;
+			}
+		}
+
+		public bool IsAlwaysOnTop {
+			get { return this._model.IsAlwaysOnTop; }
+			set {
+				this._model.IsAlwaysOnTop = value;
+				this.ModelModified();
+				this.OnPropertyChanged();
+				this._modifiableStyleSetting.IsAlwaysOnTop = value;
+			}
+		}
+
 		public StyleViewModel(ApplicationSettingService applicationSettingService, IModifiableStyleSetting modifiableStyleSetting) : base(applicationSettingService, "ApplicationStyle") {
 			this._modifiableStyleSetting = modifiableStyleSetting;
 			applicationSettingService.Closing += (sender, args) => this.SaveDataSetting();
@@ -47,6 +67,8 @@ namespace Orion.Zeta.Settings.ViewModels {
 		private void ApplyDataLoaded() {
 			this.OnPropertyChanged("IsSlimDesign");
 			this.OnPropertyChanged("Width");
+			this.OnPropertyChanged("IsAlwaysOnTop");
+			this.OnPropertyChanged("IsHideWhenLostFocus");
 		}
 	}
 }

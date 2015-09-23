@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
@@ -16,17 +14,11 @@ namespace Orion.Zeta {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        private static MainWindow _mainWindow {
-            get {
-                return Current.MainWindow as MainWindow;
-            }
-        }
-
-        public static TaskbarIcon NotifyIcon { get; private set; }
-
-        public static NotifyIconViewModel NotifyIconViewModel { get; private set; }
+        private static MainWindow _mainWindow => Current.MainWindow as MainWindow;
+	    private static Zeta _zeta;
 
         private void App_OnStartup(object sender, StartupEventArgs e) {
+
 #if !(DEBUG)
 			var process = Process.GetCurrentProcess();
 			if (Process.GetProcesses().Count(p => p.ProcessName.Equals(process.ProcessName)) > 1) {
@@ -34,36 +26,16 @@ namespace Orion.Zeta {
 				return;
 			}
 #endif
-            NotifyIcon = this.FindResource("TaskbarIcon") as TaskbarIcon;
-            if (NotifyIcon == null) {
+			_zeta = new Zeta(this);
+	        _zeta.Start();
+			LogConfig.Configure();
+			var notifyIcon = this.FindResource("TaskbarIcon") as TaskbarIcon;
+            if (notifyIcon == null) {
                 Current.Shutdown();
                 return;
             }
-            NotifyIconViewModel = new NotifyIconViewModel();
-            NotifyIcon.DataContext = NotifyIconViewModel;
-            NotifyIconViewModel.WakeUpApplication += this.NotifyIconViewModelOnWakeUpApplication;
-			NotifyIconViewModel.OpenSettingPanel +=	NotifyIconViewModelOnOpenSettingPanel;
-            try {
-                HotkeyManager.Current.AddOrReplace("LaunchZeta", Key.Space, ModifierKeys.Alt, this.OnWakeUpApplication);
-            } catch (HotkeyAlreadyRegisteredException) {
-#if !(DEBUG)
-				MessageBox.Show("Sorry, Global hot key ALT + Space is already use");
-				Current.Shutdown();
-				return;
-#endif
-            }
-        }
-
-	    private void NotifyIconViewModelOnOpenSettingPanel(object sender, EventArgs eventArgs) {
-		    _mainWindow.OpenSettingPanel();
-	    }
-
-	    private void NotifyIconViewModelOnWakeUpApplication(object sender, EventArgs eventArgs) {
-            _mainWindow.WakeUpApplication();
-        }
-
-        private void OnWakeUpApplication(object sender, HotkeyEventArgs e) {
-            _mainWindow.WakeUpApplication();
+			NotifyIconConfig.Configuration(notifyIcon, _zeta);
+			HotKeyConfig.Configuration(_zeta);            
         }
 
         public void ToggleStartOnBoot(bool value) {
