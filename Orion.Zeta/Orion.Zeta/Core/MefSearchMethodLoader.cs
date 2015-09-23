@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
@@ -14,10 +15,11 @@ namespace Orion.Zeta.Core {
 		private string defaultPluginsFolder = @"Plugins/";
 
 		public void Load(ICollection<IMethodContainer> searchMethods, ICollection<IMethodAsyncContainer> searchMethodsAsync) {
+			var path = this.GetBasePath();
 			var catalog = new AggregateCatalog();
-			catalog.Catalogs.Add(new AssemblyCatalog("Orion.Zeta.Methods.Ui.dll"));
+			catalog.Catalogs.Add(new AssemblyCatalog(Path.Combine(path, "Orion.Zeta.Methods.Ui.dll")));
 			if (Directory.Exists(this.defaultPluginsFolder)) {
-				var directoryCatalog = new DirectoryCatalog(this.defaultPluginsFolder);
+				var directoryCatalog = new DirectoryCatalog(Path.Combine(path, this.defaultPluginsFolder));
 				catalog.Catalogs.Add(directoryCatalog);
 			}
 			var container = new CompositionContainer(catalog);
@@ -29,6 +31,10 @@ namespace Orion.Zeta.Core {
 			foreach (var methodAsyncContainer in this._searchMethodsAsync) {
 				searchMethodsAsync.Add(methodAsyncContainer);
 			}
+		}
+
+		private string GetBasePath() {
+			return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 		}
 	}
 }

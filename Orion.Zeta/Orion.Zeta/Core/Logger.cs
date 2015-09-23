@@ -46,7 +46,6 @@ namespace Orion.Zeta.Core {
 		public void LogWarning(string message) {
 			RootLogger.Warn(message);
 		}
-
 		#endregion
 	}
 }

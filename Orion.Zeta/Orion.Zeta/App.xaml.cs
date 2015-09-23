@@ -2,24 +2,19 @@
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
-using NHotkey;
-using NHotkey.Wpf;
 using Orion.Zeta.Core;
-using Orion.Zeta.ViewModels;
 
 namespace Orion.Zeta {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        private static MainWindow _mainWindow => Current.MainWindow as MainWindow;
 	    private static Zeta _zeta;
 
         private void App_OnStartup(object sender, StartupEventArgs e) {
-
 #if !(DEBUG)
+			Logger.LogInfo("Application Start");
 			var process = Process.GetCurrentProcess();
 			if (Process.GetProcesses().Count(p => p.ProcessName.Equals(process.ProcessName)) > 1) {
 				Current.Shutdown();
@@ -35,7 +30,7 @@ namespace Orion.Zeta {
                 return;
             }
 			NotifyIconConfig.Configuration(notifyIcon, _zeta);
-			HotKeyConfig.Configuration(_zeta);            
+			HotKeyConfig.Configuration(_zeta);
         }
 
         public void ToggleStartOnBoot(bool value) {
