@@ -127,9 +127,11 @@ namespace Orion.Zeta {
 		}
 
 		public void EnabledAutoRefresh(int interval) {
+			SearchEngine.AutoRefreshCache = interval*60000;
 		}
 
 		public void DisabledAutoRefresh() {
+			SearchEngine.AutoRefreshCache = null;
 		}
 		#endregion
 	}
