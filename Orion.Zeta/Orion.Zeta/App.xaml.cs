@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
-using Orion.Zeta.Core;
 
 namespace Orion.Zeta {
     /// <summary>
@@ -31,21 +27,6 @@ namespace Orion.Zeta {
             }
 			NotifyIconConfig.Configuration(notifyIcon, _zeta);
 			HotKeyConfig.Configuration(_zeta);
-        }
-
-        public void ToggleStartOnBoot(bool value) {
-            var startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-            var exePath = Assembly.GetExecutingAssembly().Location;
-            var shortcutName = "Zeta";
-            var completePath = Path.Combine(startupPath, shortcutName + ".lnk");
-            if (value) {
-                if (!File.Exists(completePath))
-                    Shortcut.Create(shortcutName, startupPath, exePath);
-            }
-            else {
-                if (File.Exists(completePath))
-                    File.Delete(completePath);
-            }
         }
     }
 }

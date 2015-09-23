@@ -6,7 +6,6 @@
 				xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:viewModels="clr-namespace:Orion.Zeta.ViewModels"
 				xmlns:converters="clr-namespace:Orion.Zeta.Converters"
-				xmlns:zetaCore="clr-namespace:Orion.Zeta.Core;assembly=Orion.Zeta.Core"
 				xmlns:shared="clr-namespace:Orion.Zeta.Methods.Dev.Shared;assembly=Orion.Zeta.Methods.Dev"
 				mc:Ignorable="d"
 				d:DataContext="{viewModels:MainViewModel}"

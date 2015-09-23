@@ -137,11 +137,6 @@ namespace Orion.Zeta.ViewModels {
 		#endregion
 
 		#region Search
-
-		private void AutoRefreshSearchEngine() {
-			//this.SearchEngine.RefreshCache();
-		}
-
 		private void OnExpressionUpdated() {
 			if (_expressionSearchTimer.Enabled) {
 				_expressionSearchTimer.Stop();
@@ -154,7 +149,7 @@ namespace Orion.Zeta.ViewModels {
 		}
 
 		private void StartSearching(string expression) {
-			if (String.IsNullOrEmpty(expression)) {
+			if (string.IsNullOrEmpty(expression)) {
 				if (Suggestions.Any()) {
 					Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => {
 						Suggestions.Clear();

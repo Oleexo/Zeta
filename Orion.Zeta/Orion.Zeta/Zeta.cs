@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Orion.Zeta.Core;
 using Orion.Zeta.Persistence;
@@ -110,7 +112,18 @@ namespace Orion.Zeta {
 		}
 
 		private void ToogleStartOnBoot(bool value) {
-			
+			var startupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+			var exePath = Assembly.GetExecutingAssembly().Location;
+			var shortcutName = "Zeta";
+			var completePath = Path.Combine(startupPath, shortcutName + ".lnk");
+			if (value) {
+				if (!File.Exists(completePath))
+					Shortcut.Create(shortcutName, startupPath, exePath);
+			}
+			else {
+				if (File.Exists(completePath))
+					File.Delete(completePath);
+			}
 		}
 
 		public void EnabledAutoRefresh(int interval) {
