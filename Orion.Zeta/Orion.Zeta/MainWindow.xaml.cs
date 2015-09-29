@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using Orion.Zeta.ViewModels;
@@ -11,80 +12,75 @@ namespace Orion.Zeta {
 		private bool _isFirstTime;
 
 		public MainWindow() {
-			this.InitializeComponent();
-			this.AllowsTransparency = true;
-			this._mainViewModel = new MainViewModel();
-			this.DataContext = this._mainViewModel;
-			this._mainViewModel.OnAutoComplete += this.MainViewModelOnAutoComplete;
-			this._mainViewModel.OnProgramStart += this.MainViewModelOnOnProgramStart;
-			this._mainViewModel.OnSearchFinished += this.MainViewModelOnOnSearchFinished;
-			this.ExpressionTextBox.Focus();
-			this.Deactivated += this.OnDeactivated;
-			this._isFirstTime = true;
-			this.MinimizeApplication();
+			InitializeComponent();
+			AllowsTransparency = true;
+			_mainViewModel = new MainViewModel();
+			DataContext = _mainViewModel;
+			_mainViewModel.OnAutoComplete += MainViewModelOnAutoComplete;
+			_mainViewModel.OnProgramStart += MainViewModelOnOnProgramStart;
+			_mainViewModel.OnSearchFinished += MainViewModelOnOnSearchFinished;
+			ExpressionTextBox.Focus();
+			Deactivated += OnDeactivated;
+			_isFirstTime = true;
+			MinimizeApplication();
 		}
 
 		private void OnDeactivated(object sender, EventArgs eventArgs) {
-			if (this._mainViewModel.IsHideWhenLostFocus)
-				this.MinimizeApplication();
+			if (_mainViewModel.IsHideWhenLostFocus)
+				MinimizeApplication();
 		}
 
 		public void WakeUpApplication() {
-			if (this.WindowState == WindowState.Normal) {
+			if (WindowState == WindowState.Normal) {
 				return;
 			}
-			this.Show();
-			this.WindowState = WindowState.Normal;
-			this.ExpressionTextBox.Focus();
-			this.ExpressionTextBox.SelectAll();
-			this.CenterInScreen();
+			Show();
+			WindowState = WindowState.Normal;
+			ExpressionTextBox.Focus();
+			ExpressionTextBox.SelectAll();
+			CenterInScreen();
 		}
 
 		private void CenterInScreen() {
-			this.Top = 0;
-			var width = this.ActualWidth;
-			if (this._isFirstTime) {
-				if (!double.IsNaN(this.Width)) { width = this.Width; }
-				this._isFirstTime = false;
+			Top = 0;
+			var width = ActualWidth;
+			if (_isFirstTime) {
+				if (!double.IsNaN(Width)) { width = Width; }
+				_isFirstTime = false;
 			}
-			this.Left = (SystemParameters.WorkArea.Width - width) / 2 + SystemParameters.WorkArea.Left;
-		}
-
-		public void OpenSettingPanel() {
-			this.WakeUpApplication();
-			this._mainViewModel.OpenSettingCommand.Execute(null);
+			Left = (SystemParameters.WorkArea.Width - width) / 2 + SystemParameters.WorkArea.Left;
 		}
 
 		private void MainViewModelOnOnSearchFinished(object sender, EventArgs eventArgs) {
-			this.SuggestionsListBox.SelectedIndex = 0;
-			this.SuggestionTextBox.UpdateLayout();
-			this._mainViewModel.SelectSuggestionCommand.Execute(this.SuggestionsListBox.SelectedItem);
+			SuggestionsListBox.SelectedIndex = 0;
+			SuggestionTextBox.UpdateLayout();
+			_mainViewModel.SelectSuggestionCommand.Execute(SuggestionsListBox.SelectedItem);
 		}
 
 		private void MainViewModelOnOnProgramStart(object sender, EventArgs eventArgs) {
-			this.MinimizeApplication();
+			MinimizeApplication();
 		}
 
 		private void MinimizeApplication() {
-			this.WindowState = WindowState.Minimized;
-			this.Hide();
+			WindowState = WindowState.Minimized;
+			Hide();
 		}
 
 		private void MainViewModelOnAutoComplete(object sender, EventArgs e) {
-			this.ExpressionTextBox.CaretIndex = this.ExpressionTextBox.Text.Length;
+			ExpressionTextBox.CaretIndex = ExpressionTextBox.Text.Length;
 		}
 
 		private void ExpressionTextBox_OnScrollChanged(object sender, ScrollChangedEventArgs e) {
 			if (e.HorizontalOffset >= (e.ExtentWidth - e.ViewportWidth) - 1) {
-				if (this.SuggestionTextBox.Visibility == Visibility.Hidden)
-					this.SuggestionTextBox.Visibility = Visibility.Visible;
-				var margin = this.SuggestionTextBox.Margin;
-				margin.Left = -(this.ExpressionTextBox.HorizontalOffset);
-				this.SuggestionTextBox.Margin = margin;
+				if (SuggestionTextBox.Visibility == Visibility.Hidden)
+					SuggestionTextBox.Visibility = Visibility.Visible;
+				var margin = SuggestionTextBox.Margin;
+				margin.Left = -(ExpressionTextBox.HorizontalOffset);
+				SuggestionTextBox.Margin = margin;
 			}
 			else {
-				if (this.SuggestionTextBox.Visibility == Visibility.Visible) {
-					this.SuggestionTextBox.Visibility = Visibility.Hidden;
+				if (SuggestionTextBox.Visibility == Visibility.Visible) {
+					SuggestionTextBox.Visibility = Visibility.Hidden;
 				}
 			}
 		}
@@ -92,43 +88,53 @@ namespace Orion.Zeta {
 		private void ExpressionTextBox_OnKeyUp(object sender, KeyEventArgs e) {
 			switch (e.Key) {
 				case Key.Down:
-					if (this.SuggestionsListBox.SelectedIndex < this.SuggestionsListBox.Items.Count) {
-						++this.SuggestionsListBox.SelectedIndex;
-						this.SuggestionsListBox.UpdateLayout();
-						this._mainViewModel.SelectSuggestionCommand.Execute(this.SuggestionsListBox.SelectedItem);
+					if (SuggestionsListBox.SelectedIndex < SuggestionsListBox.Items.Count) {
+						++SuggestionsListBox.SelectedIndex;
+						SuggestionsListBox.UpdateLayout();
+						SuggestionTextBox.BringIntoView();
+						_mainViewModel.SelectSuggestionCommand.Execute(SuggestionsListBox.SelectedItem);
 					}
 					break;
 				case Key.Up:
-					if (this.SuggestionsListBox.SelectedIndex > 0) {
-						--this.SuggestionsListBox.SelectedIndex;
-						this.SuggestionsListBox.UpdateLayout();
-						this._mainViewModel.SelectSuggestionCommand.Execute(this.SuggestionsListBox.SelectedItem);
+					if (SuggestionsListBox.SelectedIndex > 0) {
+						--SuggestionsListBox.SelectedIndex;
+						SuggestionsListBox.UpdateLayout();
+						SuggestionTextBox.BringIntoView();
+						_mainViewModel.SelectSuggestionCommand.Execute(SuggestionsListBox.SelectedItem);
 					}
+					break;
+				case Key.Escape:
+					MinimizeApplication();
 					break;
 			}
 		}
 
 		private void SuggestionsListBox_OnKeyUp(object sender, KeyEventArgs e) {
 			if (e.Key == Key.Enter) {
-				this._mainViewModel.RunCommand.Execute(this.SuggestionsListBox.SelectedItem);
+				_mainViewModel.RunCommand.Execute(SuggestionsListBox.SelectedItem);
 			}
 		}
 
 		private void MainWindow_OnStateChanged(object sender, EventArgs e) {
-			if (this.WindowState == WindowState.Minimized) {
-				this.MinimizeApplication();
+			if (WindowState == WindowState.Minimized) {
+				MinimizeApplication();
 			}
 		}
 
 		private void SuggestionTextBox_OnTextChanged(object sender, TextChangedEventArgs e) {
-			if (!this.SuggestionTextBox.Text.StartsWith(this.ExpressionTextBox.Text, StringComparison.OrdinalIgnoreCase)) {
-				this.SuggestionTextBox.Visibility = Visibility.Collapsed;
+			if (!SuggestionTextBox.Text.StartsWith(ExpressionTextBox.Text, StringComparison.OrdinalIgnoreCase)) {
+				SuggestionTextBox.Visibility = Visibility.Collapsed;
 			}
 			else {
-				if (this.SuggestionTextBox.Visibility == Visibility.Collapsed) {
-					this.SuggestionTextBox.Visibility = Visibility.Visible;
+				if (SuggestionTextBox.Visibility == Visibility.Collapsed) {
+					SuggestionTextBox.Visibility = Visibility.Visible;
 				}
 			}
+		}
+
+		private void SuggestionsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) {
+			var selector = sender as Selector;
+			(selector as ListBox)?.ScrollIntoView(selector.SelectedItem);
 		}
 	}
 }

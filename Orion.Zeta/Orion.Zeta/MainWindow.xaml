@@ -82,7 +82,10 @@
 				</controls:ProgressRing>
 			</Grid>
 		</Border>
-		<ListBox x:Name="SuggestionsListBox" Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent" MaxHeight="325" KeyUp="SuggestionsListBox_OnKeyUp">
+		<ListBox x:Name="SuggestionsListBox" Grid.Row="1" ItemsSource="{Binding Suggestions}" Background="Transparent" MaxHeight="325" 
+		KeyUp="SuggestionsListBox_OnKeyUp"
+		SelectionChanged="SuggestionsListBox_OnSelectionChanged"
+		IsSynchronizedWithCurrentItem="True">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type shared:IItem}">
 					<Border BorderBrush="#FF999393" BorderThickness="0,0,0,1" Margin="0,0,5,0">
