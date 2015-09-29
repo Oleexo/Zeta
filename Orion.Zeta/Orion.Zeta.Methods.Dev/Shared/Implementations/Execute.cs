@@ -12,27 +12,27 @@ namespace Orion.Zeta.Methods.Dev.Shared.Implementations {
 
 		public void Start() {
 			if (_processInfo == null)
-				this.GenerateProcessStartInfo();
-			if (this._processInfo == null) {
+				GenerateProcessStartInfo();
+			if (_processInfo == null) {
 				throw new Exception();
 			}
-			Process.Start(this._processInfo);
+			Process.Start(_processInfo);
 		}
 
 		private void GenerateProcessStartInfo() {
-			if (this.Program == null || !File.Exists(this.Program))
+			if (Program == null || !File.Exists(Program))
 				throw new Exception();
-			this._processInfo = new ProcessStartInfo {
-				FileName = Path.GetFileName(this.Program),
-				WorkingDirectory = Path.GetDirectoryName(this.Program)
+			_processInfo = new ProcessStartInfo {
+				FileName = Path.GetFileName(Program),
+				WorkingDirectory = Path.GetDirectoryName(Program)
 			};
-			if (this.HaveParameters()) {
-				this._processInfo.Arguments = this.Parameters;
+			if (HaveParameters()) {
+				_processInfo.Arguments = Parameters;
 			}
 		}
 
 		private bool HaveParameters() {
-			return !String.IsNullOrEmpty(this.Parameters);
+			return !string.IsNullOrEmpty(Parameters);
 		}
 	}
 }
